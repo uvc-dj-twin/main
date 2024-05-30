@@ -19,6 +19,19 @@ const dao = {
     });
   },
 
+  selectUser(params) {
+    return new Promise((resolve, reject) => {
+      User.findOne({
+        where: { email: params.email },
+      })
+        .then((selectedInfo) => {
+          resolve(selectedInfo);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    })
+  }
 
 };
 

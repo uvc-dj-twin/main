@@ -30,12 +30,11 @@ router.post('/', async (req, res, next) => {
       logger.info(`(user.reg.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.sendStatus(200);
+      res.sendStatus(201);
     }
   } catch (err) {
     next(err);
   }
 });
-
 
 module.exports = router;

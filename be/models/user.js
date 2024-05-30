@@ -13,8 +13,13 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.STRING(500),
           allowNull: false,
         },
+        name: {
+          type: Sequelize.STRING(50),
+          allowNull: false,
+        },
         phone: {
           type: Sequelize.STRING(50),
+          allowNull: false,
         },
         role: {
           type: Sequelize.STRING(20),
@@ -33,6 +38,7 @@ module.exports = class User extends Sequelize.Model {
   }
 
   static associate(db) {
+    db.User.belongsTo(db.Group, {foreignKey: { name: "groupId" },onDelete: "SET NULL",as: "Group",});
   }
 
 };
