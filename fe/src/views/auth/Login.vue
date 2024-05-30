@@ -8,14 +8,24 @@
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
               <h6 class="text-blueGray-500 text-sm font-bold">
-                AI-Monitering System
+                Sign in with
               </h6>
             </div>
             <div class="btn-wrapper text-center">
-          
-                <img alt="..." class="w-50 mr-1" :src="home" />
-                
-            
+              <button
+                class="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                type="button"
+              >
+                <img alt="..." class="w-5 mr-1" :src="github" />
+                Github
+              </button>
+              <button
+                class="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                type="button"
+              >
+                <img alt="..." class="w-5 mr-1" :src="google" />
+                Google
+              </button>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
@@ -94,15 +104,12 @@
 <script>
 import github from "@/assets/img/github.svg";
 import google from "@/assets/img/google.svg";
-import home from "@/assets/img/sensor.svg"; 
-// 이 코드는 src/views/auth/Login.vue에서 실행되므로, assets 폴더 내부의 sensor.svg를 읽으려고 하지만, src 폴더 내부가 아닌 assets 폴더 내부의 파일을 읽는 것은 불가능하므로, 에러가 발생하게 된다.
+
 export default {
   data() {
     return {
-      
-      google,
       github,
-      home
+      google,
     };
   },
 };
