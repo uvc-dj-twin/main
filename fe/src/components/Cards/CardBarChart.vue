@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
-  >
+  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -16,16 +14,21 @@
     </div>
     <div class="p-4 flex-auto">
       <div class="relative h-350-px">
-        <canvas id="bar-chart"></canvas>
+        <canvas ref="chart"></canvas>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import { ref, onMounted } from "vue";
 import Chart from "chart.js";
+
 export default {
-  mounted: function () {
-    this.$nextTick(function () {
+  setup() {
+    const chart = ref(null);
+
+    onMounted(() => {
       let config = {
         type: "bar",
         data: {
@@ -118,9 +121,14 @@ export default {
           },
         },
       };
-      let ctx = document.getElementById("bar-chart").getContext("2d");
-      window.myBar = new Chart(ctx, config);
+
+      if (chart.value) {
+        let ctx = chart.value.getContext("2d");
+        new Chart(ctx, config);
+      }
     });
+
+    return { chart };
   },
 };
 </script>

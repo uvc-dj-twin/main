@@ -28,14 +28,22 @@
               statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
             ]"
           ></i>
-          {{ statPercent }}%
+          <input
+            v-model="percent"
+            type="text"
+            class="border-b border-transparent focus:outline-none focus:border-emerald-500"
+          />
+          %
         </span>
         <span class="whitespace-nowrap">{{ statDescripiron }}</span>
       </p>
     </div>
   </div>
 </template>
+
 <script>
+import { ref, watch } from 'vue';
+
 export default {
   name: "card-stats",
   props: {
@@ -78,6 +86,16 @@ export default {
       type: String,
       default: "bg-red-500",
     },
+  },
+  setup(props) {
+    const percent = ref(props.statPercent);
+
+    // Watch for changes in the prop and update the ref accordingly
+    watch(() => props.statPercent, (newVal) => {
+      percent.value = newVal;
+    });
+
+    return { percent };
   },
 };
 </script>

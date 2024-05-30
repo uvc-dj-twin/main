@@ -605,7 +605,7 @@ import team3 from "@/assets/img/team-3-800x800.jpg";
 import team4 from "@/assets/img/team-4-470x470.png";
 
 export default {
-  data() {
+  setup() {
     return {
       team1,
       team2,
