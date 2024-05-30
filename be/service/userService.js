@@ -1,0 +1,107 @@
+const logger = require('../lib/logger');
+const userDao = require('../dao/userDao');
+const hashUtil = require('../lib/hashUtil');
+const CustomError = require('../error/CustomError');
+const tokenUtil = require('../lib/tokenUtil');
+
+const service = {
+  // user 입력
+  async reg(params) {
+    let inserted = null;
+    let hashPassword = null;
+    try {
+      hashPassword = await hashUtil.makePasswordHash(params.password);
+      logger.debug(
+        `userService.reg - hashPassword: ${JSON.stringify(params.password)}`,
+      );
+    } catch (err) {
+      logger.error(`(userService.reg) - hashPassword: ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+    const newParams = {
+      ...params,
+      password: hashPassword,
+    };
+    try {
+      inserted = await userDao.insert(newParams);
+      logger.debug(`(userService.reg) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(userService.reg) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(new CustomError(400, 'Bad Request'));
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+
+  async login(params) {
+    let selected = null;
+    let token = null;
+
+    // 사용자 조회
+    try {
+      selected = await userDao.selectUser(params);
+
+      if (!selected) {
+        throw new CustomError('401', '일치하는 유저 정보가 없습니다')
+      }
+    } catch (err) {
+      logger.error(`(userService.login): ${err.message}`)
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // params.password와 조회된 password랑 비교
+    try {
+      const checkPassword = await hashUtil.checkPasswordHash(
+        params.password,
+        selected.password,
+      );
+      // 패스워드 불일치시 에러
+      if (!checkPassword) {
+        const err = new Error(
+          'userService.login, 패스워드가 일치하지 않습니다.',
+        );
+        throw err;
+      }
+    } catch (err) {
+      logger.error(`(userService.login): ${err.message}`)
+      return new Promise((resolve, reject) => {
+        reject(new CustomError('401', '일치하는 유저 정보가 없습니다'))
+      })
+    }
+
+    // 토큰발급
+    try {
+      token = await tokenUtil.makeToken({
+        id: selected.id,
+        name: selected.name,
+        role: selected.role,
+      });
+      if (!token) {
+        const err = new Error('userService.login, 토큰 발급 실패.');
+        throw err;
+      }
+    } catch (err) {
+      logger.error(`(userService.login): ${err.message}`)
+      return new Promise((resolve, reject) => {
+        reject(new CustomError('401', '일치하는 유저 정보가 없습니다'))
+      })
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve({ token: token });
+    });
+  }
+
+};
+
+module.exports = service;
