@@ -42,145 +42,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="(traffic, index) in socialTraffic" :key="index">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
             >
-              Facebook
+              {{ traffic.referral }}
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              1,480
+              {{ traffic.visitors }}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               <div class="flex items-center">
-                <span class="mr-2">60%</span>
+                <span class="mr-2">{{ traffic.percent }}</span>
                 <div class="relative w-full">
                   <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-red-200"
+                    class="overflow-hidden h-2 text-xs flex rounded"
+                    :class="traffic.barBgColor"
                   >
                     <div
-                      style="width: 60%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Facebook
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              5,480
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">70%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-emerald-200"
-                  >
-                    <div
-                      style="width: 70%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Google
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              4,807
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">80%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-purple-200"
-                  >
-                    <div
-                      style="width: 80%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              Instagram
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              3,678
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">75%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-lightBlue-200"
-                  >
-                    <div
-                      style="width: 75%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lightBlue-500"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-            >
-              twitter
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              2,645
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <div class="flex items-center">
-                <span class="mr-2">30%</span>
-                <div class="relative w-full">
-                  <div
-                    class="overflow-hidden h-2 text-xs flex rounded bg-orange-200"
-                  >
-                    <div
-                      style="width: 30%;"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
+                      :style="{ width: traffic.percent }"
+                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
+                      :class="traffic.barColor"
                     ></div>
                   </div>
                 </div>
@@ -192,3 +78,23 @@
     </div>
   </div>
 </template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const socialTraffic = ref([
+      { referral: 'Facebook', visitors: '1,480', percent: '60%', barBgColor: 'bg-red-200', barColor: 'bg-red-500' },
+      { referral: 'Facebook', visitors: '5,480', percent: '70%', barBgColor: 'bg-emerald-200', barColor: 'bg-emerald-500' },
+      { referral: 'Google', visitors: '4,807', percent: '80%', barBgColor: 'bg-purple-200', barColor: 'bg-purple-500' },
+      { referral: 'Instagram', visitors: '3,678', percent: '75%', barBgColor: 'bg-lightBlue-200', barColor: 'bg-lightBlue-500' },
+      { referral: 'Twitter', visitors: '2,645', percent: '30%', barBgColor: 'bg-orange-200', barColor: 'bg-emerald-500' },
+    ]);
+
+    return {
+      socialTraffic
+    };
+  },
+};
+</script>

@@ -488,7 +488,10 @@ import team3 from "@/assets/img/team-3-800x800.jpg";
 import team4 from "@/assets/img/team-4-470x470.png";
 
 export default {
-  data() {
+  components: {
+    TableDropdown,
+  },
+  setup() {
     return {
       bootstrap,
       angular,
@@ -501,9 +504,7 @@ export default {
       team4,
     };
   },
-  components: {
-    TableDropdown,
-  },
+  
   props: {
     color: {
       default: "light",

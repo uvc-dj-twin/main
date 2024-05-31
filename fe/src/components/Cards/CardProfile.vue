@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16"
-  >
+  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
     <div class="px-6">
       <div class="flex flex-wrap justify-center">
         <div class="w-full px-4 flex justify-center">
@@ -19,7 +17,7 @@
               <span
                 class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
               >
-                22
+                {{ friendCount }}
               </span>
               <span class="text-sm text-blueGray-400">Friends</span>
             </div>
@@ -27,7 +25,7 @@
               <span
                 class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
               >
-                10
+                {{ photoCount }}
               </span>
               <span class="text-sm text-blueGray-400">Photos</span>
             </div>
@@ -35,7 +33,7 @@
               <span
                 class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
               >
-                89
+                {{ commentCount }}
               </span>
               <span class="text-sm text-blueGray-400">Comments</span>
             </div>
@@ -46,31 +44,28 @@
         <h3
           class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"
         >
-          Jenna Stones
+          {{ fullName }}
         </h3>
         <div
           class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase"
         >
           <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-          Los Angeles, California
+          {{ location }}
         </div>
         <div class="mb-2 text-blueGray-600 mt-10">
           <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-          Solution Manager - Creative Tim Officer
+          {{ occupation }}
         </div>
         <div class="mb-2 text-blueGray-600">
           <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-          University of Computer Science
+          {{ education }}
         </div>
       </div>
       <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
         <div class="flex flex-wrap justify-center">
           <div class="w-full lg:w-9/12 px-4">
             <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-              An artist of considerable range, Jenna the name taken by
-              Melbourne-raised, Brooklyn-based Nick Murphy writes, performs and
-              records all of his own music, giving it a warm, intimate feel with
-              a solid groove structure. An artist of considerable range.
+              {{ bio }}
             </p>
             <a href="javascript:void(0);" class="font-normal text-emerald-500">
               Show more
@@ -81,14 +76,24 @@
     </div>
   </div>
 </template>
+
 <script>
+import { ref } from "vue";
 import team2 from "@/assets/img/team-2-800x800.jpg";
 
 export default {
-  data() {
-    return {
-      team2,
-    };
+  setup() {
+    const friendCount = ref(22);
+    const photoCount = ref(10);
+    const commentCount = ref(89);
+    const fullName = ref("Jenna Stones");
+    const location = ref("Los Angeles, California");
+    const occupation = ref("Solution Manager - Creative Tim Officer");
+    const education = ref("University of Computer Science");
+    const bio = ref("An artist of considerable range, Jenna the name taken by Melbourne-raised, Brooklyn-based Nick Murphy writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. An artist of considerable range.");
+    const team2Img = ref(team2);
+
+    return { friendCount, photoCount, commentCount, fullName, location, occupation, education, bio, team2Img };
   },
 };
 </script>
