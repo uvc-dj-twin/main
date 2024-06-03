@@ -40,6 +40,63 @@ const service = {
     });
   },
 
+  // 조회
+  async info(params) {
+    let result = null;
+
+    try {
+      result = await userDao.selectInfo(params);
+      logger.debug(`(userService.info) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(userService.info) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
+  // 수정
+  async edit(params) {
+    let result = null;
+
+    try {
+      result = await userDao.update(params);
+      logger.debug(`(userService.edit) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(userService.edit) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
+  // 삭제
+  async delete(params) {
+    let result = null;
+
+    try {
+      result = await userDao.delete(params);
+      logger.debug(`(userService.delete) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(userService.delete) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   async login(params) {
     let selected = null;
     let token = null;

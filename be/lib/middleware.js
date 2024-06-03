@@ -1,15 +1,17 @@
+const CustomError = require("../error/CustomError");
 const logger = require("./logger");
 const tokenUtil = require("./tokenUtil");
 
 const middleware = {
   // 로그인 확인
   isLoggedIn(req, res, next) {
-    const token = req.headers && req.headers.token;
+    const loginToken = req.headers && req.headers.authorization;
     try {
-      if (token) {
+      if (loginToken) {
         // 토큰 유효한지 확인
+        const token = loginToken.split('Bearer ')[1];
         const decoded = tokenUtil.verifyToken(token);
-  
+
         if (decoded) {
           req.user = {
             id: decoded.id,
@@ -18,7 +20,7 @@ const middleware = {
           // 토큰 유효하면 새로운 토큰으로 갱신(만기시간 초기화)
           const newToken = tokenUtil.makeToken(decoded);
           res.set("token", newToken);
-  
+
           next();
         } else {
           throw new CustomError(401, 'Unauthorized')

@@ -38,7 +38,11 @@ module.exports = class User extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.User.belongsTo(db.Group, {foreignKey: { name: "groupId" },onDelete: "SET NULL",as: "Group",});
+    db.User.belongsTo(db.Group, { foreignKey: { name: "groupId" }, onDelete: "SET NULL", as: "Group", });
+  }
+
+  static getPrivateIncludeAttributes() {
+    return ["id", "name", "email", "phone", "role"];
   }
 
 };
