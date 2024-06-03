@@ -1,17 +1,18 @@
 const fs = require('fs');
 const { parse } = require('csv-parse');
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
+const path = require('path');
+const { PythonShell } = require('python-shell')
 
 // InfluxDB 설정
 const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PORT}`;
 const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN });
-const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
 const queryApi = influx.getQueryApi('test');
 
 // csv 파일 읽기
-const readCSV = async (filePath) => {
+const readCSV = async (filePath, baseTime) => {
   try {
-    const csv = fs.readFileSync(filePath, 'utf8');
+    const csv = fs.readFileSync(path.resolve(__dirname, filePath), 'utf8');
     const rows = await new Promise((resolve, reject) => {
       parse(csv, { trim: true, skip_empty_lines: true, relax_column_count: true }, (err, output) => {
         if (err) {
@@ -48,48 +49,121 @@ const readCSV = async (filePath) => {
 };
 
 // influx에 저장
-const saveDB = (csvData) => {
+const saveDB = async (csvData, baseTime, type) => {
+  const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
   try {
-    // 현재 시간 설정
-    const baseTime = new Date();
-    baseTime.setMilliseconds(0);
+    const startTime = baseTime.getTime() * 1000;
+    const endTime = baseTime.getTime() + (csvData.data.length - 1) * 500;
+    let writePoints;
+    if (type === 'currents') {
+      writePoints = csvData.data.map((entry, index) => {
+        const timestamp = baseTime.getTime() * 1000 + index * 500;
+        const point = new Point('currents')
+          .tag('serial_no', csvData.machine)
+          .intField('rpm', csvData.rpm)
+          .floatField('watt', csvData.watt)
+          .intField('rate', csvData.rate)
+          .floatField('x', entry[0])
+          .floatField('y', entry[1])
+          .floatField('z', entry[2])
+          .timestamp(timestamp);
 
-    csvData.data.forEach((entry, index) => {
-      const timestamp = baseTime.getTime() * 1000 + index * 500
-      const point = new Point('current')
-        .tag('machine', csvData.machine)
-        .intField('rpm', csvData.rpm)
-        .floatField('watt', csvData.watt)
-        .intField('rate', csvData.rate)
-        .floatField('x', entry[0])
-        .floatField('y', entry[1])
-        .floatField('z', entry[2])
-        .timestamp(timestamp);
+        return writeApi.writePoint(point);
+      });
+    } else if (type === 'vibrations') {
+      writePoints = csvData.data.map((entry, index) => {
+        const timestamp = baseTime.getTime() * 1000 + index * 250;
+        const point = new Point('vibrations')
+          .tag('serial_no', csvData.machine)
+          .intField('rpm', csvData.rpm)
+          .floatField('watt', csvData.watt)
+          .intField('rate', csvData.rate)
+          .floatField('x', entry[0])
+          .timestamp(timestamp);
 
-      writeApi.writePoint(point);
-    });
+        return writeApi.writePoint(point);
+      });
+    }
 
-    writeApi.close().then(() => {
-      console.log('Data saved to InfluxDB.');
-    }).catch((e) => {
-      console.error(e);
-      console.log('Error saving data to InfluxDB.');
-    });
+    await Promise.all(writePoints);
+    await writeApi.close();
+
+    return {
+      startTime: startTime,
+      endTime: endTime,
+      ...csvData
+    };
   } catch (err) {
     console.error('DB 저장 중 오류 발생:', err);
   }
 }
 
-// csv 읽고 influx에 저장
-const readCSVAndSaveDB = async () => {
-  const csvData = await readCSV('./csv/modified_data.csv')
-  console.log(csvData);
-  saveDB(csvData)
+const predict = async (data, csvPath, type) => {
+  let pklPath, predictPath, normPath, _measurement;
+  if (type === 'currents') {
+    pklPath = path.resolve(__dirname, '../python/current_xgb.pkl');
+    predictPath = path.resolve(__dirname, '../python/current_predict.py');
+    normPath = '';
+    _measurement = 'current_predictions';
+  } else if (type === 'vibrations') {
+    pklPath = path.resolve(__dirname, '../python/vibration_xgb.pkl');
+    predictPath = path.resolve(__dirname, '../python/vibration_predict.py');
+    normPath = path.resolve(__dirname, '../python/vibration_norm.npy')
+    _measurement = 'vibration_predictions';
+  }
+  let options = {
+    mode: 'text',
+    pythonOptions: ['-u'], // get print results in real-time
+    args: [path.resolve(__dirname, csvPath), '1730', '2000', '2.2', pklPath, normPath]
+  };
+  try {
+    const result = await PythonShell.run(predictPath, options);
+    const code = parseInt(result[0]);
+    const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
+    if (type === 'currents') {
+    }
+    const point = new Point(_measurement)
+      .tag('serial_no', data.machine)
+      .tag('end_time', data.end_time)
+      .intField('code', code)
+      .timestamp(data.startTime);
+    await writeApi.writePoint(point);
+    await writeApi.close();
+    return code;
+  } catch (err) {
+    console.error(err);
+  }
 }
+
+// csv 읽고 influx에 저장
+const readCSVAndSaveDB = async (csvPath, type) => {
+  // 현재 시간
+  const baseTime = new Date();
+  baseTime.setMilliseconds(0);
+
+  // csv 파일 읽기
+  const csvData = await readCSV(csvPath)
+
+  // 데이터 DB에 저장
+  const data = await saveDB(csvData, baseTime, type)
+
+  // // 장비 상태 예측 후 예측 결과 저장
+  const result = await predict(data, csvPath, type);
+  console.log(`${type} predict : ${result}`)
+}
+
+let curIdx = 0;
+let vibIdx = 0;
+const curLength = 1;
+const vibLength = 1;
 
 const scheduler = {
   machineDataJob() {
-    readCSVAndSaveDB();
+    readCSVAndSaveDB(`../csv/current/current${curIdx}.csv`, 'currents');
+    readCSVAndSaveDB(`../csv/vibration/vibration${vibIdx}.csv`, 'vibrations');
+    curIdx++; vibIdx++;
+    curIdx = curIdx >= curLength ? 0 : curIdx;
+    vibIdx = vibIdx >= vibLength? 0 : vibIdx;
   }
 }
 
