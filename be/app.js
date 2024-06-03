@@ -7,10 +7,11 @@ const corsConfig = require('./config/corsConfig.json');
 const logger = require('./lib/logger');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const schedule = require('node-schedule')
 const models = require('./models/index');
 const errorHandler = require('./error/ErrorHandler')
-
 const indexRouter = require('./routes/index');
+const { machineDataJob } = require('./lib/scheduler');
 
 dotenv.config();
 
@@ -36,6 +37,11 @@ models.sequelize.authenticate().then(() => {
 }).catch((err) => {
   logger.error('DB Connection fail', err);
 });
+
+const job = schedule.scheduleJob('*/3 * * * * *', () => {
+  console.log('schedule job');
+  machineDataJob();
+})
 
 app.use(cors(corsConfig));
 app.use(express.json());
