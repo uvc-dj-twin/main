@@ -2,8 +2,9 @@
   <div>
     <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <HeaderStats></HeaderStats>
-      <RealTimeCard />
+      <HeaderForm></HeaderForm>
+      <div>필터 관리</div>
+      <EquipmentTable />
       
     </div>
   </div>
@@ -14,14 +15,14 @@
 // import CardBarChart from "@/components/Cards/CardBarChart.vue";
 // import CardPageVisits from "@/components/Cards/CardPageVisits.vue";
 // import CardSocialTraffic from "@/components/Cards/CardSocialTraffic.vue";
-import RealTimeCard from "@/components/Cards/RealTimeCard.vue";
-import HeaderStats from "@/components/Headers/HeaderStats.vue";
+import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
+import HeaderForm from "@/components/Headers/HeaderForm.vue";
 
 
 export default {
   components: {
-    HeaderStats,
-    RealTimeCard,
+    EquipmentTable,
+    HeaderForm
     // CardLineChart,
     // CardBarChart,
     // CardPageVisits,

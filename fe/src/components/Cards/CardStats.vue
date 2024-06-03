@@ -8,9 +8,29 @@
           <h5 class="text-blueGray-400 uppercase font-bold text-xs">
             {{ statSubtitle }}
           </h5>
+          <p class="text-sm text-blueGray-400 mt-4">
+        <span class="whitespace-nowrap">{{ statDescripiron1 }}</span>
+          </p>
           <span class="font-semibold text-xl text-blueGray-700">
-            {{ statTitle }}
+            {{ statTitle1 }}
           </span>
+          <br>
+          <p class="text-sm text-blueGray-400 mt-4">
+        <span class="whitespace-nowrap">{{ statDescripiron2 }}</span>
+          </p>
+          <span class="font-semibold text-xl text-blueGray-700">
+            {{ statTitle2 }}
+          </span>
+          <br>
+          <p class="text-sm text-blueGray-400 mt-4">
+        <span class="whitespace-nowrap">{{ statDescripiron3 }}</span>
+          </p>
+          <span class="font-semibold text-xl text-blueGray-700">
+            {{ statTitle3 }}
+          </span>
+         
+          
+          
         </div>
         <div class="relative w-auto pl-4 flex-initial">
           <div
@@ -21,22 +41,8 @@
           </div>
         </div>
       </div>
-      <p class="text-sm text-blueGray-400 mt-4">
-        <span class="mr-2" :class="[statPercentColor]">
-          <i
-            :class="[
-              statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-            ]"
-          ></i>
-          <input
-            v-model="percent"
-            type="text"
-            class="border-b border-transparent focus:outline-none focus:border-emerald-500"
-          />
-          %
-        </span>
-        <span class="whitespace-nowrap">{{ statDescripiron }}</span>
-      </p>
+     
+  
     </div>
   </div>
 </template>
@@ -51,30 +57,33 @@ export default {
       type: String,
       default: "Traffic",
     },
-    statTitle: {
+    statTitle1: {
       type: String,
-      default: "350,897",
+      default: "111",
     },
-    statArrow: {
-      default: "up",
-      validator: function (value) {
-        // The value must match one of these strings
-        return ["up", "down"].indexOf(value) !== -1;
-      },
-    },
-    statPercent: {
+    statTitle2: {
       type: String,
-      default: "3.48",
+      default: "222",
     },
+    statTitle3: {
+      type: String,
+      default: "333",
+    },
+   
     // can be any of the text color utilities
     // from tailwindcss
-    statPercentColor: {
+  
+    statDescripiron1: {
       type: String,
-      default: "text-emerald-500",
+      default: "총 수",
     },
-    statDescripiron: {
+    statDescripiron2: {
       type: String,
-      default: "Since last month",
+      default: "정상 수",
+    },
+    statDescripiron3: {
+      type: String,
+      default: "이상 수",
     },
     statIconName: {
       type: String,

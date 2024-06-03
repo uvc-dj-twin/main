@@ -23,7 +23,7 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 
 export default {
   setup() {

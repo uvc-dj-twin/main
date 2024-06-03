@@ -16,13 +16,13 @@
 <script>
 import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
 import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
-
 export default {
-  components: {
-    AdminNavbar,
-    FooterAdmin,
+  setup() {
+    return {
+      AdminNavbar,
+      FooterAdmin,
+    }
   }
 };
 </script>
-
 

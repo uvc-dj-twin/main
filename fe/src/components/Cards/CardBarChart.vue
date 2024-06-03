@@ -22,12 +22,12 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 
 export default {
   setup() {
-    const chart = ref(null);
 
+    const chart = ref(null);
     onMounted(() => {
       let config = {
         type: "bar",

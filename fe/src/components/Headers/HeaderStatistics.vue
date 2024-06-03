@@ -16,36 +16,26 @@ setup 함수:
 Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 반환합니다.
 이 코드는 Composition API를 사용하여 각 카드의 데이터를 반응형 변수로 관리하고, 이를 카드 컴포넌트에 전달하여 동적으로 표시합니다. 각 변수와 로직은 주석으로 명확히 설명되어 있습니다.
  -->
-
+<!-- 
 <template>
-  <!-- Header -->
-  <div class="relative md:pt-32 pb-32 pt-12">
+    <div class="relative md:pt-32 pb-32 pt-12">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
-        <!-- Card stats -->
-        <div class="flex flex-wrap">
+                  <div class="flex flex-wrap">
         
-          <!-- New Users Card -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-            <card-stats
-              :statSubtitle="totalStat.statSubtitle"
-              :statTitle1="totalStat.statTitle1"
-              :statTitle2="totalStat.statTitle2"
-              :statTitle3="totalStat.statTitle3"
-              
-              
-              :statDescripiron="totalStat.statDescripiron1"
-              :statDescripiron2="totalStat.statDescripiron2"
-
-              :statDescripiron3="totalStat.statDescripiron3"
-
-              :statIconName="totalStat.statIconName"
-              :statIconColor="totalStat.statIconColor"
-            />
-          </div>
-           <!-- Traffic Card -->
            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+            <div class="relative w-full mb-3">
+              <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">장비 선택</label>
+              <select class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                <option value="newUsersStat">New Users</option>
+                <option value="totalStat">Total Statistics</option>
+                <option value="salesStat">Sales</option>
+                <option value="performanceStat">Performance</option>
+              </select>
+            </div>
+
             <card-stats
+              v-if="selectedStatistics === 'newUsersStat'"
               :statSubtitle="newUsersStat.statSubtitle"
               :statTitle1="newUsersStat.statTitle1"
               :statTitle2="newUsersStat.statTitle2"
@@ -55,21 +45,37 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
               :statIconName="newUsersStat.statIconName"
               :statIconColor="newUsersStat.statIconColor"
             />
+
+            <card-stats
+              v-if="selectedStatistics === 'newUsersStat'"
+              :statSubtitle="newUsersStat.statSubtitle"
+              :statTitle1="newUsersStat.statTitle1"
+              :statTitle2="newUsersStat.statTitle2"
+              :statTitle3="newUsersStat.statTitle3"
+              :statArrow="newUsersStat.statArrow"
+              :statPercent="newUsersStat.statPercent"
+              :statIconName="newUsersStat.statIconName"
+              :statIconColor="newUsersStat.statIconColor"
+            />
+
+            
+
+
+
           </div>
     
         </div>
       </div>
     </div>
   </div>
-</template>
+</template> -->
 
-<script>
+<!-- <script>
 import { ref } from 'vue'; // Vue 3의 ref 함수 가져오기
-import CardStats from "@/components/Cards/CardStats.vue"; // CardStats 컴포넌트 가져오기
 
 export default {
   components: {
-    CardStats, // CardStats 컴포넌트 등록
+    // CardStats 컴포넌트 등록
   },
   setup() {
     // 각 카드의 데이터를 저장하는 반응형 변수들 선언
@@ -129,4 +135,4 @@ export default {
     };
   },
 };
-</script>
+</script> -->
