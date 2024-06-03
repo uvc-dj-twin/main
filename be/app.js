@@ -39,7 +39,6 @@ models.sequelize.authenticate().then(() => {
 });
 
 const job = schedule.scheduleJob('*/3 * * * * *', () => {
-  console.log('schedule job');
   machineDataJob();
 })
 
