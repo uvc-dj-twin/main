@@ -12,7 +12,7 @@ const queryApi = influx.getQueryApi('test');
 // csv 파일 읽기
 const readCSV = async (filePath, baseTime) => {
   try {
-    const csv = fs.readFileSync(path.resolve(__dirname, filePath), 'utf8');
+    const csv = fs.readFileSync(filePath, 'utf8');
     const rows = await new Promise((resolve, reject) => {
       parse(csv, { trim: true, skip_empty_lines: true, relax_column_count: true }, (err, output) => {
         if (err) {
@@ -120,8 +120,6 @@ const predict = async (data, csvPath, type) => {
     const result = await PythonShell.run(predictPath, options);
     const code = parseInt(result[0]);
     const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
-    if (type === 'currents') {
-    }
     const point = new Point(_measurement)
       .tag('serial_no', data.machine)
       .tag('end_time', data.end_time)
@@ -154,16 +152,27 @@ const readCSVAndSaveDB = async (csvPath, type) => {
 
 let curIdx = 0;
 let vibIdx = 0;
-const curLength = 1;
-const vibLength = 1;
+const curLength = 200;
+const vibLength = 200;
+
+const currentDir = path.resolve(__dirname, '../csv/current');
+const vibrationDir = path.resolve(__dirname, '../csv/vibration');
 
 const scheduler = {
   machineDataJob() {
-    readCSVAndSaveDB(`../csv/current/current${curIdx}.csv`, 'currents');
-    readCSVAndSaveDB(`../csv/vibration/vibration${vibIdx}.csv`, 'vibrations');
+    const currentFolers = fs.readdirSync(currentDir);
+    const vibrationFolders = fs.readdirSync(vibrationDir);
+    currentFolers.forEach((file) => {
+      const currentFile = path.resolve(currentDir, file, `current${curIdx}.csv`)
+      readCSVAndSaveDB(currentFile, 'currents');
+    });
+    vibrationFolders.forEach((file) => {
+      const vibrationFile = path.resolve(vibrationDir, file, `vibration${vibIdx}.csv`)
+      readCSVAndSaveDB(vibrationFile, 'vibrations');
+    });
     curIdx++; vibIdx++;
     curIdx = curIdx >= curLength ? 0 : curIdx;
-    vibIdx = vibIdx >= vibLength? 0 : vibIdx;
+    vibIdx = vibIdx >= vibLength ? 0 : vibIdx;
   }
 }
 
