@@ -8,22 +8,19 @@
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
               <h6 class="text-blueGray-500 text-sm font-bold">
-                AI-Monitering System
+                LOGIN
               </h6>
             </div>
             <div class="btn-wrapper text-center">
-          
-                <img alt="..." class="w-50 mr-1" :src="home" />
-                
-            
+                    <img alt="..." class="w-120 h-120" :src="sensor" />
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <div class="text-blueGray-400 text-center mb-3 font-bold">
-              <small>Or sign in with credentials</small>
+              <small>환영합니다</small>
             </div>
-            <form>
+            <form @submit="onSubmit">
               <div class="relative w-full mb-3">
                 <label
                   class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -92,17 +89,35 @@
   </div>
 </template>
 <script>
-import github from "@/assets/img/github.svg";
-import google from "@/assets/img/google.svg";
-import home from "@/assets/img/sensor.svg"; 
-// 이 코드는 src/views/auth/Login.vue에서 실행되므로, assets 폴더 내부의 sensor.svg를 읽으려고 하지만, src 폴더 내부가 아닌 assets 폴더 내부의 파일을 읽는 것은 불가능하므로, 에러가 발생하게 된다.
+
+import sensor from "@/assets/img/sensor.svg";
+// import { useUserStore } from '@/stores/user' // Pinia 스토어 가져오기
+
+
 export default {
-  data() {
+  setup() {
+    
+
+    // const onSubmit = async () => {
+    //   const formData = new FormData();
+    //   const mail = document.querySelector('input[type="email"]').value;
+    //   const password = document.querySelector('input[type="password"]').value;
+    //   formData.append('email', mail);
+    //   formData.append('password', password);
+    //   const userStore = useUserStore() // Pinia 스토어 인스턴스 가져오기
+
+    //   try {
+    //     await userStore.login(mail, password); // Pinia 스토어의 login action 실행
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
+
+
     return {
       
-      google,
-      github,
-      home
+      sensor,
+      // onSubmit,
     };
   },
 };
