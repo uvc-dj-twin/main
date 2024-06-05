@@ -15,7 +15,7 @@ router.post("/sign-in", async (req, res, next) => {
     logger.info(`(user.login.params) ${JSON.stringify(result)}`);
 
     res.status(200).json(result);
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 })
