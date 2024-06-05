@@ -11,15 +11,16 @@
           :to="link.path"
           class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
           :class="{
-            'bg-emerald-500 active:bg-emerald-600': isActive(link.path),
-            'bg-indigo-500 active:bg-emerald-600': !isActive(link.path),
+            'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes(link.path),
+            'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
           }"
         >
           {{ link.name }}
         </router-link>
       </div>
       <div>
-        <span class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600" id="time">{{ `현재 시간:${new Date().toLocaleTimeString()} 접속자: ${null} ${null}님 ` }}</span>
+        <span class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600" 
+        id="time">{{ `현재 시간:${newDate} 접속자: ${null} ${null}님 ` }}</span>
 
         <router-link
           to="/myPage"
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 export default {
   setup() {
     const links = [
@@ -57,11 +59,18 @@ export default {
       return route ? route.path === path : false;
     };
 
+
+    const newDate =ref();
+    setInterval(() =>{
+      newDate.value = new Date().toLocaleTimeString();}
+      ,1000)
+
     const userName = '홍길동';
 
     return {
       userName,
       links,
+      newDate,
       isActive,
     };
   },

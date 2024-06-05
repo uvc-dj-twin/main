@@ -55,6 +55,11 @@ import GroupMng from "@/views/admin/GroupMng.vue";
 
 // routes
 
+///////socket test//
+import socketPlugin from './plugins/socketPlug';
+import {host} from './config';
+
+
 const routes = [
   {
     path: "/",
@@ -142,7 +147,10 @@ const app = createApp(App)
 
 registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhOYVBpR2Nbe05xflRDal5YVAciSV9jS3pTcEVgWX5fdXdVRGJVWQ==');
 
+//socket 사용추가 
 app.use(router);
+app.use(socketPlugin, {host})
+
 
 app.mount("#app");
 

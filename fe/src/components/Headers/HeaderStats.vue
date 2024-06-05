@@ -60,6 +60,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
         </div>
       </div>
     </div>
+    <button @click="editCount">버튼</button>
   </div>
 </template>
 
@@ -71,28 +72,41 @@ export default {
   components: {
     CardStats, // CardStats 컴포넌트 등록
   },
-  setup() {
-    // 각 카드의 데이터를 저장하는 반응형 변수들 선언
+  props: {
+    dailyCount: Object,
+    dailyState: Object,
+
+  },
+  setup(props) {
+  
+    console.log(props)
+    console.log(props)
+
+    const editCount = () => {
+      totalStat.value.statTitle1="999"
+      totalStat.value.statTitle2="999"
+      totalStat.value.statTitle3="999"
+    }
+
     const totalStat = ref({
-      statSubtitle: "금일 검사 현황",
-      statTitle1: "1000",
-      statTitle2: "900",
-      statTitle3: "100",
+      statSubtitle: "금일 검사 현황11",
+      statTitle1: props.dailyCount.totalCount,
+      statTitle2: props.dailyCount.passCount,
+      statTitle3: props.dailyCount.failCount,
       
       statDescripiron1: "금일 총 검사",
       statDescripiron2: "금일 정상판정",
       statDescripiron3: "금일 이상판정",
       
-    
       statIconName: "far fa-chart-bar",
       statIconColor: "bg-red-500"
     });
 
     const newUsersStat = ref({
       statSubtitle: "금일 장비 현황",
-      statTitle1: "10",
-      statTitle2: "9",
-      statTitle3: "1",
+      statTitle1: props.dailyState.totalCount,
+      statTitle2: props.dailyState.passCount,
+      statTitle3: props.dailyState.failCount,
       
       statIconName: "fas fa-chart-pie",
       statIconColor: "bg-orange-500"
@@ -121,11 +135,11 @@ export default {
     });
 
     return {
-      // 템플릿에서 사용할 변수들 반환
       totalStat,
       newUsersStat,
       salesStat,
       performanceStat,
+      editCount,
     };
   },
 };

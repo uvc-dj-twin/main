@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
-
+// import { ref } from 'vue';
+// import {watch } from 'vue';
 export default {
   name: "card-stats",
   props: {
@@ -96,15 +96,22 @@ export default {
       default: "bg-red-500",
     },
   },
-  setup(props) {
-    const percent = ref(props.statPercent);
+  setup() {
+
+    // const {data} = props
+    // const dailyCount =ref();
+    // const dailyState =ref();
+    // dailyCount.value = data.dailyCount;
+    // dailyState.value = data.dailyState;
 
     // Watch for changes in the prop and update the ref accordingly
-    watch(() => props.statPercent, (newVal) => {
-      percent.value = newVal;
-    });
+    // const percent = ref(props.statPercent);
 
-    return { percent };
+    // watch(() => props.statPercent, (newVal) => {
+    //   percent.value = newVal;
+    // });
+
+    return {  };
   },
 };
 </script>

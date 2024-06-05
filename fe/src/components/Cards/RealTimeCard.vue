@@ -184,7 +184,7 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> 베어링 이상
+              <i class="fas fa-circle text-orange-500 mr-2"></i> 베어링 이상 
             </td>
           
             <td
@@ -224,35 +224,27 @@
 // import TableDropdown from "@/components/Dropdowns/TableDropdown.vue";
 
 import bootstrap from "@/assets/img/bootstrap.jpg";
-import angular from "@/assets/img/angular.jpg";
-import sketch from "@/assets/img/sketch.jpg";
-import react from "@/assets/img/react.jpg";
-import vue from "@/assets/img/react.jpg";
 
-import team1 from "@/assets/img/team-1-800x800.jpg";
-import team2 from "@/assets/img/team-2-800x800.jpg";
-import team3 from "@/assets/img/team-3-800x800.jpg";
-import team4 from "@/assets/img/team-4-470x470.png";
 
 export default {
   components: {
     
   },
   setup() {
+  
+   
+
+
+    
     return {
       bootstrap,
-      angular,
-      sketch,
-      react,
-      vue,
-      team1,
-      team2,
-      team3,
-      team4,
+      
     };
   },
   
+
   props: {
+    
     color: {
       default: "light",
       validator: function (value) {
