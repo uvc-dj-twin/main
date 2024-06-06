@@ -2,8 +2,24 @@ const { Op } = require("sequelize");
 const { Machine, Group } = require("../models/index");
 
 const dao = {
+  selectBySerialNo(params) {
+    return new Promise((resolve, reject) => {
+      Machine.findOne({
+        where: {
+          serialNo: params.serialNo,
+        },
+      })
+       .then((selected) => {
+          const result = selected.toJSON();
+          resolve(result);
+        })
+       .catch((err) => {
+          reject(err);
+        });
+    })
+  },
+
   selectByGroupId(params) {
-    console.log(params.groupId)
     return new Promise((resolve, reject) => {
       Machine.findAll({
         include: [{

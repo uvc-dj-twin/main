@@ -4,11 +4,12 @@ const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const path = require('path');
 const { PythonShell } = require('python-shell');
 const groupService = require('../service/groupService');
+const machineDao = require('../dao/machineDao');
+const sensorDao = require('../dao/sensorDao');
 
 // InfluxDB 설정
 const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PORT}`;
 const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN });
-const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
 // csv 파일 읽기
 const readCSV = async (filePath, baseTime) => {
@@ -135,12 +136,34 @@ const predict = async (data, csvPath, type) => {
 }
 
 const sendSocekt = async (io, type, data, result) => {
+  let socketInfo = {};
+  const machine = await machineDao.selectBySerialNo({ serialNo: data.machine })
   const groups = await groupService.selectBySerialNo({ serialNo: data.machine })
+  socketInfo.equipmentId = machine.id;
+  socketInfo.equipmentName = machine.name;
+  socketInfo.equipmentSerialNo = machine.serialNo;
+  socketInfo.thresholdCount = machine.threshold;
+  socketInfo.type = type;
+  const measurement = await (type === 'currents' ? 'current_predictions' : 'vibration_predictions');
+  const count = await sensorDao.countTodayPredict({
+    serialNo: machine.serialNo,
+    measurement: measurement,
+  });
+  socketInfo.count = count;
+  const failCount = await sensorDao.countTodayFailPredict({
+    serialNo: machine.serialNo,
+    measurement: measurement,
+  });
+  socketInfo.failCount = failCount;
+  socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
+  socketInfo.result = result;
+  socketInfo.time = data.startTime;
+  console.log(socketInfo);
   let groupIds = [];
   for (const group of groups) {
     groupIds.push(group.id);
   }
-  io.to(groupIds).emit(type, { predict: result })
+  io.to(groupIds).emit(type, socketInfo)
 }
 
 // csv 읽고 influx에 저장
@@ -160,7 +183,7 @@ const readCSVAndSaveDB = async (csvPath, type, io) => {
 
   // socket
   if (io) {
-    sendSocekt(io, type, csvData, result);
+    sendSocekt(io, type, data, result);
   }
 
   console.log(`${type} predict : ${result}`)
