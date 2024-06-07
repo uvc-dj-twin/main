@@ -54,7 +54,6 @@ const dao = {
   },
 
   countTodayFailPredict(params) {
-    console.log(params);
     return new Promise((resolve, reject) => {
       // 조회 시간 설정
       const now = new Date();

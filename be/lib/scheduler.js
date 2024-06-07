@@ -6,6 +6,7 @@ const { PythonShell } = require('python-shell');
 const groupService = require('../service/groupService');
 const machineDao = require('../dao/machineDao');
 const sensorDao = require('../dao/sensorDao');
+const codeDao = require('../dao/codeDao');
 
 // InfluxDB 설정
 const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PORT}`;
@@ -18,9 +19,10 @@ const readCSV = async (filePath, baseTime) => {
     const rows = await new Promise((resolve, reject) => {
       parse(csv, { trim: true, skip_empty_lines: true, relax_column_count: true }, (err, output) => {
         if (err) {
-          return reject(err);
+          reject(err);
+        } else {
+          resolve(output);
         }
-        resolve(output);
       });
     });
 
@@ -135,7 +137,7 @@ const predict = async (data, csvPath, type) => {
   }
 }
 
-const sendSocekt = async (io, type, data, result) => {
+const sendSocket = async (io, type, data, result) => {
   let socketInfo = {};
   const machine = await machineDao.selectBySerialNo({ serialNo: data.machine })
   const groups = await groupService.selectBySerialNo({ serialNo: data.machine })
@@ -156,9 +158,10 @@ const sendSocekt = async (io, type, data, result) => {
   });
   socketInfo.failCount = failCount;
   socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
-  socketInfo.result = result;
+  const codeInfo = await codeDao.info({machineId: machine.id, code: result})
+  socketInfo.result = codeInfo.name;
   socketInfo.time = data.startTime;
-  console.log(socketInfo);
+  console.log(socketInfo.type);
   let groupIds = [];
   for (const group of groups) {
     groupIds.push(group.id);
@@ -183,7 +186,7 @@ const readCSVAndSaveDB = async (csvPath, type, io) => {
 
   // socket
   if (io) {
-    sendSocekt(io, type, data, result);
+    sendSocket(io, type, data, result);
   }
 
   console.log(`${type} predict : ${result}`)

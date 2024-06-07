@@ -11,11 +11,25 @@ router.get('/monitoring-data', isLoggedIn, async (req, res, next) => {
       id: req.user.id,
     };
     logger.info(`(board.info.params) ${JSON.stringify(params)}`);
-    const group = await boardService.monitoringDataList(params);
-    logger.info(`(board.info.result) ${JSON.stringify(group)}`);
+    const result = await boardService.monitoringDataList(params);
+    logger.info(`(board.info.result) ${JSON.stringify(result)}`);
 
-    // const io = req.app.get('io');
-    res.status(200).json(group).send();
+    res.status(200).json(result).send();
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.get('/machines', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+    };
+    logger.info(`(board.machines.params) ${JSON.stringify(params)}`);
+    const result = await boardService.machineList(params);
+    logger.info(`(board.machines.result) ${JSON.stringify(result)}`);
+
+    res.status(200).json(result).send();
   } catch (err) {
     next(err);
   }

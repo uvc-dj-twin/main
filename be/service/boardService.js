@@ -82,6 +82,42 @@ const service = {
     });
   },
 
+  // 설비 목록 조회
+  async machineList(params) {
+    let result = null;
+
+    try {
+      const userInfo = await userDao.selectInfo(params);
+      const groupId = userInfo.Group.id;
+      const machines = await machineDao.selectByGroupId({ groupId: groupId })
+      const machinesResult = await Promise.all(
+        machines.map(async (machine) => {
+          let machineInfo = {};
+
+          machineInfo.id = machine.id;
+          machineInfo.serialNo = machine.serialNo;
+          machineInfo.name = machine.name;
+          machineInfo.threshold = machine.threshold;
+          const codes = await codeDao.listByMachine({machineId: machine.id})
+          const codesResult = codes.map(code => {return {id: code.id, name: code.name}});
+          machineInfo.defectTypes = codesResult;
+
+          return machineInfo;
+        })
+      );
+      result = machinesResult;
+    } catch (err) {
+      logger.debug(`(boardService.machineList) ${JSON.stringify(result)}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  }
+
 };
 
 module.exports = service;

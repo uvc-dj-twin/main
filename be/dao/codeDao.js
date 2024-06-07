@@ -13,7 +13,26 @@ const dao = {
         }
       )
         .then((selected) => {
-          resolve(selected);
+          resolve(selected.toJSON());
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  listByMachine(params) {
+    return new Promise((resolve, reject) => {
+      Code.findAll(
+        {
+          where: {
+            machineId: params.machineId,
+          }
+        }
+      )
+        .then((selected) => {
+          const result = selected.map(code => code.toJSON());
+          resolve(result);
         })
         .catch((err) => {
           reject(err);
