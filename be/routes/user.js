@@ -51,10 +51,11 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.info.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result);
+      res.status(200).json(result).send();
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
+      throw err;
     }
   } catch (err) {
     next(err);
@@ -77,17 +78,18 @@ router.patch('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.update.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result);
+      res.status(200).json(result).send();
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
+      throw err;
     }
   } catch (err) {
     next(err);
   }
 });
 
-// 마이페이지 정보 수정
+// 회원탈퇴
 router.delete('/:id', isLoggedIn, async (req, res, next) => {
   try {
     const params = {
@@ -101,10 +103,11 @@ router.delete('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.delete.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result);
+      res.status(200).json(result).send();
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
+      throw err;
     }
   } catch (err) {
     next(err);
