@@ -12,7 +12,6 @@ const models = require('./models/index');
 const errorHandler = require('./error/ErrorHandler')
 const indexRouter = require('./routes/index');
 const { machineDataJob } = require('./lib/scheduler');
-const webSocket = require('./lib/socket')
 
 dotenv.config();
 
@@ -54,7 +53,5 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 
 app.use(errorHandler);
-
-webSocket(server, app);
 
 module.exports = app;

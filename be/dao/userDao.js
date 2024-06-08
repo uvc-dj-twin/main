@@ -33,7 +33,7 @@ const dao = {
         ]
       })
         .then((selectedInfo) => {
-          resolve(selectedInfo);
+          resolve(selectedInfo.toJSON());
         })
         .catch((err) => {
           reject(err);

@@ -2,12 +2,15 @@ const fs = require('fs');
 const { parse } = require('csv-parse');
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const path = require('path');
-const { PythonShell } = require('python-shell')
+const { PythonShell } = require('python-shell');
+const groupService = require('../service/groupService');
+const machineDao = require('../dao/machineDao');
+const sensorDao = require('../dao/sensorDao');
+const codeDao = require('../dao/codeDao');
 
 // InfluxDB 설정
 const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PORT}`;
 const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN });
-const queryApi = influx.getQueryApi('test');
 
 // csv 파일 읽기
 const readCSV = async (filePath, baseTime) => {
@@ -16,9 +19,10 @@ const readCSV = async (filePath, baseTime) => {
     const rows = await new Promise((resolve, reject) => {
       parse(csv, { trim: true, skip_empty_lines: true, relax_column_count: true }, (err, output) => {
         if (err) {
-          return reject(err);
+          reject(err);
+        } else {
+          resolve(output);
         }
-        resolve(output);
       });
     });
 
@@ -133,8 +137,40 @@ const predict = async (data, csvPath, type) => {
   }
 }
 
+const sendSocket = async (io, type, data, result) => {
+  let socketInfo = {};
+  const machine = await machineDao.selectBySerialNo({ serialNo: data.machine })
+  const groups = await groupService.selectBySerialNo({ serialNo: data.machine })
+  socketInfo.equipmentId = machine.id;
+  socketInfo.equipmentName = machine.name;
+  socketInfo.equipmentSerialNo = machine.serialNo;
+  socketInfo.thresholdCount = machine.threshold;
+  socketInfo.type = type;
+  const measurement = await (type === 'currents' ? 'current_predictions' : 'vibration_predictions');
+  const count = await sensorDao.countTodayPredict({
+    serialNo: machine.serialNo,
+    measurement: measurement,
+  });
+  socketInfo.count = count;
+  const failCount = await sensorDao.countTodayFailPredict({
+    serialNo: machine.serialNo,
+    measurement: measurement,
+  });
+  socketInfo.failCount = failCount;
+  socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
+  const codeInfo = await codeDao.info({machineId: machine.id, code: result})
+  socketInfo.result = codeInfo.name;
+  socketInfo.time = data.startTime;
+  console.log(socketInfo.type);
+  let groupIds = [];
+  for (const group of groups) {
+    groupIds.push(group.id);
+  }
+  io.to(groupIds).emit(type, socketInfo)
+}
+
 // csv 읽고 influx에 저장
-const readCSVAndSaveDB = async (csvPath, type) => {
+const readCSVAndSaveDB = async (csvPath, type, io) => {
   // 현재 시간
   const baseTime = new Date();
   baseTime.setMilliseconds(0);
@@ -145,8 +181,14 @@ const readCSVAndSaveDB = async (csvPath, type) => {
   // 데이터 DB에 저장
   const data = await saveDB(csvData, baseTime, type)
 
-  // // 장비 상태 예측 후 예측 결과 저장
+  // 장비 상태 예측 후 예측 결과 저장
   const result = await predict(data, csvPath, type);
+
+  // socket
+  if (io) {
+    sendSocket(io, type, data, result);
+  }
+
   console.log(`${type} predict : ${result}`)
 }
 
@@ -160,15 +202,17 @@ const vibrationDir = path.resolve(__dirname, '../csv/vibration');
 
 const scheduler = {
   machineDataJob() {
+    const io = require('../app').get('io');
+
     const currentFolers = fs.readdirSync(currentDir);
     const vibrationFolders = fs.readdirSync(vibrationDir);
     currentFolers.forEach((file) => {
       const currentFile = path.resolve(currentDir, file, `current${curIdx}.csv`)
-      readCSVAndSaveDB(currentFile, 'currents');
+      readCSVAndSaveDB(currentFile, 'currents', io);
     });
     vibrationFolders.forEach((file) => {
       const vibrationFile = path.resolve(vibrationDir, file, `vibration${vibIdx}.csv`)
-      readCSVAndSaveDB(vibrationFile, 'vibrations');
+      readCSVAndSaveDB(vibrationFile, 'vibrations', io);
     });
     curIdx++; vibIdx++;
     curIdx = curIdx >= curLength ? 0 : curIdx;

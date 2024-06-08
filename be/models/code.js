@@ -4,10 +4,20 @@ module.exports = class Code extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
+        machineId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: 'uniqueMachineAndCode'
+        },
+        code: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          unique: 'uniqueMachineAndCode'
+        },
         name: {
           type: Sequelize.STRING(100),
           allowNull: false,
-        }
+        },
       },
       {
         sequelize,

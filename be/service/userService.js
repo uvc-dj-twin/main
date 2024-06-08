@@ -63,6 +63,13 @@ const service = {
   async edit(params) {
     let result = null;
 
+    if (params.password) {
+      params.password = await hashUtil.makePasswordHash(params.password);
+      logger.debug(
+        `userService.edit - hashPassword: ${JSON.stringify(params.password)}`,
+      );
+    }
+
     try {
       result = await userDao.update(params);
       logger.debug(`(userService.edit) ${JSON.stringify(result)}`);
