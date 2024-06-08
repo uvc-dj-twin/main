@@ -20,7 +20,7 @@
             <div class="text-blueGray-400 text-center mb-3 font-bold">
               <small>환영합니다</small>
             </div>
-            <form @submit="onSubmit">
+            <form @submit.prevent="handleSubmit">
               <div class="relative w-full mb-3">
                 <label
                   class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -29,7 +29,7 @@
                   Email
                 </label>
                 <input
-                  type="email"
+                  type="email"  v-model="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Email"
                 />
@@ -43,7 +43,7 @@
                   Password
                 </label>
                 <input
-                  type="password"
+                  type="password"  v-model="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
                 />
@@ -64,7 +64,7 @@
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  type="button"
+                  type="submit"
                 >
                   Sign In
                 </button>
@@ -89,36 +89,47 @@
   </div>
 </template>
 <script>
+    
 
 import sensor from "@/assets/img/sensor.svg";
-// import { useUserStore } from '@/stores/user' // Pinia 스토어 가져오기
 
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
+// import { useUserStore } from '@/stores/user' // Pinia 스토어 가져오기
 
 export default {
   setup() {
-    
-
-    // const onSubmit = async () => {
-    //   const formData = new FormData();
-    //   const mail = document.querySelector('input[type="email"]').value;
-    //   const password = document.querySelector('input[type="password"]').value;
-    //   formData.append('email', mail);
-    //   formData.append('password', password);
-    //   const userStore = useUserStore() // Pinia 스토어 인스턴스 가져오기
-
-    //   try {
-    //     await userStore.login(mail, password); // Pinia 스토어의 login action 실행
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
+    const router = useRouter()
+    const email = ref('');
+    const password = ref('');
+    const store = useStore();
 
 
-    return {
-      
-      sensor,
-      // onSubmit,
+    const handleSubmit = async () => {
+      try {
+        await store.dispatch('login', { email: email.value, password: password.value });
+        console.log(store);
+        // 로그인 성공 시 리다이렉트 또는 다른 작업 수행
+        console.log('성공')
+        console.log("유저정보는 토큰:",store.state.user)
+        // const redirectPath = '/dashboard'; 
+
+        // console.log(this.$router)
+        // self.$router.push({name: "Dashboard"})
+        router.push({ name: 'Dashboard' })
+        
+
+
+      } catch (error) {
+        this.$router.push({name: "Dashboard"});
+
+        console.error(error.message);
+        // 로그인 실패 처리
+      }
     };
-  },
+
+    return { email, password, handleSubmit,sensor };
+  }
 };
 </script>

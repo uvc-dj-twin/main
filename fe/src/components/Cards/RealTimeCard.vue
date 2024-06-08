@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
+    
     :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            Card Tables
+            실시간 모니터링 결과
           </h3>
         </div>
       </div>
@@ -29,6 +29,16 @@
               ]"
             >
               장비명 
+            </th>
+            <th
+              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              :class="[
+                color === 'light'
+                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
+              ]"
+            >
+              Threshold 
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -114,38 +124,52 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="(result,index) in props.dataRealtimeCard" :key="index">
             <th
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
-              <img
-                :src="bootstrap"
-                class="h-12 w-12 bg-white rounded-full border"
-                alt="..."
-              />
               <span
                 class="ml-3 font-bold"
                 :class="[
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
-              >
-                L-SF-01
+              >{{ result.equipmentSerialNo }}
+              <br>
+              {{ result.equipmentName }}
               </span>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <div class="flex items-center">
-                <span class="mr-2">91
+                <span class="mr-2">{{ result.thresholdCount }}<br> 
+                  <br></span>
+                <div class="relative w-full">
+                  <div
+                    
+                  >
+                    <div
+                    style="width: 90%;"
+                      class="big-circle"
+                    >{{  result.thresholdPercent }} </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+            >
+            <div class="flex items-center">
+                <span class="mr-2">{{  result.currentFailCount }} /{{ result.currentCount }}
                   <br></span>
                 <div class="relative w-full">
                   <div
                     class="overflow-hidden h-2 text-xs flex rounded bg-red-200"
                   >
                     <div
-                      style="width: 60%;"
+                      style="width: 90%;"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    >60%</div>
+                    > {{result.currentRatioPercent}}</div>
                   </div>
                 </div>
               </div>
@@ -154,19 +178,20 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> 베어링 이상
+              <i class="fas fa-circle text-orange-500 mr-2"></i> {{  result.currentResult}}
             </td>
           
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-          2024.01.01 01:01:01
-            </td>
+         <!-- {{`${result.currentTime.toLocaleDateString()} ${result.currentTime.getHours()}:${result.currentTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
+        {{ result.currentTime}} 
+        </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <div class="flex items-center">
-                <span class="mr-2">91
+                <span class="mr-2">{{result.vibrationFailCount}} / {{ result.vibrationCount }}
                   <br></span>
                 <div class="relative w-full">
                   <div
@@ -175,7 +200,7 @@
                     <div
                       style="width: 60%;"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    >60%</div>
+                    >{{ result.vibrationRatioPercent }}</div>
                   </div>
                 </div>
               </div>
@@ -184,28 +209,32 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> 베어링 이상 
+              <i class="fas fa-circle text-orange-500 mr-2"></i> {{ result. vibrationResult }}
             </td>
           
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-          2024.01.01 01:01:01
-            </td>
+            <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
+          {{ result.vibrationTime}}   
+          </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
-            <button class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none ml-auto mr-2 mb-1 ease-linear transition-all duration-150"> 상세보기</button>
-             
+        
+            <ModalGraph/> 
+            <!-- 상세보기 버튼  -->
+        
+         
+
+            
             </td>
           </tr>
-         
-       
         </tbody>
 
       </table>
-      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <!-- <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
           <button
             class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
             type="button"
@@ -216,35 +245,40 @@
           >
             {{ page }}
           </button>
-        </div>
+        </div> -->
     </div>
   </div>
 </template>
 <script>
 // import TableDropdown from "@/components/Dropdowns/TableDropdown.vue";
 
-import bootstrap from "@/assets/img/bootstrap.jpg";
-
-
+import ModalGraph from "@/components/modals/ModalGraph.vue";
+import {onMounted} from "vue";
 export default {
   components: {
-    
+    ModalGraph,
   },
-  setup() {
-  
-   
-
-
-    
-    return {
-      bootstrap,
-      
-    };
-  },
-  
-
   props: {
-    
+    dataRealtimeCard: {
+      type: Array,
+      default: () => ([{ 
+        equipmentId: 0, 
+        equipmentSerialNo: 0, 
+        equipmentName: 0,
+        thresholdCount:0,
+        currentCount:0,
+        currentFailCount:0,
+        currentRatioPercent:0,
+        vibrationCount:0,
+        vibrationFailCount:0,
+        vibrationRatioPercent:0,
+        currentResult:"확인중",
+        currentTime:new Date(),
+        vibrationResult:"확인중",
+        vibrationTime:new Date(),
+        thresholdPercent:0.01,
+       }])
+    },
     color: {
       default: "light",
       validator: function (value) {
@@ -253,5 +287,43 @@ export default {
       },
     },
   },
+  setup(props) {
+
+    onMounted(() =>{
+      console.log(props.dataRealtimeCard)
+    })
+
+
+
+    return {
+      props,
+      
+      
+    };
+  },
+  
+
+
 };
 </script>
+
+
+<style scoped>
+.big-circle {
+    width: 300px; /* 조절 가능한 크기 */
+    height: 100px; /* 조절 가능한 크기 */
+    border-radius: 50%; /* 원 모양 */
+    background: linear-gradient(to bottom, gray 40%, yellow 60%); /* 배경색은 빨강색 60%, 하향색 40% */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px; /* 텍스트 글씨크기 */
+    color: #ffffff; /* 텍스트 색상은 흰색 */
+    line-height: 100px; /* 라인 높이를 크기와 같게 설정하여 글자가 꽉차게 표시되도록 한다. */
+    font-weight: bold; /* 글자 굵기를 두껍게 설정한다. */
+    text-align: center; /* 글자를 가운데로 정렬한다. */
+}
+
+
+</style>

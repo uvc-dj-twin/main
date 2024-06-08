@@ -22,25 +22,14 @@
             <div class="text-blueGray-400 text-center mb-3 font-bold">
               <small>Or sign up with credentials</small>
             </div>
-            <form>
-              <div class="relative w-full mb-3">
-                <label
-                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                  htmlFor="grid-password"
-                >
-                  Name
-                </label>
-                <input
-                  type="email"
-                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  placeholder="Name"
-                />
-              </div>
+            <form @submit.prevent="register">
+            
 
               <div class="relative w-full mb-3">
                 <label
                   class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                   htmlFor="grid-password"
+                  
                 >
                   Email
                 </label>
@@ -48,6 +37,7 @@
                   type="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Email"
+                  v-model="email"
                 />
               </div>
 
@@ -62,6 +52,37 @@
                   type="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
+                  v-model="password"
+                />
+              </div>
+
+              <div class="relative w-full mb-3">
+                <label
+                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  placeholder="Name"
+                  v-model="name"
+                />
+              </div>
+
+              <div class="relative w-full mb-3">
+                <label
+                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  placeholder="Phone number"
+                  v-model="phone"
                 />
               </div>
 
@@ -84,10 +105,12 @@
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  type="button"
+                  type="submit"
+                  
                 >
                   Create Account
                 </button>
+                <button>클릭 {{ email }},{{ password }},{{ name }},{{ phone }}</button>
               </div>
             </form>
           </div>
@@ -98,12 +121,55 @@
 </template>
 <script>
 import sensor from "@/assets/img/sensor.svg";
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import {useRouter} from 'vue-router'
 
 
 export default {
   setup() {
+    const router = useRouter()
+    const store = useStore();
+    const email = ref('');
+    const password = ref('');
+    const name = ref('');
+    const phone =ref('');
+
+
+
+    const register = async () => {
+      try {
+        console.log(email.value)
+        console.log(password.value)
+        console.log(name.value)
+        console.log(phone.value)
+
+        await store.dispatch('register', { email: email.value, password: password.value, name: name.value,phone: phone.value, });
+        console.log(store);
+        // 로그인 성공 시 리다이렉트 또는 다른 작업 수행
+        console.log('가입 성공')
+        // console.log("유저정보는 토큰:",store.state.user)
+        // const redirectPath = '/dashboard'; 
+
+        // console.log(this.$router)
+        // self.$router.push({name: "Dashboard"})
+        router.push({ name: 'Dashboard' })
+        
+
+
+      } catch (error) {
+        router.push({ name: 'Dashboard' })
+
+        console.error(error.message);
+        // 로그인 실패 처리
+      }
+    };
     return {
-      sensor
+      sensor,register,
+      email,
+      password,
+      name,
+      phone
     };
   },
 };

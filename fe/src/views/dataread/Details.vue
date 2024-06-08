@@ -13,7 +13,7 @@
 
         <div class="flex">
           
-<EquipmentDropdownVue></EquipmentDropdownVue>
+<EquipmentDropdownVue :equipmentList="equipmentList"></EquipmentDropdownVue>
         <DatePicker></DatePicker>
         <TimePicker></TimePicker>
 
@@ -21,13 +21,13 @@
       
 
 
-        <RealTimeCard />
+        <EquipmentTable :columnList="columnList"/>
       </div>
     </div>
   </div>
 </template>
 <script>
-import RealTimeCard from "@/components/Cards/RealTimeCard.vue";
+import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
 
 
 
@@ -43,13 +43,13 @@ import  TimePicker from "@/components/Calenders/TimePicker.vue";
 
 
 
-
 export default {
   components: {
-    RealTimeCard,
+    EquipmentTable,
     DatePicker,
     TimePicker,
     EquipmentDropdownVue,
+    
 
 
 
@@ -60,6 +60,10 @@ export default {
     
   },
   setup() {
+    const columnList=['전류 검사 결과','전류 검사 시간','진동 검사 결과','진동 검사 시간','상세보기']
+
+    const equipmentList = ['L-SF-04','L-SF-05']
+
     const onValueChange = (args)=> {
       document.getElementById("date_label").textContent =
         args.value.toLocaleDateString();
@@ -73,7 +77,7 @@ export default {
 
   
 
-    return {onValueChange};
+    return {onValueChange, columnList,equipmentList};
 
   }
 };

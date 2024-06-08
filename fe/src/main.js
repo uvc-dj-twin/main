@@ -60,11 +60,16 @@ import socketPlugin from './plugins/socketPlug';
 import {host} from './config';
 
 
+//store
+import store from "./stores/store";
+
+
 const routes = [
   {
     path: "/",
     redirect: "/dashboard",
     component: DashboardLayout,
+    name:"Dashboard",
     children: [
       {
         path: "/dashboard",
@@ -123,6 +128,7 @@ const routes = [
       },
     ],
   },
+  
 
 
 
@@ -150,6 +156,7 @@ registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhOYVBpR2Nbe05xflRDal5YVAciSV9jS3p
 //socket 사용추가 
 app.use(router);
 app.use(socketPlugin, {host})
+app.use(store);
 
 
 app.mount("#app");

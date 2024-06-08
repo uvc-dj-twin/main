@@ -9,6 +9,7 @@
         <option value="totalStat">Total Statistics</option>
         <option value="salesStat">Sales</option>
       <option value="performanceStat">Performance</option>
+      <option :value="option" v-for="(option,index) in props.equipmentList" :key="index" >{{ option }}</option>
     </select>
     </div>
 </template>

@@ -69,7 +69,7 @@ export default {
       type: String,
       default: "333",
     },
-   
+
     // can be any of the text color utilities
     // from tailwindcss
   

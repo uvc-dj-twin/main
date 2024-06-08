@@ -14,12 +14,19 @@ totalStat, newUsersStat, salesStat, performanceStat 변수들은 각 카드에 �
 setup 함수:
 
 Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 반환합니다.
-이 코드는 Composition API를 사용하여 각 카드의 데이터를 반응형 변수로 관리하고, 이를 카드 컴포넌트에 전달하여 동적으로 표시합니다. 각 변수와 로직은 주석으로 명확히 설명되어 있습니다.
+이 코드는 Composition API를 사용하여 각 카드의 데이터를 반응형 변수로 관리하고,
+ 이를 카드 컴포넌트에 전달하여 동적으로 표시합니다. 각 변수와 로직은 주석으로 명확히 설명되어 있습니다.
+
+
+ props전달방법:props 정의(기본값 권장) 및 setup(props) 후 return props처리 후 template에서 변수명=props.정의명.속성
+ props: {
+   
+ }
  -->
 
 <template>
   <!-- Header -->
-  <div class="relative md:pt-32 pb-32 pt-12">
+  <div class="relative md:pt-32  pt-12">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
@@ -28,32 +35,22 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
           <!-- New Users Card -->
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              :statSubtitle="totalStat.statSubtitle"
-              :statTitle1="totalStat.statTitle1"
-              :statTitle2="totalStat.statTitle2"
-              :statTitle3="totalStat.statTitle3"
+              :statSubtitle="totalStat.statSubtitle" 
               
-              
-              :statDescripiron="totalStat.statDescripiron1"
-              :statDescripiron2="totalStat.statDescripiron2"
+              :statTitle1="props.dailyCount.totalCount"
+              :statTitle2="props.dailyCount.passCount"
+              :statTitle3="props.dailyCount.failCount"
 
-              :statDescripiron3="totalStat.statDescripiron3"
-
-              :statIconName="totalStat.statIconName"
-              :statIconColor="totalStat.statIconColor"
             />
           </div>
            <!-- Traffic Card -->
            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              :statSubtitle="newUsersStat.statSubtitle"
-              :statTitle1="newUsersStat.statTitle1"
-              :statTitle2="newUsersStat.statTitle2"
-              :statTitle3="newUsersStat.statTitle3"
-              :statArrow="newUsersStat.statArrow"
-              :statPercent="newUsersStat.statPercent"
-              :statIconName="newUsersStat.statIconName"
-              :statIconColor="newUsersStat.statIconColor"
+              :statSubtitle="props.dailyState.statSubtitle"
+              :statTitle1="props.dailyState.totalCount"
+              :statTitle2="props.dailyState.passCount"
+              :statTitle3="props.dailyState.failCount"
+           
             />
           </div>
     
@@ -65,23 +62,35 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 </template>
 
 <script>
-import { ref } from 'vue'; // Vue 3의 ref 함수 가져오기
+import {  ref } from 'vue'; // Vue 3의 ref 함수 가져오기
 import CardStats from "@/components/Cards/CardStats.vue"; // CardStats 컴포넌트 가져오기
-
 export default {
   components: {
     CardStats, // CardStats 컴포넌트 등록
   },
   props: {
-    dailyCount: Object,
-    dailyState: Object,
-
+    dailyCount: {
+      type: Object,
+      default: () => ({ totalCount: 0, passCount: 0, failCount: 0 })
+    },
+    dailyState: {
+      type: Object,
+      default: () => ({ totalCount: 0, passCount: 0, failCount: 0 })
+    },
   },
   setup(props) {
-  
-    console.log(props)
-    console.log(props)
+ 
+    
 
+    // console.log(props) setinterval로 갱신처리방법
+    // onMounted(() => {
+    //   console.log(props)
+    //   setInterval(() => {
+    //     totalStat.value.statTitle1 = props.dailyCount.totalCount;
+    //     totalStat.value.statTitle2 = props.dailyCount.passCount;
+    //     totalStat.value.statTitle3 = props.dailyCount.failCount;
+    //   }, 1000);
+    // })
     const editCount = () => {
       totalStat.value.statTitle1="999"
       totalStat.value.statTitle2="999"
@@ -89,7 +98,7 @@ export default {
     }
 
     const totalStat = ref({
-      statSubtitle: "금일 검사 현황11",
+      statSubtitle: "<금일 검사 현황>",
       statTitle1: props.dailyCount.totalCount,
       statTitle2: props.dailyCount.passCount,
       statTitle3: props.dailyCount.failCount,
@@ -140,6 +149,8 @@ export default {
       salesStat,
       performanceStat,
       editCount,
+      props,
+    
     };
   },
 };

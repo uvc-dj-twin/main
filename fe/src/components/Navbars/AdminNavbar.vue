@@ -20,7 +20,7 @@
       </div>
       <div>
         <span class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600" 
-        id="time">{{ `현재 시간:${newDate} 접속자: ${null} ${null}님 ` }}</span>
+        id="time">{{ `현재 시간:${newDate} 접속자: ${groupName}팀 ${userName}님 ` }}</span>
 
         <router-link
           to="/myPage"
@@ -44,9 +44,20 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import { ref } from 'vue';
 export default {
+
   setup() {
+    const store = useStore(); //stor 불러오기 
+    const userName = computed(() => store.state.name); // store 유저명 불러오기
+    const groupName = computed(() => store.state.groupName); // store 그룹명 불러오기
+    
+    // const userName = ref();
+
+
+    
     const links = [
       { path: '/dashboard', name: '모니터링' },
       { path: '/dataread', name: '이력조회' },
@@ -65,10 +76,9 @@ export default {
       newDate.value = new Date().toLocaleTimeString();}
       ,1000)
 
-    const userName = '홍길동';
-
     return {
       userName,
+      groupName,
       links,
       newDate,
       isActive,
@@ -76,4 +86,7 @@ export default {
   },
 };
 </script>
+
+
+
 
