@@ -15,13 +15,13 @@
         </div>
       </div>
     </div>
-    <div class="block w-full overflow-x-auto">
+    <div class="block vw-50% overflow-x-hidden">
       <!-- Projects table -->
-      <table class="items-center w-full bg-transparent border-collapse">
+      <table class="items-center w-full margin-left-auto bg-transparent border-collapse">
         <thead>
           <tr>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -31,7 +31,7 @@
               장비명 
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -41,7 +41,7 @@
               Threshold 
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -51,17 +51,17 @@
               전류검사 
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              전류 판정결과
+              전류 판정
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -71,7 +71,7 @@
                검사시간
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -81,17 +81,17 @@
               전동검사
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-               전동 판정결과
+               전동 판정
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -101,7 +101,7 @@
                검사 시간
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -114,7 +114,7 @@
          
             <!-- 추가칼럼 설정용 
               <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -126,7 +126,7 @@
         <tbody>
           <tr v-for="(result,index) in props.dataRealtimeCard" :key="index">
             <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
             >
               <span
                 class="ml-3 font-bold"
@@ -139,7 +139,7 @@
               </span>
             </th>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <div class="flex items-center">
                 <span class="mr-2">{{ result.thresholdCount }}<br> 
@@ -157,7 +157,7 @@
               </div>
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <div class="flex items-center">
                 <span class="mr-2">{{  result.currentFailCount }} /{{ result.currentCount }}
@@ -176,19 +176,19 @@
             </td>
             
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               <i class="fas fa-circle text-orange-500 mr-2"></i> {{  result.currentResult}}
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
          <!-- {{`${result.currentTime.toLocaleDateString()} ${result.currentTime.getHours()}:${result.currentTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
         {{ result.currentTime}} 
         </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <div class="flex items-center">
                 <span class="mr-2">{{result.vibrationFailCount}} / {{ result.vibrationCount }}
@@ -207,19 +207,19 @@
               
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               <i class="fas fa-circle text-orange-500 mr-2"></i> {{ result. vibrationResult }}
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
           {{ result.vibrationTime}}   
           </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
+              class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
         
@@ -234,7 +234,7 @@
         </tbody>
 
       </table>
-      <!-- <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
           <button
             class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
             type="button"
@@ -245,7 +245,7 @@
           >
             {{ page }}
           </button>
-        </div> -->
+        </div>
     </div>
   </div>
 </template>

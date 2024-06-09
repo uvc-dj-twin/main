@@ -9,8 +9,6 @@ const useStore = createStore({
     name: '고길동',
     groupName: 'OPC',
     dummy:false,
-
-
     equipmentlist: ['L-SF-04'],
 
   },
@@ -26,9 +24,9 @@ const useStore = createStore({
     nochange(state) {
       state.dummy=false;
     },
-    loadEquipment(state, equipmentlist) {
-      state.equipmentlist = equipmentlist
-    },
+    // loadEquipment(state, equipmentlist) {
+    //   state.equipmentlist = equipmentlist
+    // },
    
   },
   actions: {

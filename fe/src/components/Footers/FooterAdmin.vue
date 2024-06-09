@@ -41,12 +41,12 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
               href="https://www.creative-tim.com?ref=vn-footer-admin"
               class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
             >
-              Creative Tim
+            DJ-Twin
             </a>
           </div>
         </div>
         <!-- 링크 섹션 -->
-        <div class="w-full md:w-8/12 px-4">
+        <!-- <div class="w-full md:w-8/12 px-4">
           <ul class="flex flex-wrap list-none md:justify-end justify-center">
             <li>
               <a
@@ -81,7 +81,7 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
               </a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </footer>

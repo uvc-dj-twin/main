@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
+  <div class="relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-blueGray-700">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -16,7 +16,7 @@
     </div>
     <div class="p-4 flex-auto">
       <!-- Chart -->
-      <div class="relative h-150-px w-150-px">
+      <div class="relative h-full w-150-px">
         <canvas ref="chart" ></canvas>
       </div>
     </div>
@@ -27,6 +27,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import Chart from "chart.js";
+import {watch} from "vue";
 
 export default {
   setup(props) {
@@ -142,6 +143,23 @@ export default {
         myChart = new Chart(ctx, config);
       }
     });
+
+    
+    const updateChart = () => {
+      if (myChart) {
+        myChart.data.labels = props.data.labels;
+        myChart.data.datasets[0].data = props.data.data;
+        myChart.update();
+      }
+    };
+
+    watch(()=>props.data,()=>{
+      addData()
+    })
+    watch(() => props.data, () => {
+      updateChart();
+    }, { deep: true });
+    // watch로 처리하는 방법: watch(()=>변수명, 실행할 콜백함수, {설정});
 
     return { chart,addData };
   },

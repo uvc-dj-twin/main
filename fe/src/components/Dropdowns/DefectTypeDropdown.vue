@@ -1,11 +1,12 @@
 <template>
   
   <div class="relative mb-3">
-      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">장비 선택</label>
+      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="grid-password">결과 선택</label>
       <select 
       v-model="selectedValue"
       @change="handleChange"
       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150">
+      <option value="All"> All </option>
       <option :value="option" v-for="(option,index) in props.equipmentList" :key="index" >{{ option }}</option>
     </select>
     </div>

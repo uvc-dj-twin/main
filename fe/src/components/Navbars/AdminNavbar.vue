@@ -19,10 +19,11 @@
         </router-link>
       </div>
       <div>
-        <span class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600" 
-        id="time">{{ `현재 시간:${newDate} 접속자: ${groupName}팀 ${userName}님 ` }}</span>
+       
+       
 
         <router-link
+        
           to="/myPage"
           class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
           :class="{
@@ -30,7 +31,7 @@
             'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
       }"
         >
-          마이페이지
+        {{ `현재 시간:${newDate} 접속자: ${groupName}팀 ${userName}님 ` }} 마이페이지
         </router-link>
 
         <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"

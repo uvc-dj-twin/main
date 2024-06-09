@@ -49,6 +49,7 @@ Remove the margin in all browsers.
 
 body {
   margin: 0;
+  font-size:1em;
 }
 
 /**
@@ -122,7 +123,7 @@ pre {
 		'Liberation Mono',
 		Menlo,
 		monospace; /* 1 */
-  font-size: 1em; /* 2 */
+  font-size: 2em; /* 2 */
 }
 
 /**
@@ -184,7 +185,7 @@ optgroup,
 select,
 textarea {
   font-family: inherit; /* 1 */
-  font-size: 100%; /* 1 */
+  font-size: 1rem; /* 1 */
   line-height: 1.15; /* 1 */
   margin: 0; /* 2 */
 }
@@ -469,6 +470,10 @@ h6 {
 a {
   color: inherit;
   text-decoration: inherit;
+  font-size: 1rem;
+}
+header-button {
+  font-size: 3em;
 }
 
 /**
@@ -2218,7 +2223,7 @@ select {
 }
 
 .text-xl {
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.75rem;
 }
 
@@ -3943,7 +3948,8 @@ select {
   }
 
   .md\:ml-64 {
-    margin-left: 16rem;
+    margin-left: 3rem; 
+    /* 사이드바 마진 위치 */
   }
 
   .md\:max-w-4xl {
