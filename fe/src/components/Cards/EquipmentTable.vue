@@ -71,7 +71,8 @@
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
-            <ModalGraph/>
+            <ModalGraph/> 
+            <!-- 모달그래프 추가 -->
                         </td>
           </tr>
         </tbody>

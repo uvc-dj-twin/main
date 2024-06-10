@@ -225,6 +225,8 @@ export default {
      // const checked = event.target.checked;
      // checkedArray.value[index] = checked;
      console.log( selectedGroupArray.value[index])
+     console.log( selectedGroupArray.value)
+
    }
 
 
@@ -233,6 +235,7 @@ export default {
       if(checked){
         selectedGroupArray.value[index]=event.target.value
       }
+      console.log(selectedGroupArray.value)
       
     })
    }
