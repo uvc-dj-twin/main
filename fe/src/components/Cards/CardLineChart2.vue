@@ -1,6 +1,6 @@
 <template>
-<div class="modal relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">    
-  <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+  <div class="relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-blueGray-700">
+    <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
@@ -8,7 +8,7 @@
           </h6> -->
           <h2 class="text-white text-xl font-semibold">
             <!-- {{ data.title }} -->
-            <button @click="addData">전류검사 </button>
+            <button @click="addData">진동검사 </button>
 
           </h2>
         </div>
@@ -16,8 +16,8 @@
     </div>
     <div class="p-4 flex-auto">
       <!-- Chart -->
-      <div class="relative h-150-px w-1200-px">
-        <canvas ref="chart" class="relative h-150-px w-1200-px">></canvas>
+      <div class="relative h-full w-150-px">
+        <canvas ref="chart" ></canvas>
       </div>
     </div>
 
@@ -27,12 +27,14 @@
 <script>
 import { ref, onMounted } from "vue";
 import Chart from "chart.js";
+import {watch} from "vue";
 
 export default {
   setup(props) {
     const chart = ref(null);
     let myChart = null;
-    const {data} = props
+    const data = ref(props.data)
+
 
     const addData = () => {
       if (myChart) {
@@ -55,16 +57,20 @@ export default {
 
 
     onMounted(() => {
+    
+
       let config = {
         type: "line",
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: data.value.labels,
           datasets: [
             {
               label: 'X',
               backgroundColor: "white",
               borderColor: "white",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: data.value.data[0],
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
             },
@@ -72,7 +78,9 @@ export default {
               label: 'Y',
               backgroundColor: "red",
               borderColor: "red",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: data.value.data[1],
+
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
 
@@ -81,7 +89,9 @@ export default {
               label: 'Z',
               backgroundColor: "green",
               borderColor: "green",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: data.value.data[2],
+
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
 
@@ -162,6 +172,28 @@ export default {
       }
     });
 
+    
+    const updateChart = () => {
+      if (myChart) {
+        myChart.data.labels = props.data.labels;
+        myChart.data.datasets[0].data = data.data[0];
+        myChart.data.datasets[1].data = data.data[1];
+        myChart.data.datasets[2].data = data.data[2];
+
+        console.log("3차선 중 하나:",data.data[0])
+
+        myChart.update();
+      }
+    };
+
+    watch(()=>props.data,()=>{
+      addData()
+    })
+    watch(() => props.data, () => {
+      updateChart();
+    }, { deep: true });
+    // watch로 처리하는 방법: watch(()=>변수명, 실행할 콜백함수, {설정});
+
     return { chart,addData };
   },
   props: {
@@ -171,10 +203,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.chartjs-size-monitor {
-  height: 2000px; /* 원하는 높이 설정 */
-}
-
-</style>

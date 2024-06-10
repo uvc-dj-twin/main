@@ -9,28 +9,29 @@
           <h3
             class="font-semibold text-lg"
 
-          >
+          >            
             {{editCheck ? '회원 관리 수정' : '회원 관리 조회'}}
-            <button @click="handleEdit">모드 변경 </button>
+            <button 
+           class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600 bg-emerald-500 active:bg-emerald-600"
+           style="min-width: 200px; max-width: 400px"
+           @click="handleEdit">모드 변경 </button>
 
           </h3>
           
 
-
-          <select 
+          <!-- 일괄적용을 위한 드랍다운  -->
+          <select
             v-model="selectedGroupArray[index]"
             @change="checkGroupAll"
             class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
-            style="min-width: 200px; max-width: 400px">
-            <!-- <option selected :value="person.currentGroup">  {{ person.currentGroup }} </option> -->
-            
+            style="min-width: 200px; max-width: 400px"
+            >
             <option :value="option" v-for="option in props.groupList" :key="option" >{{ option }}</option>
-            
           </select>
 
           <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
           :class="[editCheck ? 'bg-emerald-500 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
-          >수정요청</button>
+          >수정 요청</button>
       
          
         </div>
@@ -42,7 +43,7 @@
         <thead>
           <tr>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -52,7 +53,7 @@
               체크박스 
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -62,7 +63,7 @@
               이름 
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -72,7 +73,7 @@
                메일
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -82,7 +83,7 @@
               현재 그룹
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -93,7 +94,7 @@
 
             <!-- 추가칼럼 설정용 
               <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -108,7 +109,7 @@
           <!-- <tr v-for="person in people" :key="person.id"> -->
           <tr v-for="(person, index) in people" :key="index">
             <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4 text-left flex items-center"
              
               >
             <input :id="`${index}`" type="checkbox" v-model="checkedArray[index]" @change="checkE"
@@ -123,7 +124,7 @@
               </span>
             </th>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
             >
             <div class="flex items-center">
                 <span class="mr-2">{{person.name}}
@@ -135,18 +136,18 @@
             </td>
             
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
             >
             {{person.mail}}
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
             >{{ person.currentGroup }}
          <!-- {{person.currentGroup}} -->
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
             >
           <select 
             v-model="selectedGroupArray[index]"
@@ -230,14 +231,19 @@ export default {
    }
 
 
+   // 전체 체크박스에서 값이 변경되면,
+   // 해당 체크박스가 true일 때만 선택된 그룹 값을 변경한다.
    const checkGroupAll = (event)=> {
-    checkedArray.value.forEach ((checked,index) => {
-      if(checked){
-        selectedGroupArray.value[index]=event.target.value
-      }
-      console.log(selectedGroupArray.value)
-      
-    })
+     // 전체 체크박스의 값을 반복하면서,
+     checkedArray.value.forEach ((checked, index) => {
+       // 해당 체크박스가 true일 때,
+       if(checked){
+         // 선택된 그룹 값을 변경한다.
+         selectedGroupArray.value[index]=event.target.value
+       }
+       // 변경된 선택된 그룹 값을 출력한다.
+       console.log(selectedGroupArray.value)
+     })
    }
 
 

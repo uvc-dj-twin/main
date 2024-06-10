@@ -3,8 +3,8 @@
     <div class="flex flex-wrap mt-4">
       <div class="w-full mb-12 px-4">
         <HeaderForm></HeaderForm>
-        <div>필터 관리</div>
-        <button @click="handlePages">테스트</button>
+        <div></div>
+        <button @click="handlePages"> </button>
         <div
           class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
           :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
@@ -97,7 +97,7 @@
     </div>
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-              type="button" style="transition: all .15s ease" v-for="(page, index) in pages" :key="index" @click="handlePages(page)">
+              type="button" style="transition: all .15s ease" v-for="(page) in pages" :key="page" value="page" @click="handlePages">
         {{ page }}
       </button>
     </div>
@@ -161,6 +161,7 @@ export default {
   setup() {
   const columnList=['장비명','Threshold','그룹A','그룹B','그룹C','저장']
   const pages=ref(0);
+  const currentPage=ref(1);
   const limits=ref(30);
   const totalRow=ref(10);
 
@@ -210,8 +211,8 @@ export default {
       }
 
        //페이지에 붙일 이벤트 - 페이지수만 바꿔서 조회요청 
-    const handlePages = (page) => {
-      pages.value=page
+    const handlePages = (event) => {
+      currentPage.value=event.target.value
       getValue()
     } 
 
@@ -221,7 +222,7 @@ export default {
       
       
       console.log(limits.value)
-      console.log(pages.value)
+      console.log(currentPage.value)
       
 
       

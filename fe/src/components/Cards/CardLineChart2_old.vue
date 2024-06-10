@@ -1,6 +1,6 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
-    <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+<div class="modal relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">    
+  <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
@@ -8,7 +8,7 @@
           </h6> -->
           <h2 class="text-white text-xl font-semibold">
             <!-- {{ data.title }} -->
-            <button @click="addData">진동검사 </button>
+            <button @click="addData">전류검사 </button>
 
           </h2>
         </div>
@@ -16,8 +16,8 @@
     </div>
     <div class="p-4 flex-auto">
       <!-- Chart -->
-      <div class="relative h-150-px w-150-px">
-        <canvas ref="chart" ></canvas>
+      <div class="relative h-150-px w-1200-px">
+        <canvas ref="chart" class="relative h-150-px w-1200-px">></canvas>
       </div>
     </div>
 
@@ -61,11 +61,30 @@ export default {
           labels: Array.from({length: 101}, (_, i) => i),
           datasets: [
             {
-              label: 'vertical',
-              backgroundColor: "#4c51bf",
-              borderColor: "#4c51bf",
+              label: 'X',
+              backgroundColor: "white",
+              borderColor: "white",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+            },
+            {
+              label: 'Y',
+              backgroundColor: "red",
+              borderColor: "red",
+              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+
+            },
+            {
+              label: 'Z',
+              backgroundColor: "green",
+              borderColor: "green",
+              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+
             },
           ],
         },
@@ -152,3 +171,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.chartjs-size-monitor {
+  height: 2000px; /* 원하는 높이 설정 */
+}
+
+</style>

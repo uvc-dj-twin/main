@@ -25,12 +25,12 @@
             </p>
             <div class="grid">
               <div>
-                <CardLineChart/>
+                <CardLineChart :data="vibrationGraphData.value.data"/>
                 
               </div>
               <div>
 
-                <CardLineChart2/>
+                <CardLineChart2 :data="currentGraphData"/>
                 
               </div>
             </div>
@@ -53,22 +53,106 @@
 import { ref } from 'vue';
 import CardLineChart from '@/components/Cards/CardLineChart.vue';
 import CardLineChart2 from '@/components/Cards/CardLineChart2.vue';
+import axios from 'axios'
 export default {
   components:{
     CardLineChart,
     CardLineChart2,
 
   },
-  setup() {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({ date: '2024-01-01', id: 8 }),
+    },
+  },
+  setup(props) {
+
+    
+const vert1 = [
+-1.801757813,
+-1.44140625,
+-0.9609375,
+];
+const vert4 = [
+  -1.801757813,
+  -1.44140625,
+  ];
+const vert2 = [
+2.922851563,
+2.482421875,
+];
+const vert3 = [
+-2.682617188,
+-2.922851563,
+];
+
+
     const showModal = ref(false);
 
+    const testData ={current:[vert3,vert4,vert2],vibration:[vert1]}
+    const vibrationGraphData =ref ({data:[100,2000,3000,4,5,6,6],labels:[]})
+    const  currentGraphData=ref ({data:[vert3,vert2,vert4],labels:[]})
+    
+    
+ 
+
+
+
+    /////
+    
+
+console.log(currentGraphData.value)
+console.log(vibrationGraphData.value)
+////////
+console.log(props)
     const toggleModal = () => {
+
+      
       showModal.value = !showModal.value;
     };
 
+
+    if (props.data.id) {
+      console.log(props.data)
+      axios
+        .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
+          headers: {
+            authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+          }
+        })
+        .then((response) => {
+          // 요청이 성공하면 실행되는 코드
+          console.log('Response:', response.data)
+          
+          currentGraphData.value.data = response.data.current
+          vibrationGraphData.value.data = response.data.vibration
+
+          console.log("모달에서 통신 후 배열:",currentGraphData.value)
+          console.log("모달통신배열",vibrationGraphData.value)
+
+        //   equipmentList.value =response.data.map((x)=>x.name)
+        //   console.log(equipmentList.value)
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행되는 코드
+          console.error('Error:', error)
+
+        })
+    }
+
+
+
+
+
     return {
       showModal,
-      toggleModal
+      toggleModal,
+      props,
+      currentGraphData,
+      vibrationGraphData,
+      testData
     };
   }
 }

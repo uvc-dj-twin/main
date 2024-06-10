@@ -5,26 +5,19 @@
         <!-- <HeaderStats></HeaderStats> -->
         <h1>장비와 날짜, 조회시각을 선택하세요</h1>
 
-        <!-- <IndexDropdownVue></IndexDropdownVue> 상단 인덱스 드랍다운용
-        <NotificationDropdown></NotificationDropdown> 알람아이콘 클릭 드랍다운용
-        <PagesDropdown></PagesDropdown> //인덱스와 같은 듯 함
-        <TableDropdown></TableDropdown> // : 클릭 드랍다운용  -->
-        <!-- <user-dropdown> </user-dropdown> //프로필 아이콘 클릭 드랍다운용 -->
-
         <div class="flex">
           <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
-          <DefectTypeDropdown :equipmentList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
+          <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
 
           <DatePicker  @update:value="handleUpdateDate"></DatePicker>
           <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
           <button @click="getValue">검색</button>
           
-{{ defectiveTypeList }}
         </div>
       
 
 
-        <EquipmentTable :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
+        <EquipmentTable :id="selectedMachine?.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
       </div>
     </div>
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -34,7 +27,8 @@
             style="transition:all .15s ease"
             v-for="(page, index) in pages"
             :key="index"
-            @click="handlePages(page)"
+            :value="page"
+            @click="handlePages"
           >
             {{ page }}
             
@@ -45,6 +39,8 @@
 <script>
 import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
 import { ref } from "vue";
+import axios from "axios";
+import {onMounted} from "vue";
 // import axios from "axios";
 
 //장비선택
@@ -79,7 +75,7 @@ export default {
   setup() {
     //초기화 관련 - 테이블 칼럼, 장비목록, 고장목록
     const columnList=['전류 검사 결과','전류 검사 시간','진동 검사 결과','진동 검사 시간','상세보기']
-    const machinetList = ref(
+    const equipmentList = ref(
       [{
         id:1,
         seral_no:'L-SF-04',
@@ -110,13 +106,42 @@ export default {
       },
     ]);
 
-    const equipmentList = ref(machinetList.value.map(equipment => equipment.name));
+    onMounted( //장비목록 불러오는 API GET 실행
+        axios
+        .get(`http://192.168.0.64:3000/board/machines`, {
+          headers: {
+            authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+          }
+        })
+        .then((response) => {
+          // 요청이 성공하면 실행되는 코드
+          console.log('Response:', response.data)
+          
+          equipmentList.value = response.data
+          console.log(equipmentList.value)
+        //   equipmentList.value =response.data.map((x)=>x.name)
+        //   console.log(equipmentList.value)
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행되는 코드
+          console.error('Error:', error)
+
+        })
+      )
+
+      // const equipmentList = ref(machinetList.value.map(equipment => equipment.name));
+
+
+
     //response data에서 가져온 모든 장비 목록
    
 
     const selectedEquipmentName = ref(); 
     // 사옹자가 선택한 이름을 자식컴포넌트에서 넘겨받은 값을 저장한 변수
-    const selectedMachine = ref() //
+    const selectedMachine = ref({
+      id: 1,
+    }) //
     // selectedEquipmentName 이벤트를 통해 선택된 장비명 selectedEquipmentName을
     // handleId함수에서 .find로 같은 이름을 찾아 해당 장비를 저장
 
@@ -127,17 +152,20 @@ export default {
     //화면에 표시된 불량유형 중 선택된 유형을 자식컴포넌트에서 받아와 저장할 변수명-쿼리용
 
 const handleId = ()=>{
-  selectedMachine.value = machinetList.value.find(machine => machine.name === selectedEquipmentName.value);
+  console.log()
 
-  console.log(selectedMachine.value.defectType.map(defectType => defectType.name))
-  defectTypeList.value = selectedMachine.value.defectType.map(defectType => defectType.name)
-  selectedDefectType.value='All';
+  selectedMachine.value = equipmentList.value.find(machine => machine.id === selectedEquipmentName.value);
+  console.log(selectedMachine.value )
+
+  defectTypeList.value = selectedMachine.value.defectTypes
+  console.log(defectTypeList.value)
 }
  // 장비선택 @click이벤트로 막 업데이트된 selectedEquipmentName정보로 머신과 머신의 불량유형저장함수
 
+ 
 
 // 달력관련 변수들 
-    const selectedDate=ref(1/1/2024); 
+    // const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
     const datePicker = ref(null);
     const startTime=ref();
     const endTime=ref();
@@ -146,8 +174,11 @@ const handleId = ()=>{
     const totalRow=ref(100);
     // 데이터 수를 받고서 만들 페이지 수
     const pages=ref(0);
+    const currentPage=ref(1);
     // 한 페이지 표시 행 수 
     const limits=ref(30);
+
+    // 상세정보 전달 id
     
 
     const response = { data: testResultArray ,totalRow:100}; 
@@ -155,41 +186,43 @@ const handleId = ()=>{
   // 업데이트 함수들 
     const handleUpdateEquipment = (value) => {
       selectedEquipmentName.value = value;
-      console.log('부모 컴포넌트에서 선택된 값:', value);
-    };
-    const handleUpdateDefect = (value) => {
-      selectedDefectType.value = value;
-      console.log('부모 컴포넌트에서 선택된 값:', value);
+      
+      console.log('부모 컴포넌트에서 선택된 값:', selectedEquipmentName.value);
     };
     
-    const handleUpdateDate = (value) => {
-      selectedDate.value = value;
-      console.log('부모 컴포넌트에서 선택된 값:', value);
+    const handleUpdateDefect = (value) => { //선택 후 바뀐 불량유형값을 확인
+      selectedDefectType.value = value;
+      console.log('부모 컴포넌트에서 선택된 값:', selectedDefectType.value);
     };
+    
+    // const handleUpdateDate = (value) => { //선택 후 바퀸 달력날짜정보 - 미사용 
+    //   selectedDate.value = value;
+    //   console.log('부모 컴포넌트에서 선택된 값:', value);
+    // };
 
     
-    const handleUpdateTimeStart = (value) => {
+    const handleUpdateTimeStart = (value) => { //선택 후 바뀐 시작시간값 확인
       startTime.value = value;
       console.log('부모 컴포넌트에서 선택된 시작시간값:', value);
     };
 
 
 
-    const handleUpdateTimeEnd = (value) => {
+    const handleUpdateTimeEnd = (value) => {//선택 후 바뀐 종료 시간값 확인
       endTime.value = value;
       console.log('부모 컴포넌트에서 선택된 종료시간값:', value);
     };
 
 
 
-    const onValueChange = (args)=> {
+    const onValueChange = (args)=> { //바뀐 값을 화면 텍스트 확인용, 불필요
       document.getElementById("date_label").textContent =
         args.value.toLocaleDateString();
     }
 
     //페이지에 붙일 이벤트 - 페이지수만 바꿔서 조회요청 
-    const handlePages = (page) => {
-      pages.value=page
+    const handlePages = (event) => {
+      currentPage.value=event.target.value
       getValue()
     } 
 
@@ -197,13 +230,15 @@ const handleId = ()=>{
     const getValue = () => {
     if (startTime) {
       
-      console.log(selectedDate.value)
-      console.log(startTime.value)
-      console.log(endTime.value)
-      console.log(selectedDefectType.value)
-      console.log(limits.value)
-      console.log(pages.value)
+      console.log("시작시간: ",startTime.value)
+      console.log("종료시간: ",endTime.value)
+      console.log("장비선택 선택 후 받은 장비객체id: ",selectedMachine.value.id)
+      console.log("한 페이지 수 :",limits.value)
+      console.log("요청 페이지 정보: ",currentPage.value)
+      console.log("불량타입",selectedDefectType.value) 
+      console.log("현재 페이지:", currentPage.value)
     }
+
 
     //들어갈 것: 
 
@@ -219,38 +254,46 @@ const handleId = ()=>{
     // testResultArray.value=response.data
     
 
-    // axios
-    //   .get(`http://192.168.0.64:3000/dataread/details/${id}?endTime=${startTime.value}&endTime=${endTime.value}`, {
-    //     headers: {
-    //       authorization:
-    //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     // 요청이 성공하면 실행되는 코드
-    //     console.log('Response:', response.data)
-    //     dailyTrend.value=response.data.dailyTrend
-    //     totalCount.value=response.data.totalCount
-    //     defectCount.value=response.data.defectCount
-    //     showGraph.value=true
-    //   })
-    //   .catch((error) => {
-    //     // 요청이 실패하면 실행되는 코드
-    //     console.error('Error:', error)
-    //     showGraph.value=true
+    axios
+    
+      .get(`http://192.168.0.64:3000/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&resultTime=${selectedDefectType}&limit=${limits.value}&page=${currentPage.value}`, {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+        }
+      })
+      .then((response) => {
+        // 요청이 성공하면 실행되는 코드
+        console.log('Response:', response.data)
 
-    //   })
-    console.log(totalRow.value)
-    console.log(limits.value)
-    console.log(totalRow.value/limits.value)
+        testResultArray.value=response.data.data
+
+        console.log(testResultArray)
 
 
-    const total = Number(totalRow.value);
-    const limit = Number(limits.value);
-    pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
+
+        totalRow.value=response.data.totalRow
+        console.log(testResultArray.value)
+        console.log(totalRow.value)
+        console.log(limits.value)
+        console.log(totalRow.value/limits.value)
+        const total = Number(totalRow.value);
+        const limit = Number(limits.value);
+        pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
    
 
     console.log(pages.value)
+       
+      })
+      .catch((error) => {
+        // 요청이 실패하면 실행되는 코드
+        console.error('Error:', error)
+
+      })
+   
+
+
+   
   };
 
 
@@ -388,11 +431,10 @@ const handleId = ()=>{
       handleUpdateDefect, // 불량유형 업데이트
       
       onValueChange, //선택된 날짜 화면표시용 지워도 됨 
-      datePicker,handleUpdateDate,
+      datePicker,
       handleUpdateTimeStart,
       handleUpdateTimeEnd,
       getValue,
-      selectedDate,
       startTime,
       endTime,
       testResultArray,

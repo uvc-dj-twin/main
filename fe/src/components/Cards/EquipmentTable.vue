@@ -23,7 +23,7 @@
             
          
             <th v-for="(column ,index) in props.columnList" :key="index"
-              class="px-6 align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-5xl  uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -38,41 +38,43 @@
         <tbody>
           <tr v-for="(row, index) in props.rowList" :key="index">
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-5xl  whitespace-nowrap p-4"
             >   {{ 
           row.currentResult
 
         }}
-              <i class="fas fa-circle text-orange-500 mr-2"></i> 
+              <i :class="[row.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" class="fas fa-circle mr-2"> </i> 
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-5xl  whitespace-nowrap p-4"
             >
           {{ 
           row.currentTime
+
+        
 
           }}
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-5xl  whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> {{ row.vibrationResult }}
-            >
+              <i :class="[row.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" class="fas fa-circle 500 mr-2"></i> {{ row.vibrationResult }}
+            
 
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-5xl  whitespace-nowrap p-4"
             >{{ row.vibrationTime }} 
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-5xl  whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
-            <ModalGraph/> 
-            <!-- 모달그래프 추가 -->
+            <ModalGraph :data="{id:props.id ,date:row.vibrationTime}"/> 
+            <!-- Modalgraph data 저장 및 보내기 ->모달안에서 그래프로 보낼 예정 -->
                         </td>
           </tr>
         </tbody>
@@ -88,21 +90,60 @@
 <script>
 import { ref } from "vue";
 import ModalGraph from "@/components/modals/ModalGraph.vue"
+// import axios from "axios";
 // import TableDropdown from "@/components/Dropdowns/TableDropdown.vue";
 const columns=ref([]);
+const targetGraph =ref();
+
+// const currentGraphData=ref();
+// const vibrationGraphData=ref()
+
 
 export default {
   components: {
     ModalGraph
   },
   setup(props) {
+    console.log(props.id)
+
+    // if (props.data.id) {
+    //   console.log(props.data)
+    //   axios
+    //     .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
+    //       headers: {
+    //         authorization:
+    //           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+    //       }
+    //     })
+    //     .then((response) => {
+    //       // 요청이 성공하면 실행되는 코드
+    //       console.log('Response:', response.data)
+          
+    //       currentGraphData.value.data = response.data.current
+    //       vibrationGraphData.value.data = response.data.vibration
+
+    //       console.log("모달에서 통신 후 배열:",currentGraphData.value)
+    //       console.log("모달통신배열",vibrationGraphData.value)
+
+    //     //   equipmentList.value =response.data.map((x)=>x.name)
+    //     //   console.log(equipmentList.value)
+    //     })
+    //     .catch((error) => {
+    //       // 요청이 실패하면 실행되는 코드
+    //       console.error('Error:', error)
+
+    //     })
+    // }
     return {
-      columns,props
-      
+      columns,props,targetGraph
     };
   },
   
   props: {
+    id:{
+      type:Number,
+      default: 1
+    },
     columnList:{
       type:Array,
     },

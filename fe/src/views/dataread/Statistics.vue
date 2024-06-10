@@ -22,12 +22,13 @@
 
           {{ startVal }} ~ {{ endVal }}
         </div>
-        <div v-if="showGraph" class="flex"> 
+        <div v-if="showGraph"> 
+          <div>
           <CardLineChart :data="dailyTrend"/>
-          <!-- <PieChart :data="data.totalCount"/>
-          <PieChart :data="data.faultType"/> -->
+          </div>
+          <div class="flex">
           <PieChart :data="totalCount"/>
-          <PieChart :data="defectCount"/>
+          <PieChart :data="defectCount"/></div>
         </div>
         <div v-else class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">조회를 진행해주세요</div>
       </div>
@@ -52,7 +53,9 @@ import PieChart from '@/components/Cards/PieChart.vue'
 import CardLineChart from '@/components/Cards/CardLineChart.vue'
 import data from "@/data/statistics.js";
 import {ref}  from "vue";
-// import axios from "axios";
+import axios  from "axios";
+import { onMounted } from "vue";
+// import {onMounted}  from "vue";
 
 export default {
   components: {
@@ -66,13 +69,39 @@ export default {
     const endVal = ref(new Date("06/06/2024 5:00 PM"));
     const selectedValue = ref('option1');
     const waterMark = "Select a Range";
-    const equipmentList = ['L-SF-04','L-SF-05']
+    const equipmentList = ref(['가짜장비1','L-SF-05'])
+    // const equipmentList1 =ref([])
     const dateRangePicker = ref(null);
     // 값을 저장할 변수
     const inputValue = ref('');
       const startDate = ref();
       const endDate = ref();
       const showGraph= ref(false);
+
+      onMounted( //장비목록 불러오기
+        axios
+        .get(`http://192.168.0.64:3000/board/machines`, {
+          headers: {
+            authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+          }
+        })
+        .then((response) => {
+          // 요청이 성공하면 실행되는 코드
+          console.log('Response:', response.data)
+          
+          equipmentList.value = response.data
+          console.log(equipmentList.value)
+        //   equipmentList.value =response.data.map((x)=>x.name)
+        //   console.log(equipmentList.value)
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행되는 코드
+          console.error('Error:', error)
+          showGraph.value=true
+
+        })
+      )
 
 
          // 자식 컴포넌트로부터 받은 값 처리
@@ -117,40 +146,38 @@ export default {
       console.log(startDate.value)
       console.log(endDate.value)
       console.log(selectedValue.value)
+      const id =1
+      axios
+        .get(`http://192.168.0.64:3000/board/machines/statistics/${id}/?startDate=${startDate.value}&endDate=${endDate.value}`, {
+          headers: {
+            authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+          }
+        })
+        .then((response) => {
+          // 요청이 성공하면 실행되는 코드
+          console.log('Response:', response.data)
+          dailyTrend.value=response.data.dailyTrend
+          totalCount.value=response.data.totalCount
+          defectCount.value=response.data.defectCount
+          showGraph.value=true
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행되는 코드
+          console.error('Error:', error)
+          showGraph.value=true
 
-      // axios
-      //   .get(`http://192.168.0.64:3000/dataread/statistics/${equipmentList.value[0]}?startDate=${startDate.value}&endDate=${endDate.value}`, {
-      //     headers: {
-      //       authorization:
-      //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-      //     }
-      //   })
-      //   .then((response) => {
-      //     // 요청이 성공하면 실행되는 코드
-      //     console.log('Response:', response.data)
-      //     dailyTrend.value=response.data.dailyTrend
-      //     totalCount.value=response.data.totalCount
-      //     defectCount.value=response.data.defectCount
-      //     showGraph.value=true
-      //   })
-      //   .catch((error) => {
-      //     // 요청이 실패하면 실행되는 코드
-      //     console.error('Error:', error)
-      //     showGraph.value=true
-
-      //   })
+        })
 
 
-      console.log(data.dailyTrend)
-      console.log(data.dailyTrend)
+      console.log(dailyTrend.value)
     
 
      
       dailyTrend.value=data.dailyTrend
       totalCount.value=data.totalCount
       defectCount.value=data.defectCount
-      console.log(defectCount.value)
-      console.log(defectCount.value)
+  
     };
 
 

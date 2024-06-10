@@ -12,9 +12,10 @@
             class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
             type="button"
             style="transition:all .15s ease"
-            v-for="(page, index) in 5"
+            v-for="(page, index) in pages"
             :key="index"
-            @click="currentPage = page"
+            :value="page"
+            @click="handlePage"
           >
             {{ page }}
           </button>
@@ -51,7 +52,8 @@ export default {
     //검색 변수//
     const  userEmail=ref('')
     const  limit=ref(30)
-    const  page=ref(1)
+    const  pages=ref(0)
+    const currentPage=ref(1)
 
     const handleUpdate = (value) => {
       selectedValue.value = value;
@@ -60,7 +62,7 @@ export default {
 
 
     const handlePage = (event) => {
-      page.value=event.target.id
+      currentPage.value=event.target.id
       getValue()
     }
 
@@ -70,8 +72,9 @@ export default {
     // if (inputElement) {
     console.log(userEmail.value)  
     console.log(groups.value) 
-    console.log(page.value) 
     console.log(limit.value)
+    console.log(currentPage.value) 
+    console.log(pages.value)
 
     // axios
     //   .get(`http://192.168.0.64:3000/admin/groups/users?userEmail=${userEmail.value}&group=${group.value}&limit=${limit.value}&page=${page.value}`, {

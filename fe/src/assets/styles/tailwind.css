@@ -2197,9 +2197,15 @@ select {
 .h-600-px {
   height: 600px;
 }
+.text-1 {
+  font-size: 1rem;
+}
+.text-3 {
+  font-size: 3rem;
+}
 
-.text-55 {
-  font-size: 55rem;
+.text-8 {
+  font-size: 8rem;
 }
 
 .text-xs {
