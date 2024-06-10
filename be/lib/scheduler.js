@@ -56,10 +56,12 @@ const readCSV = async (filePath, baseTime) => {
 const saveDB = async (csvData, baseTime, type) => {
   const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
   try {
-    const startTime = baseTime.getTime() * 1000;
-    const endTime = baseTime.getTime() + (csvData.data.length - 1) * 500;
+    let startTime = baseTime.getTime() * 1000;
+    let endTime = baseTime.getTime() * 1000;
     let writePoints;
     if (type === 'currents') {
+      startTime -= csvData.data.length * 500;
+      endTime -= 500;
       writePoints = csvData.data.map((entry, index) => {
         const timestamp = baseTime.getTime() * 1000 + index * 500;
         const point = new Point('currents')
@@ -75,6 +77,8 @@ const saveDB = async (csvData, baseTime, type) => {
         return writeApi.writePoint(point);
       });
     } else if (type === 'vibrations') {
+      startTime -= csvData.data.length * 250;
+      endTime -= 250;
       writePoints = csvData.data.map((entry, index) => {
         const timestamp = baseTime.getTime() * 1000 + index * 250;
         const point = new Point('vibrations')
@@ -126,9 +130,9 @@ const predict = async (data, csvPath, type) => {
     const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
     const point = new Point(_measurement)
       .tag('serial_no', data.machine)
-      .tag('end_time', data.end_time)
+      .intField('start_time', data.startTime)
       .intField('code', code)
-      .timestamp(data.startTime);
+      .timestamp(data.endTime);
     await writeApi.writePoint(point);
     await writeApi.close();
     return code;
@@ -160,8 +164,7 @@ const sendSocket = async (io, type, data, result) => {
   socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
   const codeInfo = await codeDao.info({machineId: machine.id, code: result})
   socketInfo.result = codeInfo.name;
-  socketInfo.time = data.startTime;
-  console.log(socketInfo.type);
+  socketInfo.time = data.endTime;
   let groupIds = [];
   for (const group of groups) {
     groupIds.push(group.id);
@@ -189,7 +192,6 @@ const readCSVAndSaveDB = async (csvPath, type, io) => {
     sendSocket(io, type, data, result);
   }
 
-  console.log(`${type} predict : ${result}`)
 }
 
 let curIdx = 0;

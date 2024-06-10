@@ -9,11 +9,11 @@ const dao = {
           serialNo: params.serialNo,
         },
       })
-       .then((selected) => {
+        .then((selected) => {
           const result = selected.toJSON();
           resolve(result);
         })
-       .catch((err) => {
+        .catch((err) => {
           reject(err);
         });
     })
@@ -41,6 +41,23 @@ const dao = {
           reject(err);
         });
     });
+  },
+
+  selectById(params) {
+    return new Promise((resolve, reject) => {
+      Machine.findOne({
+        where: {
+          id: params.id,
+        },
+      })
+        .then((selected) => {
+          const result = selected.toJSON();
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    })
   }
 }
 

@@ -38,6 +38,25 @@ const dao = {
           reject(err);
         });
     });
+  },
+
+  infoByIdAndMachineId(params) {
+    return new Promise((resolve, reject) => {
+      Code.findOne(
+        {
+          where: {
+            id: params.id,
+            machineId: params.machineId,
+          }
+        }
+      )
+        .then((selected) => {
+          resolve(selected?.toJSON());
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 }
 
