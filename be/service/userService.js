@@ -162,7 +162,11 @@ const service = {
 
     // 결과값 리턴
     return new Promise((resolve) => {
-      resolve({ token: token });
+      resolve({
+        token: token,
+        id: selected.id,
+        name: selected.name,
+      });
     });
   },
 
