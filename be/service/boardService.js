@@ -393,7 +393,7 @@ const service = {
         let data = []; 
         for (let i = 0; i < dataPerOnce; i++) {
           const index = Math.floor(i * offset);
-          data.push(currentData[index]);
+          data.push(currentData[index]._value);
         }
         current.data.push(data);
       }
@@ -421,7 +421,7 @@ const service = {
         let data = []; 
         for (let i = 0; i < dataPerOnce; i++) {
           const index = Math.floor(i * offset);
-          data.push(vibrationData[index]);
+          data.push(vibrationData[index]._value);
         }
         vibration.data.push(data);
       }

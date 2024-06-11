@@ -30,4 +30,6 @@ module.exports = class Machine extends Sequelize.Model {
     db.Machine.belongsToMany(db.Group, { through: db.GroupMachineJoin, foreignKey: 'machineId', otherKey: 'groupId', as: 'Groups' });
   }
 
+  static machinesListAttributes = ['id', 'serialNo', 'name', 'threshold' ]
+
 };
