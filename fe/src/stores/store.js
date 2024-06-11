@@ -5,7 +5,7 @@ import { createStore } from 'vuex';
 const useStore = createStore({
   state: {
     isLoggedIn: false,
-    user: null,
+    userId: null,
     name: '고길동',
     groupName: 'OPC',
     dummy:false,
@@ -15,7 +15,9 @@ const useStore = createStore({
   mutations: {
     login(state, user) {
       state.isLoggedIn = true;
-      state.user = user;
+      state.userId = user.id;
+      state.name=user.name;
+      state.userToken=user.token;
     },
     logout(state) {
       state.isLoggedIn = false;

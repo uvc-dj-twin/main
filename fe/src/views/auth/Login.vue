@@ -112,7 +112,10 @@ export default {
         console.log(store);
         // 로그인 성공 시 리다이렉트 또는 다른 작업 수행
         console.log('성공')
-        console.log("유저정보는 토큰:",store.state.user)
+        console.log("유저id:",store.state.userId)
+        console.log("유저이름:",store.state.name)
+        console.log("유저 토큰:",store.state.userToken)
+
         // const redirectPath = '/dashboard'; 
 
         // console.log(this.$router)

@@ -6,6 +6,9 @@
         <div></div>
         <button @click="handlePages"> </button>
         <button @click="handlePages"> 테스트 조회버튼 </button>
+        <button @click="editEvent"> 테스트 수정,삭제버튼  </button>
+
+        
 
 
         
@@ -29,65 +32,70 @@
             <table class="items-center w-full bg-transparent border-collapse">
               <thead>
                 <tr>
-                  <th v-for="(column, index) in columnList" :key="index"
+                  <th> 장비명 </th>
+                  <th>Threshold</th>
+                  <th v-for="(group, index) in data.machines[0].groups" :key="index"
                       class="px-6 align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                       :class="[
                         color === 'light'
                           ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
                           : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-                      ]">{{ column }}</th>
+                      ]">그룹 {{ group.name }}</th>
+                      <th>저장</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, index) in data.machineList" :key="index">
+                 <!-- // v-for 시작 한 행에 대한 정보 -->
+                <tr v-for="(machine, index) in data.machines" :key="index">
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
-                    {{ row.장비명 }}
+                    {{ machine.name }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
-                    <input type="text" v-model="row.threshold" placeholder="Search here..."
+                    <input type="text" v-model="machine.threshold" placeholder="Search here..."
                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
-                  </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
+                  {{ machine.threshold }}
+                          </td>
+                  <td v-for="(group,groupIndex) in machine.groups" :key="groupIndex" 
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     <div class="col-lg-12 control-section">
                       <div class="content-wrapper">
                         <div class="container switch-control">
                           <div>
                             <label for="groupA" style="padding: 10px 70px 10px 0"> 권한부여 </label>
-                            <input type="checkbox" v-model="row.GroupA" @click="checkTF(index, 'GroupA')" placeholder="Search here..."/>
-
+                            <input type="checkbox" v-model="group.access" @click="checkTF(index, groupIndex)" placeholder="Search here..."/>
                           </div>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
+                  <!-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     <div class="col-lg-12 control-section">
                       <div class="content-wrapper">
                         <div class="container switch-control">
                           <div>
                             <label for="groupB" style="padding: 10px 70px 10px 0"> 권한부여 </label>
-                            <input type="checkbox" v-model="row.GroupB" @click="checkTF(index, 'GroupB')" placeholder="Search here..."/>
+                            <input type="checkbox" v-model="machine.groups[1]" @click="checkTF(index, 'GroupB')" placeholder="Search here..."/>
 
                           </div>
                         </div>
                       </div>
                     </div>
-                  </td>
+                  </td> -->
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
                       style="text-align: left;">
                     <div class="col-lg-12 control-section">
                       <div class="content-wrapper">
                         <div class="container switch-control">
-                          <div>
+                          <!-- <div>
                             <label for="groupC" style="padding: 10px 70px 10px 0"> 권한부여 </label>
                          <input type="checkbox" v-model="row.GroupC" @click="checkTF(index, 'GroupC')" placeholder="Search here..."/>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <button @click="reqAccess(index)">저장</button>
+                    <button @click="addDeleteMachine(machine.id)">삭제</button>
                   </td>
                 </tr>
               </tbody>
@@ -163,19 +171,19 @@ export default {
 
   },
   setup() {
+    const DeleteMachineArray = ref([]);
     
   const columnList=['장비명','Threshold','그룹A','그룹B','그룹C','저장']
   const pages=ref(0);
   const currentPage=ref(1);
   const limit=ref(30);
-  const totalRow=ref(10);
   const name=ref('설비')
 const groupName=ref('1번')
 
     const handlePages = (event) => {
       currentPage.value=event.target.value
-      console.log(name.value)
-      console.log(groupName.value)
+      console.log("현재 장비명:",name.value)
+      console.log("현재 그룹명:",groupName.value)
       getValue()
     } 
     
@@ -193,76 +201,159 @@ const getValue=() => {
     .then((response) => {
       // 요청이 성공하면 실행되는 코드
       console.log('Response:', response.data)
-      
+      const result = JSON.parse(JSON.stringify(response.data));
+
+      data.value= result
+      console.log(data.value)
+
+      data.value.
+
+
+
+  console.log(data.value.totalRow/limit.value)
+
+
+  const total = Number(data.value.totalRow);
+  const limit = Number(limit.value);
+  pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
+ 
+
+  console.log(pages.value)
     })
     .catch((error) => {
       // 요청이 실패하면 실행되는 코드
       console.error('Error:', error)
 
     })
-  console.log(totalRow.value)
-  console.log(limit.value)
-  console.log(totalRow.value/limit.value)
 
-
-  const total = Number(totalRow.value);
-  const limit = Number(limit.value);
-  pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
- 
-
-  console.log(pages.value)
 };
 
 
 
 
 
-  const data = ref({totalRow:100,
-    machineList:[
-      {id:1,
-        장비명:'설비1',
-        threshold:10,
-        GroupA:true,
-        GroupB:true,
-        GroupC:true,
+  const data = ref({
+  "totalRow": 2,
+  "machines": [
+    {
+      "id": 10,
+      "serialNo": "L-EF-00",
+      "name": "설비10",
+      "threshold": 100,
+      "groups": [
+        {
+          "id": 3,
+          "name": "1번",
+          "access": true
         },
-        {id:2,
-        장비명:'설비1',
-        threshold:10,
-        GroupA:true,
-        GroupB:true,
-        GroupC:true,
+        {
+          "id": 2,
+          "name": "9번",
+          "access": true
         },
-        {id:3,
-        장비명:'설비1',
-        threshold:10,
-        GroupA:true,
-        GroupB:true,
-        GroupC:true,
-        },    {id:4,
-        장비명:'설비1',
-        threshold:10,
-        GroupA:true,
-        GroupB:true,
-        GroupC:true,
-        },]
-      })
+        {
+          "id": 4,
+          "name": "2번",
+          "access": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "serialNo": "L-EF-99",
+      "name": "설비10",
+      "threshold": 100,
+      "groups": [
+        {
+          "id": 3,
+          "name": "1번",
+          "access": true
+        },
+        {
+          "id": 2,
+          "name": "9번",
+          "access": true
+        },
+        {
+          "id": 4,
+          "name": "2번",
+          "access": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "serialNo": "L-SF-09",
+      "name": "설비20",
+      "threshold": 550,
+      "groups": [
+        {
+          "id": 3,
+          "name": "1번",
+          "access": true
+        },
+        {
+          "id": 2,
+          "name": "9번",
+          "access": true
+        },
+        {
+          "id": 4,
+          "name": "2번",
+          "access": false
+        }
+      ]
+    }
+  ]
+})
 
-      const checkTF= (index,groupName)=>{
-  console.log(data.value.machineList[index][groupName])
+      const checkTF= (index,groupIndex)=>{
+  console.log(`${data.value.machines[index].name}기계의 ${data.value.machines[index].groups[groupIndex].name}그룹 권한설정 상태: ,${data.value.machines[index].groups[groupIndex].access}값을 변경함`)
 }
 
-      const reqAccess = (i) =>{
-        console.log(data.value.machineList[i]['장비명']) // 인식됨
-        console.log(data.value.machineList[i]['GroupA']) // 인식됨
-        console.log(data.value.machineList[i]['GroupB']) // 인식됨
-        console.log(data.value.machineList[i]['GroupC']) // 인식됨
+  ////// 삭제할 장비를 삭제배열에 추가 혹은 취소하는 기능을 하는 각 행의 삭제버튼 클릭 시 실행되는 함수
+      const addDeleteMachine = (selectedId) =>{
+        DeleteMachineArray.value = DeleteMachineArray.value.includes(selectedId) 
+    ? DeleteMachineArray.value.filter(id => id !== selectedId) 
+    : [...DeleteMachineArray.value, selectedId];
       }
+
+      const editEvent = ()=>{
+        console.log("axios 시작")
+  
+
+  axios
+    .patch(`http://192.168.0.64:3000/admin/machines`, {
+      
+        machines: data.value.machines,
+        deleteMachines: DeleteMachineArray.value
+      },
+      {
+      headers: {
+        authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+      }
+    
+    
+    })
+    .then((response) => {
+      console.log('Response:', response.data)
+      console.log("수정,삭제 요청 완료 ")
+      // 요청이 성공하면 실행되는 코드
+     
+    })
+    .catch((error) => {
+      // 요청이 실패하면 실행되는 코드
+      console.error('Error:', error)
+
+    })
+
+  }
 
 
 
       return {
-    columnList,data,pages,handlePages,reqAccess,checkTF,limit,handlePages
+    columnList,data,pages,handlePages,addDeleteMachine,checkTF,limit,editEvent
   }
 
 

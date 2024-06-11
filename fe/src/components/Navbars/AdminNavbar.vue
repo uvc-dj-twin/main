@@ -1,6 +1,6 @@
 <template>
   <!-- Navbar -->
-  <nav class="absolute top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+  <nav class=" top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
     <div class="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
       <!-- Brand -->
       <div class="flex-col md:flex-row list-none items-center hidden md:flex">
@@ -31,7 +31,7 @@
             'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
       }"
         >
-        {{ `현재 시간:${newDate} 접속자: ${groupName}팀 ${userName}님 ` }} 마이페이지
+        {{ `현재 시간:${newDate} 접속자 ${userName}님 ` }} 마이페이지
         </router-link>
 
         <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
@@ -53,7 +53,6 @@ export default {
   setup() {
     const store = useStore(); //stor 불러오기 
     const userName = computed(() => store.state.name); // store 유저명 불러오기
-    const groupName = computed(() => store.state.groupName); // store 그룹명 불러오기
     
     // const userName = ref();
 
@@ -79,7 +78,6 @@ export default {
 
     return {
       userName,
-      groupName,
       links,
       newDate,
       isActive,
