@@ -231,27 +231,28 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
-      // 조회 시간 설정
-      const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
-
-      const startKST = new Date(params.startDate);
-      const startUTC = new Date(startKST.getTime() - kstOffset);
-
-      const endKST = new Date(params.endDate);
-      const endUTC = new Date(endKST.getTime() - kstOffset);
-
-      const start = startUTC.toISOString();
-      const end = endUTC.toISOString();
-
-      let fluxQuery = `
-        from(bucket: "test")
-        |> range(start: ${start}, stop: ${end})
-        |> filter(fn: (r) => r._measurement == "${params.measurement}")
-        |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-        |> filter(fn: (r) => r._field == "code")
-      `;
-
+      
       try {
+        // 조회 시간 설정
+        const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
+  
+        const startKST = new Date(params.startDate);
+        const startUTC = new Date(startKST.getTime() - kstOffset);
+  
+        const endKST = new Date(params.endDate);
+        const endUTC = new Date(endKST.getTime() - kstOffset);
+  
+        const start = startUTC.toISOString();
+        const end = endUTC.toISOString();
+  
+        let fluxQuery = `
+          from(bucket: "test")
+          |> range(start: ${start}, stop: ${end})
+          |> filter(fn: (r) => r._measurement == "${params.measurement}")
+          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+          |> filter(fn: (r) => r._field == "code")
+        `;
+        
         const rows = await queryApi.collectRows(fluxQuery, (values, tableMeta) => {
           return tableMeta.toObject(values);
         });
