@@ -9,7 +9,7 @@ const service = {
 
     try {
       machines = await machineDao.selectByNameLike(params);
-      groups = await groupDao.selectAll();
+      groups = await groupDao.list();
       console.log(machines);
       result.totalRow = machines.totalRow;
       result.machines = machines.machines.map(machine => {
