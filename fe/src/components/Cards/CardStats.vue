@@ -5,24 +5,24 @@
     <div class="flex-auto p-4">
       <div class="flex flex-wrap">
         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-          <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+          <h5 class="text-blueGray-400 uppercase font-bold text-xl">
             {{ statSubtitle }}
           </h5>
-          <p class="text-sm text-blueGray-400 mt-4">
+          <p class="text-xl text-blueGray-400 mt-4">
         <span class="whitespace-nowrap">{{ statDescripiron1 }}</span>
           </p>
           <span class="font-semibold text-xl text-blueGray-700">
             {{ statTitle1 }}
           </span>
           <br>
-          <p class="text-sm text-blueGray-400 mt-4">
+          <p class="text-xl text-blueGray-400 mt-4">
         <span class="whitespace-nowrap">{{ statDescripiron2 }}</span>
           </p>
           <span class="font-semibold text-xl text-blueGray-700">
             {{ statTitle2 }}
           </span>
           <br>
-          <p class="text-sm text-blueGray-400 mt-4">
+          <p class="text-xl text-blueGray-400 mt-4">
         <span class="whitespace-nowrap">{{ statDescripiron3 }}</span>
           </p>
           <span class="font-semibold text-xl text-blueGray-700">

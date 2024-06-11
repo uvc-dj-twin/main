@@ -15,15 +15,26 @@
   import { CalendarComponent } from "@syncfusion/ej2-vue-calendars";
   
   export default {
+    props: {
+    
+    },
       components: { 'ejs-calendar': CalendarComponent },
     methods: {
       onValueChange: function(args) {
         document.getElementById("date_label").textContent =
           "Selected Value: " + args.value.toLocaleDateString();
+          this.$emit('update:value',args.value.toLocaleDateString())
       }
     }
   };
   </script>
+<!-- 
+setup(props, { emit }) {
+  const selectedValue = ref(props.value);
+  const handleChange = () => {
+    // 선택된 값을 부모 컴포넌트로 emit
+    emit('update:value', selectedValue.value);
+  }; -->
   
   
   <style scoped>

@@ -9,7 +9,7 @@
         </div>
         <div class="tabs-wrap" style="clear: both">
           <div class="wrap">
-            <ejs-timepicker id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead' :min="min" :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
+            <ejs-timepicker id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead'  :max="max" :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
           </div>
         </div>
         <div class="tabs-wrap">
@@ -32,13 +32,15 @@ export default {
     'ejs-timepicker': TimePickerComponent,
     'ejs-checkbox': CheckBoxComponent
   },
-  setup() {
+  setup(props,{emit}) {
     const waterMark = "Select a time";
     const endEnable = ref(false);
     const startEnable = ref(true);
     const startRead = ref(false);
     const endRead = ref(false);
     const min = ref(new Date());
+    const max = ref(); // max 값 추가
+
     const step = 30;
     const startVal = ref(null);
     const endVal = ref(null);
@@ -46,6 +48,8 @@ export default {
     const changeValue = (args) => {
       endVal.value = args.value;
       console.log("End Time Changed:", endVal.value);
+      emit('update:endTime',args.value)
+
     };
 
     const onEnableEndTime = (args) => {
@@ -56,7 +60,11 @@ export default {
         endVal.value = null;
         const value = new Date(startVal.value);
         value.setMinutes(value.getMinutes() + step);
-        min.value = value;
+        
+        const maxValue = new Date(startVal.value);
+        maxValue.setHours(maxValue.getHours() + 1); // startTime의 1시간 후로 max 설정
+        max.value = maxValue;
+        emit('update:startTime',args.value)
       }
     };
 
@@ -83,6 +91,7 @@ export default {
       startRead,
       endRead,
       min,
+      max,
       step,
       startVal,
       endVal,
