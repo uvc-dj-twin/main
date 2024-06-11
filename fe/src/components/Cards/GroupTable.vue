@@ -1,5 +1,7 @@
 <template>
-  <div
+  <div v-if="people.length == 0" class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+      조회를 진행해주세요</div>
+  <div v-else
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
     :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
   >
@@ -14,24 +16,27 @@
             <button 
            class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600 bg-emerald-500 active:bg-emerald-600"
            style="min-width: 200px; max-width: 400px"
-           @click="handleEdit">모드 변경 </button>
+           @click="handleEdit">{{editCheck ? '그룹 저장' : '그룹 수정'}}</button>
 
           </h3>
           
 
           <!-- 일괄적용을 위한 드랍다운  -->
-          <select
-            v-model="selectedGroupArray[index]"
-            @change="checkGroupAll"
-            class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
-            style="min-width: 200px; max-width: 400px"
-            >
-            <option :value="option" v-for="option in props.groupList" :key="option" >{{ option }}</option>
-          </select>
-
-          <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
-          :class="[editCheck ? 'bg-emerald-500 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
-          >수정 요청</button>
+          <div v-show="editCheck">
+            <span>선택한 사용자의 변경할 그룹 선택</span>
+            <select
+              v-model="selectedValue"
+              class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
+              style="min-width: 200px; max-width: 400px"
+              >
+              <option :value="option.id" v-for="option in props.groupList" :key="option" >{{ option.name }}</option>
+            </select>
+  
+            <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
+            :class="[editCheck ? 'bg-emerald-500 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
+            @click="checkGroupAll"
+            >일괄 변경</button>
+          </div>
       
          
         </div>
@@ -138,12 +143,12 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
             >
-            {{person.mail}}
+            {{person.email}}
             </td>
           
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
-            >{{ person.currentGroup }}
+            >{{ person.Group?.name }}
          <!-- {{person.currentGroup}} -->
             </td>
             <td
@@ -152,12 +157,12 @@
           <select 
             v-model="selectedGroupArray[index]"
             @change="checkGroupE"
-
+            :disabled="!editCheck"
             
             class="">
             <!-- <option selected :value="person.currentGroup">  {{ person.currentGroup }} </option> -->
             
-            <option :value="option" v-for="option in props.groupList" :key="option" >{{ option }}</option>
+            <option :value="option.id" v-for="option in props.groupList" :key="option" >{{ option.name }}</option>
             
           </select>
               
@@ -191,24 +196,25 @@ export default {
     // GroupDropdown
   },
   setup(props,{emit}) {
-    const selectedValue = ref(props.value);
-    const handleChange = () => {
-      // 선택된 값을 부모 컴포넌트로 emit
-      emit('update:value', selectedValue.value);
-    };
+    const selectedValue = ref();
     onMounted(() => {
-    checkedArray.value = (new Array(props.people.length).fill(false));
-    selectedGroupArray.value = (new Array(props.people.length).fill(props.groupList[0]));
-
-
+      checkedArray.value = (new Array(props.people.length).fill(false));
+      selectedGroupArray.value = (new Array(props.people.length).fill(props.groupList[0]?.id));
     });
     const selectedGroupArray = ref([]);
     const checkedArray = ref([]);
     const selectAll = ref('');
 
-    const editCheck=ref(true);
+    const editCheck=ref(false);
     const handleEdit = ()=>{
-      editCheck.value=!editCheck.value
+      if (editCheck.value) {
+        emit('handleEdit', props.people, selectedGroupArray.value)
+        checkedArray.value = (new Array(props.people.length).fill(false));
+        selectedGroupArray.value = (new Array(props.people.length).fill(props.groupList[0]?.id));
+      }
+      if (props.people.length > 0) {
+        editCheck.value=!editCheck.value
+      }
       console.log(editCheck.value)
     }
 
@@ -233,32 +239,23 @@ export default {
 
    // 전체 체크박스에서 값이 변경되면,
    // 해당 체크박스가 true일 때만 선택된 그룹 값을 변경한다.
-   const checkGroupAll = (event)=> {
+   const checkGroupAll = ()=> {
      // 전체 체크박스의 값을 반복하면서,
      checkedArray.value.forEach ((checked, index) => {
        // 해당 체크박스가 true일 때,
        if(checked){
          // 선택된 그룹 값을 변경한다.
-         selectedGroupArray.value[index]=event.target.value
+         selectedGroupArray.value[index]=selectedValue.value
        }
-       // 변경된 선택된 그룹 값을 출력한다.
-       console.log(selectedGroupArray.value)
      })
    }
 
 
-
-    
-
     return {
-      checkedArray,checkE,props,
-      handleChange,
+      checkedArray,checkE,props,selectedValue,
       checkGroupE,checkGroupAll,selectAll,
       selectedGroupArray,
       handleEdit,editCheck
-      
-      
-
 
     };
   },

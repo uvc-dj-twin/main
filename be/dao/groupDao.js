@@ -23,6 +23,18 @@ const dao = {
           reject(err);
         });
     });
+  },
+
+  list() {
+    return new Promise((resolve, reject) => {
+      Group.findAll()
+        .then((selected) => {
+          resolve(selected.map(group => group.toJSON()));
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 }
 

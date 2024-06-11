@@ -162,7 +162,31 @@ const service = {
 
     // 결과값 리턴
     return new Promise((resolve) => {
-      resolve({ token: token });
+      resolve({
+        token: token,
+        id: selected.id,
+        name: selected.name,
+      });
+    });
+  },
+
+  async editGroup(params) {
+    let result = null;
+
+    try {
+      for (const user of params.users) {
+        await userDao.update({ id: user.id, groupId: user.groupId });
+      }
+      logger.debug(`(userService.editGroup) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(userService.editGroup) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
     });
   }
 

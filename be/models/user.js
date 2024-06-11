@@ -45,4 +45,8 @@ module.exports = class User extends Sequelize.Model {
     return ["id", "name", "email", "phone", "role"];
   }
 
+  static getUserGroupListAttributes() {
+    return ['id', 'email', 'name'];
+  }
+
 };

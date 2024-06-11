@@ -4,6 +4,14 @@ const userDao = require('../dao/userDao');
 const machineDao = require('../dao/machineDao');
 const sensorDao = require('../dao/sensorDao');
 const codeDao = require('../dao/codeDao');
+const { param } = require('../routes');
+
+const microISOString = (timestamp) => {
+  const millisecondsTime = new Date(timestamp / 1000).toISOString();
+  const micro = timestamp.toString().slice(-3);
+
+  return millisecondsTime.replace("Z", `${micro}Z`);
+}
 
 const service = {
   // 조회
@@ -26,7 +34,7 @@ const service = {
             measurement: 'current_predictions',
           });
           machineInfo.currentCount = currentCount;
-          
+
           const currentFailCount = await sensorDao.countTodayFailPredict({
             serialNo: machine.serialNo,
             measurement: 'current_predictions',
@@ -51,7 +59,7 @@ const service = {
             serialNo: machine.serialNo,
             measurement: 'current_predictions',
           })
-          const currentResultInfo = await codeDao.info({machineId: machine.id, code: currentLastPredict.code})
+          const currentResultInfo = await codeDao.info({ machineId: machine.id, code: currentLastPredict.code })
           machineInfo.currentResult = currentResultInfo.name;
           machineInfo.currentTime = currentLastPredict.time;
 
@@ -59,7 +67,7 @@ const service = {
             serialNo: machine.serialNo,
             measurement: 'vibration_predictions',
           })
-          const vibrationResultInfo = await codeDao.info({machineId: machine.id, code: vibrationLastPredict.code})
+          const vibrationResultInfo = await codeDao.info({ machineId: machine.id, code: vibrationLastPredict.code })
           machineInfo.vibrationResult = vibrationResultInfo.name;
           machineInfo.vibrationTime = vibrationLastPredict.time;
 
@@ -98,8 +106,8 @@ const service = {
           machineInfo.serialNo = machine.serialNo;
           machineInfo.name = machine.name;
           machineInfo.threshold = machine.threshold;
-          const codes = await codeDao.listByMachine({machineId: machine.id})
-          const codesResult = codes.map(code => {return {id: code.id, name: code.name}});
+          const codes = await codeDao.listByMachine({ machineId: machine.id })
+          const codesResult = codes.map(code => { return { id: code.id, name: code.name } });
           machineInfo.defectTypes = codesResult;
 
           return machineInfo;
@@ -116,7 +124,325 @@ const service = {
     return new Promise((resolve) => {
       resolve(result);
     });
-  }
+  },
+
+  async machineStatistics(params) {
+    let result = null;
+
+    const kstOffset = 9 * 60 * 60 * 1000;
+    let startDate = new Date(params.startDate);
+    startDate.setHours(0, 0, 0, 0);
+    let endDate = new Date(params.endDate);
+    endDate.setHours(0, 0, 0, 0);
+    endDate = new Date(endDate.setDate(endDate.getDate() + 1));
+
+    try {
+      const machineInfo = await machineDao.selectById({ id: params.machineId });
+
+      // 시간 설정
+      params.startDate.setHours(0, 0, 0, 0);
+
+      // dailyTrend
+      let dailyTrend = {
+        data: [],
+        labels: [],
+      };
+
+      for (; params.startDate <= params.endDate; params.startDate.setDate(params.startDate.getDate() + 1)) {
+        const startUTC = new Date(params.startDate.getTime());
+        let endUTC = new Date(startUTC)
+        endUTC = new Date(endUTC.setDate(endUTC.getDate() + 1));
+        const currentStat = await sensorDao.countFailPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: startUTC.toISOString(),
+          endDate: endUTC.toISOString(),
+          measurement: 'current_predictions',
+        })
+        const vibrationStat = await sensorDao.countFailPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: startUTC.toISOString(),
+          endDate: endUTC.toISOString(),
+          measurement: 'vibration_predictions',
+        })
+
+        dailyTrend.data.push(currentStat + vibrationStat);
+        dailyTrend.labels.push(new Date(startUTC.getTime() + kstOffset));
+      }
+
+      // totalCount
+      let totalCount = {
+        data: [],
+        labels: ['정상', '불량'],
+      }
+
+      const currentTotal = await sensorDao.countPredict({
+        serialNo: machineInfo.serialNo,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        measurement: 'current_predictions',
+        code: 0,
+      })
+      const vibrationTotal = await sensorDao.countPredict({
+        serialNo: machineInfo.serialNo,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        measurement: 'vibration_predictions',
+        code: 0,
+      })
+
+      const currentFailTotal = await sensorDao.countFailPredict({
+        serialNo: machineInfo.serialNo,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        measurement: 'current_predictions',
+      })
+      const vibrationFailTotal = await sensorDao.countFailPredict({
+        serialNo: machineInfo.serialNo,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        measurement: 'vibration_predictions',
+      })
+
+      totalCount.data.push(currentTotal + vibrationTotal);
+      totalCount.data.push(currentFailTotal + vibrationFailTotal);
+
+      // defectCount
+      let defectCount = {
+        data: [],
+        labels: [],
+      }
+
+      const defectTypes = await codeDao.listByMachine({ machineId: params.machineId })
+
+      for (const defectType of defectTypes) {
+        if (defectType.code != 0) {
+          const currentDefectCount = await sensorDao.countPredict({
+            serialNo: machineInfo.serialNo,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            measurement: 'current_predictions',
+            code: defectType.code,
+          })
+          const vibrationDefectCount = await sensorDao.countPredict({
+            serialNo: machineInfo.serialNo,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            measurement: 'vibration_predictions',
+            code: defectType.code,
+          })
+          defectCount.data.push(currentDefectCount + vibrationDefectCount);
+          defectCount.labels.push(defectType.name);
+        }
+      }
+
+      result = {
+        dailyTrend: dailyTrend,
+        totalCount: totalCount,
+        defectCount: defectCount,
+      };
+    } catch (err) {
+      logger.debug(`(boardService.machineStatistics) ${JSON.stringify(result)}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
+  async machineDetails(params) {
+    let result = {};
+
+    try {
+      const machineInfo = await machineDao.selectById({ id: params.machineId });
+
+      // code 찾기
+      let resultCode = -1;
+      let resultCodeName = '';
+      if (params.codeId != -1) {
+        const codeInfo = await codeDao.infoByIdAndMachineId({ id: params.codeId, machineId: params.machineId })
+        if (codeInfo) {
+          resultCode = codeInfo.code;
+          resultCodeName = codeInfo.name;
+        }
+      }
+
+      const currentResults = await sensorDao.predictList({
+        serialNo: machineInfo.serialNo,
+        startDate: params.startTime,
+        endDate: params.endTime,
+        measurement: 'current_predictions',
+      });
+
+      const vibrationResults = await sensorDao.predictList({
+        serialNo: machineInfo.serialNo,
+        startDate: params.startTime,
+        endDate: params.endTime,
+        measurement: 'vibration_predictions',
+      });
+
+      let resultMap = {};
+
+      const defectTypes = await codeDao.listByMachine({ machineId: params.machineId })
+
+      let codeMap = {};
+
+      defectTypes.forEach(({ code, name }) => {
+        codeMap[code] = name;
+      })
+
+      const kstOffset = 9 * 60 * 60 * 1000;
+
+      currentResults.forEach(({ _value, _time }) => {
+        const time = new Date(new Date(_time).getTime() + kstOffset).toISOString().replace('Z', '').replace('T', ' ');
+        const value = codeMap[_value];
+        if (!resultMap[time]) {
+          resultMap[time] = {
+            currentResult: value,
+            currentTime: time,
+            vibrationResult: "",
+            vibrationTime: ""
+          };
+        } else {
+          resultMap[time].currentResult = value;
+          resultMap[time].currentTime = time;
+        }
+      });
+
+      vibrationResults.forEach(({ _value, _time }) => {
+        const time = new Date(new Date(_time).getTime() + kstOffset).toISOString().replace('Z', '').replace('T', ' ');
+        const value = codeMap[_value];
+        if (!resultMap[time]) {
+          resultMap[time] = {
+            currentResult: "",
+            currentTime: "",
+            vibrationResult: value,
+            vibrationTime: time
+          };
+        } else {
+          resultMap[time].vibrationResult = value;
+          resultMap[time].vibrationTime = time;
+        }
+      });
+
+
+      let mergedResults = Object.values(resultMap);
+
+      if (resultCode != -1) {
+        mergedResults = mergedResults.filter(data =>
+          data.currentResult === resultCodeName || data.vibrationResult === resultCodeName
+        );
+      }
+
+      mergedResults.sort((a, b) => {
+        const timeA = new Date(a.currentTime || a.vibrationTime).getTime();
+        const timeB = new Date(b.currentTime || b.vibrationTime).getTime();
+        return timeA - timeB;
+      });
+
+      const start = (params.page - 1) * params.limit;
+      const end = start + params.limit;
+      const paginatedResults = mergedResults.slice(start, end);
+
+      result.data = paginatedResults;
+      result.totalRow = mergedResults.length;
+    } catch (err) {
+      logger.debug(`(boardService.machineDetails) ${JSON.stringify(result)}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
+  async machineDetailsData(params) {
+    let result = null;
+
+    try {
+      const machineInfo = await machineDao.selectById({ id: params.machineId });
+
+      // 데이터 수
+      const dataPerOnce = 120;
+
+      // 전류
+      const currentResult = await sensorDao.nearestPredict({
+        serialNo: machineInfo.serialNo,
+        time: params.time,
+        measurement: 'current_predictions',
+      })
+
+      let current = {
+        data: [],
+      }
+      const currentStartTime = microISOString(currentResult._value);
+      for (const item of ['x', 'y', 'z']) {
+        const currentData = await sensorDao.detailsData({
+          serialNo: machineInfo.serialNo,
+          startTime: currentStartTime,
+          endTime: currentResult._time,
+          field: item,
+          measurement: 'currents',
+        })
+        const length = currentData.length;
+        const offset = length / dataPerOnce;
+        let data = []; 
+        for (let i = 0; i < dataPerOnce; i++) {
+          const index = Math.floor(i * offset);
+          data.push(currentData[index]._value);
+        }
+        current.data.push(data);
+      }
+
+      // 진동
+      const vibrationResult = await sensorDao.nearestPredict({
+        serialNo: machineInfo.serialNo,
+        time: params.time,
+        measurement: 'vibration_predictions',
+      })
+      let vibration = {
+        data: [],
+      }
+      const vibrationStartTime = microISOString(vibrationResult._value);
+      for (const item of ['x']) {
+        const vibrationData = await sensorDao.detailsData({
+          serialNo: machineInfo.serialNo,
+          startTime: vibrationStartTime,
+          endTime: vibrationResult._time,
+          field: item,
+          measurement: 'vibrations',
+        })
+        const length = vibrationData.length;
+        const offset = length / dataPerOnce;
+        let data = []; 
+        for (let i = 0; i < dataPerOnce; i++) {
+          const index = Math.floor(i * offset);
+          data.push(vibrationData[index]._value);
+        }
+        vibration.data.push(data);
+      }
+
+
+      result = {
+        current: current,
+        vibration: vibration,
+      };
+
+    } catch (err) {
+      logger.debug(`(boardService.machineDetailsData) ${JSON.stringify(result)}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
 
 };
 

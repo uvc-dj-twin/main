@@ -84,6 +84,57 @@ const dao = {
           reject(err);
         });
     })
+  },
+
+  selectByEmailAndGroupNameLike(params) {
+    const offset = (params.page - 1) * params.limit;
+    const where = {};
+    if (params.userEmail) {
+      where.email = {
+        [Op.like]: `%${params.userEmail}%`
+      }
+    }
+    if (params.userName) {
+      where.name = {
+        [Op.like]: `%${params.userName}%`
+      }
+    }
+    const groupWhere = {};
+    let groupRequired = false;
+    if (params.groupName) {
+      groupWhere.name = {
+        [Op.like]: `%${params.groupName}%`
+      }
+      groupRequired = true;
+    }
+    return new Promise((resolve, reject) => {
+      User.findAndCountAll({
+        include: [
+          {
+            model: Group,
+            as: 'Group',
+            attributes: ['id', 'name'],
+            where: groupWhere,
+            required: groupRequired,
+          }
+        ],
+        attributes: User.getUserGroupListAttributes(),
+        where: where,
+        limit: params.limit,
+        offset: offset,
+      })
+        .then((selected) => {
+          console.log(selected.rows);
+          const result = {
+            totalRow: selected.count,
+            users: selected.rows.map(user => user.toJSON()),
+          }
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    })
   }
 
 };
