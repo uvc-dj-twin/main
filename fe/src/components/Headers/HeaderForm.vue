@@ -33,6 +33,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
           class="md:flex flex-row flex-wrap items-center lg:ml-auto mr-3"
           action="/search"
           method="get"
+          @submit.prevent="handleSubmit"
         >
           <div class="relative flex w-full flex-wrap items-stretch">
             <div class="relative">
@@ -40,8 +41,8 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
                 class="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-state"
                 name="q"
+                v-model="selectedValue"
               >
-                <option value="">All</option>
                 <option :value="option" v-for="(option,index) in menu" :key="index" >{{ option }}</option>
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -58,16 +59,14 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
               type="text"
               placeholder="Search here..."
               class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-            />
+              v-model="searchValue"
+              />
           </div>
         </form>
   
 
-      
-          
           </div>
       
-    
         </div>
       </div>
     </div>
@@ -79,7 +78,6 @@ import { ref } from 'vue'; // Vue 3의 ref 함수 가져오기
 // import { defineProps } from 'vue';
 import { onMounted } from 'vue';
 
-
 export default {
   components: {
     // CardStats, // CardStats 컴포넌트 등록
@@ -87,17 +85,15 @@ export default {
   props: {
     menu:Array,
   },
-  setup() {
+  setup(props, {emit}) {
+    const selectedValue = ref(props.menu[0]);
+    const searchValue = ref('');
 
+    const handleSubmit = () => {
+      emit('handleSearch', selectedValue.value, searchValue.value);
+    }
 
     onMounted(() => {
-      
-//       defineProps({
-//         menu: {
-//         type: Array,
-//         required: false
-//       }
-// });
     });
     // 각 카드의 데이터를 저장하는 반응형 변수들 선언
     const totalStat = ref({
@@ -122,6 +118,9 @@ export default {
       newUsersStat,
       salesStat,
       performanceStat,
+      selectedValue,
+      searchValue,
+      handleSubmit,
     };
     
   },

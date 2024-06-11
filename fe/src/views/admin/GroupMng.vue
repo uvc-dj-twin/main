@@ -2,10 +2,8 @@
   <div>
     <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <HeaderForm :menu="menu" />
-      <GroupTable :people="peopleArr" :groupList="groups"  :value="selectedValue"  @update:value="handleUpdate"/>
-      
-      
+      <HeaderForm :menu="menu" @handleSearch="handleSearch" />
+      <GroupTable :people="users" :groupList="groups" @handleEdit="handleUpdate"/>
     </div>
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
           <button
@@ -29,78 +27,98 @@ import GroupTable from "@/components/Cards/GroupTable.vue";
 import HeaderForm from "@/components/Headers/HeaderForm.vue";
 import test from "@/data/userlist.js"
 import { ref } from "vue";
+import axios from "axios";
 
 export default {
   components: {
     GroupTable,
     HeaderForm,
-
-
-
-
   },
   setup() {
     
     const menu = ['Mail','Group'];
 
-    const groups =ref(['A','B','C'])
+    const getValue = () => {
+      const selectedMap = { Mail: 'userEmail', Group: 'group'}
+      const query = `${selectedMap[selectedOption.value]}=${searchValue.value}&limit=${limit.value}&page=${currentPage.value}`;
+      console.log(query);
+      axios.get(`http://192.168.0.64:3000/admin/groups/users?${query}`, {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+        }
+      })
+      .then((response) => {
+        // 요청이 성공하면 데이터를 저장
+        console.log('Response:', response.data)
+        groups.value=response.data.groups
+        users.value=response.data.users
+        pages.value= response.data.totalRow % limit.value === 0 ? response.data.totalRow / limit.value : Math.floor(response.data.totalRow / limit.value) + 1;
+        console.log(pages.value);
+      })
+      .catch((error) => {
+        // 요청이 실패하면 실행되는 코드
+        console.error('Error:', error)
+        // showGraph.value=true
+      })
+    }
+
+    const handleSearch = (selectedVal, searchVal) => {
+      selectedOption.value = selectedVal;
+      searchValue.value = searchVal;
+      currentPage.value = 1;
+      getValue();
+    }
+
+    // 테스트 데이터
+    const groups = ref([])
+    const users = ref([])
     const peopleArr =test
 
-    const selectedValue = ref('option1');
 
 
     //검색 변수//
-    const  userEmail=ref('')
-    const  limit=ref(30)
-    const  pages=ref(0)
+    const selectedOption = ref('')
+    const searchValue = ref('')
+    const limit =ref(15)
+    const pages =ref(0)
     const currentPage=ref(1)
 
-    const handleUpdate = (value) => {
-      selectedValue.value = value;
-      console.log('부모 컴포넌트에서 선택된 값:', value);
+    const handleUpdate = (people, values) => {
+      let editUsers = [];
+      for (const index in people) {
+        editUsers.push({
+          id: people[index].id,
+          groupId: values[index],
+        })
+      }
+      console.log(editUsers);
+      axios.patch(`http://192.168.0.64:3000/admin/groups/users`, {
+        users: editUsers,
+      }, {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+        }
+      }).then(() => {
+        getValue();
+      })
+      .catch((error) => {
+        // 요청이 실패하면 실행되는 코드
+        console.error('Error:', error)
+      })
     };
 
 
     const handlePage = (event) => {
-      currentPage.value=event.target.id
+      currentPage.value = event.target.value
       getValue()
     }
 
-    const getValue = () => {
-    
-   
-    // if (inputElement) {
-    console.log(userEmail.value)  
-    console.log(groups.value) 
-    console.log(limit.value)
-    console.log(currentPage.value) 
-    console.log(pages.value)
-
-    // axios
-    //   .get(`http://192.168.0.64:3000/admin/groups/users?userEmail=${userEmail.value}&group=${group.value}&limit=${limit.value}&page=${page.value}`, {
-    //     headers: {
-    //       authorization:
-    //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     // 요청이 성공하면 데이터를 저장
-    //     console.log('Response:', response.data)
-    //     totalRow.value=response.data.totalRow
-    //     users.value=response.data.users
-    //     groups.value=response.data.groups
-    //     
-
-    //   })
-    //   .catch((error) => {
-    //     // 요청이 실패하면 실행되는 코드
-    //     console.error('Error:', error)
-    //     showGraph.value=true
-
-    //   })
-  };
-      return {peopleArr,menu,groups,
-        selectedValue,handleUpdate,getValue,handlePage
+      return {peopleArr,menu,groups, users, pages, limit, 
+        handleUpdate,getValue,handlePage,
+        selectedOption, searchValue,
+        handleSearch
       }
   }
 };

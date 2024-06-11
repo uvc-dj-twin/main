@@ -84,6 +84,7 @@ const dao = {
             },
             as: 'Groups',
             where: groupWhere,
+            required: false,
           }
         ],
         attributes: Machine.machinesListAttributes,

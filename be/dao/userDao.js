@@ -100,10 +100,12 @@ const dao = {
       }
     }
     const groupWhere = {};
+    let groupRequired = false;
     if (params.groupName) {
       groupWhere.name = {
         [Op.like]: `%${params.groupName}%`
       }
+      groupRequired = true;
     }
     return new Promise((resolve, reject) => {
       User.findAndCountAll({
@@ -113,7 +115,7 @@ const dao = {
             as: 'Group',
             attributes: ['id', 'name'],
             where: groupWhere,
-            required: false,
+            required: groupRequired,
           }
         ],
         attributes: User.getUserGroupListAttributes(),
