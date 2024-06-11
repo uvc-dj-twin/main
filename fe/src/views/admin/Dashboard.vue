@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-4">
+    <div class="flex flex-wrap mt-4 overflow-x-hidden">
     <div class="w-full mb-12 px-4">
     
 
@@ -10,10 +10,10 @@
       <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState"/><!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
       <RealTimeCard :dataRealtimeCard="realtimeResult"/>
 
-      <h1>{{ realtimeResult }}</h1>   
+      <!-- <h1>{{ realtimeResult }}</h1>   
       <h1>{{ dailyCount }}</h1>       
       <h1>{{ dailyState }}</h1>       
-    
+     -->
       
     </div>
   </div>

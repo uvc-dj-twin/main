@@ -5,6 +5,10 @@
         <HeaderForm></HeaderForm>
         <div></div>
         <button @click="handlePages"> </button>
+        <button @click="handlePages"> 테스트 조회버튼 </button>
+
+
+        
         <div
           class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
           :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
@@ -117,7 +121,7 @@ import { ref,watch } from "vue";
 
 import { rippleMouseHandler } from "@syncfusion/ej2-buttons";
 
-
+import axios from "axios";
 
   // 감시할 data의 상태를 추가
   // 이 예제에서는 'test' 변수의 상태를 감시합니다.
@@ -159,11 +163,56 @@ export default {
 
   },
   setup() {
+    
   const columnList=['장비명','Threshold','그룹A','그룹B','그룹C','저장']
   const pages=ref(0);
   const currentPage=ref(1);
-  const limits=ref(30);
+  const limit=ref(30);
   const totalRow=ref(10);
+  const name=ref('설비')
+const groupName=ref('1번')
+
+    const handlePages = (event) => {
+      currentPage.value=event.target.value
+      console.log(name.value)
+      console.log(groupName.value)
+      getValue()
+    } 
+    
+const getValue=() => {
+  console.log("axios 시작")
+  
+
+  axios
+    .get(`http://192.168.0.64:3000/admin/machines?name=설비`, {
+      headers: {
+        authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+      }
+    })
+    .then((response) => {
+      // 요청이 성공하면 실행되는 코드
+      console.log('Response:', response.data)
+      
+    })
+    .catch((error) => {
+      // 요청이 실패하면 실행되는 코드
+      console.error('Error:', error)
+
+    })
+  console.log(totalRow.value)
+  console.log(limit.value)
+  console.log(totalRow.value/limit.value)
+
+
+  const total = Number(totalRow.value);
+  const limit = Number(limit.value);
+  pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
+ 
+
+  console.log(pages.value)
+};
+
 
 
 
@@ -210,85 +259,10 @@ export default {
         console.log(data.value.machineList[i]['GroupC']) // 인식됨
       }
 
-       //페이지에 붙일 이벤트 - 페이지수만 바꿔서 조회요청 
-    const handlePages = (event) => {
-      currentPage.value=event.target.value
-      getValue()
-    } 
 
-    
-    const getValue = () => {
-    
-      
-      
-      console.log(limits.value)
-      console.log(currentPage.value)
-      
-
-      
-
-
-
-      // data.value.machineList=data;
-      // data.value.machineList=data;
-
-
-
-
-      
-    
-
-    //들어갈 것: 
-
-// id(회원)
-// 장비명:string
-// 그룹명:string
-// limit(한 페이지에 보일 행 수)
-// page(몇 페이지인지)
-
-
-    // console.log('Response:', response.data)
-    // testResultArray.value=response.data
-    
-
-    // axios)
-    //   .get(`http://192.168.0.64:3000/dataread/details/${id}?장비명=${equipmentName.value}&그룹명=${groupName.value}`, {
-    //     headers: {
-    //       authorization:
-    //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     // 요청이 성공하면 실행되는 코드
-    //     console.log('Response:', response.data)
-    //     dailyTrend.value=response.data.dailyTrend
-    //     totalCount.value=response.data.totalCount
-    //     defectCount.value=response.data.defectCount
-    //     showGraph.value=true
-    //   })
-    //   .catch((error) => {
-    //     // 요청이 실패하면 실행되는 코드
-    //     console.error('Error:', error)
-    //     showGraph.value=true
-
-    //   })
-    console.log(totalRow.value)
-    console.log(limits.value)
-    console.log(totalRow.value/limits.value)
-
-
-    const total = Number(totalRow.value);
-    const limit = Number(limits.value);
-    pages.value= total % limit === 0 ? total / limit : Math.floor(total / limit) + 1;
-   
-
-    console.log(pages.value)
-  };
-
-    
 
       return {
-    columnList,data,pages,handlePages,reqAccess,checkTF
+    columnList,data,pages,handlePages,reqAccess,checkTF,limit,handlePages
   }
 
 

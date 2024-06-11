@@ -6,7 +6,7 @@
       v-model="selectedValue"
       @change="handleChange"
       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150">
-      <option value="All"> All </option>
+      <option value=""> All </option>
       <option :value="option.id" v-for="(option,index) in props.defectTypeList" :key="index" >{{ option.name }}</option>
     </select>
     </div>

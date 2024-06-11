@@ -142,13 +142,12 @@ export default {
          startDate.value = inputElement.value.split(' - ')[0];
           endDate.value = inputElement.value.split(' - ')[1];
       }
-      
       console.log(startDate.value)
       console.log(endDate.value)
       console.log(selectedValue.value)
-      const id =1
+
       axios
-        .get(`http://192.168.0.64:3000/board/machines/statistics/${id}/?startDate=${startDate.value}&endDate=${endDate.value}`, {
+        .get(`http://192.168.0.64:3000/board/machines/statistics/${selectedValue.value}/?startDate=${startDate.value}&endDate=${endDate.value}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -160,6 +159,7 @@ export default {
           dailyTrend.value=response.data.dailyTrend
           totalCount.value=response.data.totalCount
           defectCount.value=response.data.defectCount
+          console.log(dailyTrend.value)
           showGraph.value=true
         })
         .catch((error) => {

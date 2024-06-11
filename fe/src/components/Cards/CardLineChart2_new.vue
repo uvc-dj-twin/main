@@ -33,7 +33,8 @@ export default {
   setup(props) {
     const chart = ref(null);
     let myChart = null;
-    const {data} = props
+    const data = ref(props.data)
+
 
     const addData = () => {
       if (myChart) {
@@ -56,17 +57,44 @@ export default {
 
 
     onMounted(() => {
+    
+
       let config = {
         type: "line",
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: data.value.labels,
           datasets: [
             {
-              label: 'vertical',
-              backgroundColor: "#4c51bf",
-              borderColor: "#4c51bf",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              label: 'X',
+              backgroundColor: "white",
+              borderColor: "white",
+              data: data.value.data[0],
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              
               fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+            },
+            {
+              label: 'Y',
+              backgroundColor: "red",
+              borderColor: "red",
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: data.value.data[1],
+
+              fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+
+            },
+            {
+              label: 'Z',
+              backgroundColor: "green",
+              borderColor: "green",
+              // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: data.value.data[2],
+
+              fill: false,
+              borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
+
             },
           ],
         },
@@ -148,7 +176,12 @@ export default {
     const updateChart = () => {
       if (myChart) {
         myChart.data.labels = props.data.labels;
-        myChart.data.datasets[0].data = props.data.data;
+        myChart.data.datasets[0].data = data.data[0];
+        myChart.data.datasets[1].data = data.data[1];
+        myChart.data.datasets[2].data = data.data[2];
+
+        console.log("3차선 중 하나:",data.data[0])
+
         myChart.update();
       }
     };

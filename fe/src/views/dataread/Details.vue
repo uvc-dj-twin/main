@@ -17,7 +17,7 @@
       
 
 
-        <EquipmentTable :id="selectedMachine?.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
+        <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
       </div>
     </div>
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -165,7 +165,7 @@ const handleId = ()=>{
  
 
 // 달력관련 변수들 
-    // const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
+    const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
     const datePicker = ref(null);
     const startTime=ref();
     const endTime=ref();
@@ -195,10 +195,10 @@ const handleId = ()=>{
       console.log('부모 컴포넌트에서 선택된 값:', selectedDefectType.value);
     };
     
-    // const handleUpdateDate = (value) => { //선택 후 바퀸 달력날짜정보 - 미사용 
-    //   selectedDate.value = value;
-    //   console.log('부모 컴포넌트에서 선택된 값:', value);
-    // };
+    const handleUpdateDate = (value) => { //선택 후 바퀸 달력날짜정보 - 미사용 
+      selectedDate.value = value;
+      console.log('부모 컴포넌트에서 선택된 값:', value);
+    };
 
     
     const handleUpdateTimeStart = (value) => { //선택 후 바뀐 시작시간값 확인
@@ -228,7 +228,21 @@ const handleId = ()=>{
 
     
     const getValue = () => {
-    if (startTime) {
+  
+      const splitDate = selectedDate.value.split('.')
+      console.log(splitDate)
+      startTime.value.setFullYear(parseInt(splitDate[0].trim()), parseInt(splitDate[1].trim())-1, parseInt(splitDate[2].trim()))
+      endTime.value.setFullYear(parseInt(splitDate[0].trim()), parseInt(splitDate[1].trim())-1, parseInt(splitDate[2].trim()))
+      // selectedDate.value.setFullYear(2024, selectedDate.value.getMonth()-1, selectedDate.value.getDay()+1)
+      console.log(startTime.value)
+      // selectedDate.value.setFullYear(2024, selectedDate.value.getMonth()-1, selectedDate.value.getDay()+1)
+      console.log(endTime.value)
+
+
+
+
+
+      console.log("순수날짜 ",selectedDate.value)
       
       console.log("시작시간: ",startTime.value)
       console.log("종료시간: ",endTime.value)
@@ -237,7 +251,14 @@ const handleId = ()=>{
       console.log("요청 페이지 정보: ",currentPage.value)
       console.log("불량타입",selectedDefectType.value) 
       console.log("현재 페이지:", currentPage.value)
-    }
+    
+    
+      // console.log(startTime.value.setfullyear(2024,11,11))
+      // const a=startTime.value.setFullYear(2024, selectedDate.value.getMonth()-1, selectedDate.value.getDay())
+      // console.log(a)
+      
+     
+    
 
 
     //들어갈 것: 
@@ -256,13 +277,14 @@ const handleId = ()=>{
 
     axios
     
-      .get(`http://192.168.0.64:3000/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&resultTime=${selectedDefectType}&limit=${limits.value}&page=${currentPage.value}`, {
+      .get(`http://192.168.0.64:3000/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&result=${selectedDefectType.value}&limit=${limits.value}&page=${currentPage.value}`, {
         headers: {
           authorization:
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
         }
       })
       .then((response) => {
+        
         // 요청이 성공하면 실행되는 코드
         console.log('Response:', response.data)
 
@@ -439,11 +461,13 @@ const handleId = ()=>{
       endTime,
       testResultArray,
       totalRow,
+      selectedMachine,
 
       pages,
       handlePages,
       defectTypeList,
       handleId,
+      handleUpdateDate,
       
       response
       

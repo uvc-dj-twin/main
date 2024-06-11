@@ -25,15 +25,16 @@
             </p>
             <div class="grid">
               <div>
-                <CardLineChartDetail @click="handleDetail" :data="vibrationGraphData"/>
+                <CardLineChart :data="vibrationGraphData.value.data"/>
                 
               </div>
               <div>
 
-                <CardLineChart2 @click="handleDetail" :data="currentGraphData"/>
+                <CardLineChart2 :data="currentGraphData"/>
                 
               </div>
             </div>
+           
           </div>
           <!--footer-->
           <div class="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
@@ -50,41 +51,70 @@
 
 <script>
 import { ref } from 'vue';
-import axios from 'axios'
-import CardLineChartDetail from '@/components/Cards/CardLineChartDetail.vue';
+import CardLineChart from '@/components/Cards/CardLineChartDetail.vue';
 import CardLineChart2 from '@/components/Cards/CardLineChart2.vue';
+import axios from 'axios'
 export default {
   components:{
-    CardLineChartDetail,
+    CardLineChart,
     CardLineChart2,
 
   },
-  props : {
-    data : {
+  props: {
+    data: {
       type: Object,
-      default: () => ({ id: 1, date: '2024-01-01T01:01:01Z' })
-    }
+      default: () => ({ date: '2024-01-01', id: 8 }),
+    },
   },
   setup(props) {
-    console.log("Modal에서 받은 props.data: ", props.data)
+
+    
+const vert1 = [
+-1.801757813,
+-1.44140625,
+-0.9609375,
+];
+const vert4 = [
+  -1.801757813,
+  -1.44140625,
+  ];
+const vert2 = [
+2.922851563,
+2.482421875,
+];
+const vert3 = [
+-2.682617188,
+-2.922851563,
+];
+
+
     const showModal = ref(false);
 
-    const vibrationGraphData =ref ({data:[100,2,3000,4],labels:[1,2,3,4]})
-    const currentGraphData=ref ({data:[[100,2,3000,4],[1,2000,3,4000],[500,500,500,500]],labels:[1,2,3,4]})
+    const testData ={current:[vert3,vert4,vert2],vibration:[vert1]}
+    const vibrationGraphData =ref ({data:[100,2000,3000,4,5,6,6],labels:[]})
+    const  currentGraphData=ref ({data:[vert3,vert2,vert4],labels:[]})
+    
+    
+ 
+
+
+
+    /////
     
 
-
+console.log(currentGraphData.value)
+console.log(vibrationGraphData.value)
+////////
+console.log(props)
     const toggleModal = () => {
-      showModal.value = !showModal.value;
-      handleDetail()
-      console.log(props)
 
+      
+      showModal.value = !showModal.value;
     };
 
 
-
-    const handleDetail = () => {
-      console.log("axios 시작")
+    if (props.data.id) {
+      console.log(props.data)
       axios
         .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
           headers: {
@@ -95,25 +125,12 @@ export default {
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
-          console.log('Response:', response.data.current.data)
-          currentGraphData.value.data = response.data.current.data
-          vibrationGraphData.value.data = response.data.vibration.data
-
-          console.log(currentGraphData.value)
-          console.log(vibrationGraphData.value)
-
           
-          // currentGraphData.value.data = response.data.current
-          // vibrationGraphData.value.data = response.data.vibration
+          currentGraphData.value.data = response.data.current
+          vibrationGraphData.value.data = response.data.vibration
 
-          // console.log("모달에서 통신 후 배열:",currentGraphData.value)
-          // console.log("모달통신배열",vibrationGraphData.value)
-
-          // console.log("모달에서 통신 후 배열:",currentGraphData.value.data.data)
-
-
-
-          
+          console.log("모달에서 통신 후 배열:",currentGraphData.value)
+          console.log("모달통신배열",vibrationGraphData.value)
 
         //   equipmentList.value =response.data.map((x)=>x.name)
         //   console.log(equipmentList.value)
@@ -123,18 +140,19 @@ export default {
           console.error('Error:', error)
 
         })
-    
-
     }
 
-   
+
+
+
 
     return {
       showModal,
       toggleModal,
+      props,
       currentGraphData,
       vibrationGraphData,
-      handleDetail
+      testData
     };
   }
 }
