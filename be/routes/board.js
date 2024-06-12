@@ -5,6 +5,8 @@ const logger = require('../lib/logger');
 const boardService = require('../service/boardService');
 const { isLoggedIn } = require('../lib/middleware');
 const CustomError = require('../error/CustomError');
+const fs = require('fs');
+const path = require('path');
 
 router.get('/monitoring-data', isLoggedIn, async (req, res, next) => {
   try {
@@ -70,12 +72,26 @@ router.get('/machines/details/:id/data', isLoggedIn, async (req, res, next) => {
       throw new CustomError(400, 'Bad Request');
     } else {
       logger.info(`(board.machines.details.data.params) ${JSON.stringify(params)}`);
-      const result = await boardService.machineDetailsData(params);
+      const { filePath, ...data } = await boardService.machineDetailsData(params);
+      console.log(filePath);
+      const wavData = fs.readFileSync(filePath, { encoding: 'base64' });
+      const result = {
+        ...data,
+        wavData: wavData,
+      }
       logger.info(`(board.machines.details.data.result) ${JSON.stringify(result)}`);
-  
+
       res.status(200).json(result);
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+        } else {
+          console.log('File deleted successfully');
+        }
+      });
     }
-    
+
   } catch (err) {
     next(err);
   }
