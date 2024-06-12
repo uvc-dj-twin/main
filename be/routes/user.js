@@ -51,7 +51,7 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.info.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result).send();
+      res.status(200).json(result);
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
@@ -78,7 +78,7 @@ router.patch('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.update.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result).send();
+      res.status(200).json(result);
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
@@ -103,7 +103,7 @@ router.delete('/:id', isLoggedIn, async (req, res, next) => {
       logger.info(`(user.delete.result) ${JSON.stringify(result)}`);
 
       // 최종 응답
-      res.status(200).json(result).send();
+      res.status(200).json(result);
     } else {
       const err = new CustomError(403, 'Forbidden');
       logger.error(err.toString());
