@@ -24,13 +24,28 @@
           <!-- 일괄적용을 위한 드랍다운  -->
           <div v-show="editCheck">
             <span>선택한 사용자의 변경할 그룹 선택</span>
-            <select
+            <!-- <select
               v-model="selectedValue"
               class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
               style="min-width: 200px; max-width: 400px"
               >
               <option :value="option.id" v-for="option in props.groupList" :key="option" >{{ option.name }}</option>
-            </select>
+              <option @click="() => {console.log('+++')}">+</option>
+            </select> -->
+            <div class="relative inline-block">
+              <div @click="toggleDropdown" class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
+                  style="min-width: 200px; max-width: 400px">
+                {{ selectedText }}
+              </div>
+              <div v-if="dropdownOpen" class="absolute bg-white border mt-1 w-full z-10">
+                <div v-for="option in props.groupList" :key="option.id" @click="selectOption(option)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">
+                  {{ option.name }}
+                </div>
+                <div v-show="false" @click="handleAddOption" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-center">
+                  +
+                </div>
+              </div>
+            </div>
   
             <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
             :class="[editCheck ? 'bg-emerald-500 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
@@ -55,7 +70,7 @@
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              체크박스 
+              선택
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
@@ -120,13 +135,13 @@
             <input :id="`${index}`" type="checkbox" v-model="checkedArray[index]" @change="checkE"
               :disabled="!editCheck"
             />
-              <span
+              <!-- <span
                 class="ml-3 font-bold"
                 :class="[
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >
-              </span>
+              </span> -->
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
@@ -181,7 +196,7 @@
 
 
 <script>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 
 // import GroupDropdown from '@/components/Dropdowns/GroupDropdown.vue';
 
@@ -199,18 +214,42 @@ export default {
     const selectedValue = ref();
     onMounted(() => {
       checkedArray.value = (new Array(props.people.length).fill(false));
-      selectedGroupArray.value = (new Array(props.people.length).fill(props.groupList[0]?.id));
+      selectedGroupArray.value = (new Array(props.people.length).fill(0));
     });
     const selectedGroupArray = ref([]);
     const checkedArray = ref([]);
     const selectAll = ref('');
+
+
+    // 커스텀 드롭다운
+    const dropdownOpen = ref(false);
+    const selectedText = computed(() => {
+      const selectedOption = props.groupList.find(option => option.id === selectedValue.value);
+      return selectedOption ? selectedOption.name : '그룹을 선택하세요';
+    })
+
+    const toggleDropdown = () => {
+      dropdownOpen.value = !dropdownOpen.value
+    }
+
+    const selectOption = (option) => {
+      selectedValue.value = option.id;
+      dropdownOpen.value = false;
+    }
+
+    const handleAddOption = () => {
+      console.log('add event');
+    }
 
     const editCheck=ref(false);
     const handleEdit = ()=>{
       if (editCheck.value) {
         emit('handleEdit', props.people, selectedGroupArray.value)
         checkedArray.value = (new Array(props.people.length).fill(false));
-        selectedGroupArray.value = (new Array(props.people.length).fill(props.groupList[0]?.id));
+        selectedGroupArray.value = (new Array(props.people.length).fill(0));
+      } else {
+        checkedArray.value = (new Array(props.people.length).fill(false));
+        selectedGroupArray.value = props.people.map(person => person.Group.id);
       }
       if (props.people.length > 0) {
         editCheck.value=!editCheck.value
@@ -240,6 +279,7 @@ export default {
    // 전체 체크박스에서 값이 변경되면,
    // 해당 체크박스가 true일 때만 선택된 그룹 값을 변경한다.
    const checkGroupAll = ()=> {
+    console.log(selectedValue.value)
      // 전체 체크박스의 값을 반복하면서,
      checkedArray.value.forEach ((checked, index) => {
        // 해당 체크박스가 true일 때,
@@ -255,8 +295,8 @@ export default {
       checkedArray,checkE,props,selectedValue,
       checkGroupE,checkGroupAll,selectAll,
       selectedGroupArray,
-      handleEdit,editCheck
-
+      handleEdit,editCheck,
+      selectedText, dropdownOpen, toggleDropdown, selectOption, handleAddOption,
     };
   },
   
