@@ -129,7 +129,7 @@ const changeData = (data) => {
     newData[`${type}Count`] = data.count
     newData[`${type}FailCount`] = data.failCount
     newData[`${type}Result`] = data.result
-    newData[`${type}Time`] = new Date(data.time / 1000).toLocaleTimeString('ko-KR')
+    newData[`${type}Time`] = new Date(data.time / 1000).toISOString('ko-KR')
     newData[`${type}RatioPercent`] = data.ratioPercent
     newData.thresholdPercent =
       (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *

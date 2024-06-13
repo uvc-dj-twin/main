@@ -232,7 +232,7 @@
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
           <!-- {{  result.vibrationTime?.split('.')[0].split('T')[1] }}    -->
-          {{  result.vibrationTime }}   
+          {{  new Date(result.vibrationTime).toLocaleTimeString('ko-KR') }}   
           </td>
             <td
               class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-center"
