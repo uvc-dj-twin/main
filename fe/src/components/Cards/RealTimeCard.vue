@@ -169,7 +169,10 @@
             <td
               class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> {{  result.currentResult}}
+              <i class="fas fa-circle text-orange-500 mr-2"></i> 
+              <p class="text-xl">
+                {{  result.currentResult}}
+              </p>
             </td>
           
           
@@ -193,7 +196,11 @@
             <td
               class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> {{ result. vibrationResult }}
+              <i class="fas fa-circle text-orange-500 mr-2"></i> 
+              <p class="text-xl">
+                {{ result. vibrationResult }}
+
+              </p>
             </td>
           
             <td
