@@ -20,53 +20,43 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="">
-    <div class="px-4 md:px-10 mx-auto w-full">
+    <div class="mx-auto my-8 py-8 w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
-        
+
           <!-- New Users Card -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-            
-        <!-- Search bar -->
-        <form
-          class="md:flex flex-row flex-wrap items-center lg:ml-auto mr-3"
-          action="/search"
-          method="get"
-          @submit.prevent="handleSubmit"
-        >
-          <div class="relative flex w-full flex-wrap items-stretch">
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-state"
-                name="q"
-                v-model="selectedValue"
-              >
-                <option :value="option" v-for="(option,index) in menu" :key="index" >{{ option }}</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          <div class="w-full xl:w-8/12">
+
+            <!-- Search bar -->
+            <form class="flex items-center lg:ml-auto mr-3 my-8 w-full" action="/search" method="get"
+              @submit.prevent="handleSubmit">
+              <div class="relative flex w-full items-stretch">
+                <div class="flex-grow relative" style="flex-grow: 2;">
+                  <select
+                    class="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-state" name="q" v-model="selectedValue">
+                    <option :value="option" v-for="(option, index) in menu" :key="index">{{ option }}</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </div>
+                </div>
+                <input type="text" placeholder="Search here..."
+                  class="flex-grow border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full"
+                  style="flex-grow: 1;"
+                  v-model="searchValue" />
+                <button class="absolute right-0 top-0 mt-3 mr-4" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
               </div>
-            </div>
-            <button
-              class="absolute right-0 top-0 mt-3 mr-4"
-              type="submit"
-            >
-              <i class="fas fa-search"></i>
-            </button>
-            <input
-              type="text"
-              placeholder="Search here..."
-              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-              v-model="searchValue"
-              />
-          </div>
-        </form>
-  
+            </form>
+
 
           </div>
-      
+
         </div>
       </div>
     </div>
@@ -83,12 +73,12 @@ export default {
     // CardStats, // CardStats 컴포넌트 등록
   },
   props: {
-    menu:Array,
+    menu: Array,
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const selectedValue = ref('');
     const searchValue = ref('');
-    
+
 
     const handleSubmit = () => {
       emit('handleSearch', selectedValue.value, searchValue.value);
@@ -99,19 +89,19 @@ export default {
     });
     // 각 카드의 데이터를 저장하는 반응형 변수들 선언
     const totalStat = ref({
-     
+
     });
 
     const newUsersStat = ref({
-    
+
     });
 
     const salesStat = ref({
-      
+
     });
 
     const performanceStat = ref({
-     
+
     });
 
     return {
@@ -124,7 +114,7 @@ export default {
       searchValue,
       handleSubmit,
     };
-    
+
   },
 };
 </script>
