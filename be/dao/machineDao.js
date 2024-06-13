@@ -93,7 +93,6 @@ const dao = {
         offset: offset,
       })
       .then((selected) => {
-        console.log(selected.rows);
         const result = {
           totalRow: selected.count,
           machines: selected.rows.map(machine => machine.toJSON()),

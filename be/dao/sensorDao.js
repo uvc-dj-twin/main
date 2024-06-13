@@ -44,7 +44,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(0);
           }
@@ -95,7 +94,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(0);
           }
@@ -145,7 +143,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(null);
           }
@@ -182,7 +179,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(0);
           }
@@ -218,7 +214,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(0);
           }
@@ -300,7 +295,6 @@ const dao = {
           reject(err);
         },
         complete() {
-          console.log('Query completed');
           if (!nextCalled) {
             resolve(null);
           }

@@ -124,7 +124,6 @@ const dao = {
         offset: offset,
       })
         .then((selected) => {
-          console.log(selected.rows);
           const result = {
             totalRow: selected.count,
             users: selected.rows.map(user => user.toJSON()),

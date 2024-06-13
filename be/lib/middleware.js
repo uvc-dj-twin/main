@@ -38,7 +38,6 @@ const middleware = {
     return function (req, res, next) {
       currentUser = req.user;
       let flag = true;
-      console.log(currentUser);
       if (currentUser.role) {
         roles.map(role => {
           if (currentUser.role === role) {

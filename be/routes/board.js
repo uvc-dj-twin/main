@@ -73,7 +73,6 @@ router.get('/machines/details/:id/data', isLoggedIn, async (req, res, next) => {
     } else {
       logger.info(`(board.machines.details.data.params) ${JSON.stringify(params)}`);
       const { filePath, ...data } = await boardService.machineDetailsData(params);
-      console.log(filePath);
       const wavData = fs.readFileSync(filePath, { encoding: 'base64' });
       const result = {
         ...data,

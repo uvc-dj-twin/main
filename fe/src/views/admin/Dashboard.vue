@@ -23,7 +23,7 @@
 import RealTimeCard from "@/components/Cards/RealTimeCard.vue";
 import HeaderStats from "@/components/Headers/HeaderStats.vue";
 // import data from "@/data/dashboard.js";
-import { ref,onMounted,inject} from 'vue';
+import { ref,onMounted,inject, onUnmounted} from 'vue';
 
 import axios from 'axios';
 
@@ -75,6 +75,14 @@ export default {
         })
     })
 
+    onUnmounted(() => {
+      const socket = inject('socket')
+      // 페이지를 떠날 때 소켓 연결 해제
+      if (socket) {
+        socket.off('currents');
+        socket.off('vibrations');
+      }
+    });
 
     const setDailyInfo = () => {
       let totalCount = 0
@@ -117,7 +125,7 @@ const changeData = (data) => {
     newData[`${type}Count`] = data.count
     newData[`${type}FailCount`] = data.failCount
     newData[`${type}Result`] = data.result
-    newData[`${type}Time`] = new Date(data.time / 1000)
+    newData[`${type}Time`] = new Date(data.time / 1000).toISOString()
     newData[`${type}RatioPercent`] = data.ratioPercent
     newData.thresholdPercent =
       (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
