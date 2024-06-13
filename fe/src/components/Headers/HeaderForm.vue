@@ -86,7 +86,7 @@ export default {
     menu:Array,
   },
   setup(props, {emit}) {
-    const selectedValue = ref([]);
+    const selectedValue = ref('');
     const searchValue = ref('');
     
 
@@ -95,6 +95,7 @@ export default {
     }
 
     onMounted(() => {
+      selectedValue.value = props.menu[0];
     });
     // 각 카드의 데이터를 저장하는 반응형 변수들 선언
     const totalStat = ref({
