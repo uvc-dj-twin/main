@@ -1,10 +1,10 @@
+const path = require('path');
 const logger = require('../lib/logger');
-const groupDao = require('../dao/groupDao');
 const userDao = require('../dao/userDao');
 const machineDao = require('../dao/machineDao');
 const sensorDao = require('../dao/sensorDao');
 const codeDao = require('../dao/codeDao');
-const { param } = require('../routes');
+const { makeWav } = require('../lib/wavUtil');
 
 const microISOString = (timestamp) => {
   const millisecondsTime = new Date(timestamp / 1000).toISOString();
@@ -362,6 +362,7 @@ const service = {
 
   async machineDetailsData(params) {
     let result = null;
+    let wavFilePath = null;
 
     try {
       const machineInfo = await machineDao.selectById({ id: params.machineId });
@@ -390,7 +391,7 @@ const service = {
         })
         const length = currentData.length;
         const offset = length / dataPerOnce;
-        let data = []; 
+        let data = [];
         for (let i = 0; i < dataPerOnce; i++) {
           const index = Math.floor(i * offset);
           data.push(currentData[index]._value);
@@ -408,28 +409,30 @@ const service = {
         data: [],
       }
       const vibrationStartTime = microISOString(vibrationResult._value);
-      for (const item of ['x']) {
-        const vibrationData = await sensorDao.detailsData({
-          serialNo: machineInfo.serialNo,
-          startTime: vibrationStartTime,
-          endTime: vibrationResult._time,
-          field: item,
-          measurement: 'vibrations',
-        })
-        const length = vibrationData.length;
-        const offset = length / dataPerOnce;
-        let data = []; 
-        for (let i = 0; i < dataPerOnce; i++) {
-          const index = Math.floor(i * offset);
-          data.push(vibrationData[index]._value);
-        }
-        vibration.data.push(data);
+      const vibrationData = await sensorDao.detailsData({
+        serialNo: machineInfo.serialNo,
+        startTime: vibrationStartTime,
+        endTime: vibrationResult._time,
+        field: 'x',
+        measurement: 'vibrations',
+      })
+      const length = vibrationData.length;
+      const offset = length / dataPerOnce;
+      let data = [];
+      for (let i = 0; i < dataPerOnce; i++) {
+        const index = Math.floor(i * offset);
+        data.push(vibrationData[index]._value);
       }
-
+      const fullData = vibrationData.map(data => data._value);
+      const timestamp = Date.now();
+      const wavPath = path.resolve(__dirname, '../public', 'sounds', `vibration${timestamp}.wav`);
+      wavFilePath = await makeWav(fullData, wavPath);
+      vibration.data.push(data);
 
       result = {
         current: current,
         vibration: vibration,
+        filePath: wavFilePath,
       };
 
     } catch (err) {

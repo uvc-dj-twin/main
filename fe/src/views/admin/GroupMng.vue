@@ -25,7 +25,7 @@
 <script>
 import GroupTable from "@/components/Cards/GroupTable.vue";
 import HeaderForm from "@/components/Headers/HeaderForm.vue";
-import test from "@/data/userlist.js"
+// import test from "@/data/userlist.js"
 import { ref } from "vue";
 import axios from "axios";
 
@@ -39,6 +39,8 @@ export default {
     const menu = ['Mail','Group'];
 
     const getValue = () => {
+      groups.value = [];
+      users.value = [];
       const selectedMap = { Mail: 'userEmail', Group: 'group'}
       const query = `${selectedMap[selectedOption.value]}=${searchValue.value}&limit=${limit.value}&page=${currentPage.value}`;
       console.log(query);
@@ -73,8 +75,6 @@ export default {
     // 테스트 데이터
     const groups = ref([])
     const users = ref([])
-    const peopleArr =test
-
 
 
     //검색 변수//
@@ -115,7 +115,7 @@ export default {
       getValue()
     }
 
-      return {peopleArr,menu,groups, users, pages, limit, 
+      return {menu,groups, users, pages, limit, 
         handleUpdate,getValue,handlePage,
         selectedOption, searchValue,
         handleSearch

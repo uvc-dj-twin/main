@@ -10,7 +10,7 @@ const codeDao = require('../dao/codeDao');
 
 // InfluxDB 설정
 const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PORT}`;
-const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN });
+const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN, timeout: 10000, });
 
 // csv 파일 읽기
 const readCSV = async (filePath, baseTime) => {
@@ -103,6 +103,8 @@ const saveDB = async (csvData, baseTime, type) => {
     };
   } catch (err) {
     console.error('DB 저장 중 오류 발생:', err);
+    await writeApi.close();
+    throw err;
   }
 }
 
@@ -180,6 +182,11 @@ const readCSVAndSaveDB = async (csvPath, type, io) => {
 
   // csv 파일 읽기
   const csvData = await readCSV(csvPath)
+
+  if (!csvData) {
+    console.error('CSV 파일 읽기 실패');
+    return; // CSV 파일 읽기 실패 시 함수 종료
+  }
 
   // 데이터 DB에 저장
   const data = await saveDB(csvData, baseTime, type)

@@ -21,7 +21,7 @@ router.get('/machines', isLoggedIn, async (req, res, next) => {
     const result = await machineService.list(params);
     logger.info(`(admin.machines.list.result) ${JSON.stringify(result)}`);
 
-    res.status(200).json(result).send();
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
@@ -57,7 +57,7 @@ router.get('/groups/users', isLoggedIn, async (req, res, next) => {
     const result = await groupService.userList(params);
     logger.info(`(admin.groups - users.list.result) ${JSON.stringify(result)}`);
 
-    res.status(200).json(result).send();
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }

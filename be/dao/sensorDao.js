@@ -258,6 +258,7 @@ const dao = {
         });
         resolve(rows);
       } catch (err) {
+        console.log(`sensorDao.detailsData error: ${err.message}`);
         reject(err);
       }
 
@@ -326,6 +327,7 @@ const dao = {
         });
         resolve(rows);
       } catch (err) {
+        console.log(`sensorDao.detailsData error: ${err.message}`);
         reject(err);
       }
 
