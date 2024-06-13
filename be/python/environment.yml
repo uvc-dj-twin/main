@@ -1,0 +1,27 @@
+name: xgboost
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.7
+  - zlib
+  - xz
+  - tk
+  - sqlite
+  - six
+  - setuptools
+  - scipy
+  - scikit-learn
+  - pip
+  - pandas
+  - openssl
+  - numpy-base
+  - numpy
+  - mkl_random
+  - mkl_fft
+  - mkl-service
+  - libffi
+  - certifi
+  - ca-certificates
+  # Windows-specific dependencies
+  - vs2015_runtime

@@ -32,6 +32,7 @@
 
                 <CardLineChart2 @click="handleDetail" :data="currentGraphData"/>
                 
+                <button @click="() => {audio?.play()}">재생</button>
               </div>
             </div>
           </div>
@@ -71,12 +72,16 @@ export default {
 
     const vibrationGraphData =ref ({data:[100,2,3000,4],labels:[1,2,3,4]})
     const currentGraphData=ref ({data:[[100,2,3000,4],[1,2000,3,4000],[500,500,500,500]],labels:[1,2,3,4]})
+
+    const audio = ref();
     
 
 
     const toggleModal = () => {
       showModal.value = !showModal.value;
-      handleDetail()
+      if (showModal.value){
+        handleDetail()
+      }
       console.log(props)
 
     };
@@ -98,6 +103,9 @@ export default {
           console.log('Response:', response.data.current.data)
           currentGraphData.value.data = response.data.current.data
           vibrationGraphData.value.data = response.data.vibration.data
+          console.log(response.data.wavData);
+          const wavData = response.data.wavData;
+          audio.value = new Audio('data:audio/wav;base64,' + wavData);
 
           console.log(currentGraphData.value)
           console.log(vibrationGraphData.value)
@@ -134,7 +142,8 @@ export default {
       toggleModal,
       currentGraphData,
       vibrationGraphData,
-      handleDetail
+      handleDetail,
+      audio
     };
   }
 }
