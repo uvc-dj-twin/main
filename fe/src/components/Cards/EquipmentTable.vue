@@ -74,7 +74,6 @@
               style="text-align: left;"
             >
             <ModalGraph :data="{id:props.id ,date:row.vibrationTime}"/> 
-            <!-- Modalgraph data 저장 및 보내기 ->모달안에서 그래프로 보낼 예정 -->
                         </td>
           </tr>
         </tbody>
@@ -104,35 +103,6 @@ export default {
     ModalGraph
   },
   setup(props) {
-
-    // if (props.data.id) {
-    //   console.log(props.data)
-    //   axios
-    //     .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
-    //       headers: {
-    //         authorization:
-    //           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-    //       }
-    //     })
-    //     .then((response) => {
-    //       // 요청이 성공하면 실행되는 코드
-    //       console.log('Response:', response.data)
-          
-    //       currentGraphData.value.data = response.data.current
-    //       vibrationGraphData.value.data = response.data.vibration
-
-    //       console.log("모달에서 통신 후 배열:",currentGraphData.value)
-    //       console.log("모달통신배열",vibrationGraphData.value)
-
-    //     //   equipmentList.value =response.data.map((x)=>x.name)
-    //     //   console.log(equipmentList.value)
-    //     })
-    //     .catch((error) => {
-    //       // 요청이 실패하면 실행되는 코드
-    //       console.error('Error:', error)
-
-    //     })
-    // }
     return {
       columns,props,targetGraph
     };

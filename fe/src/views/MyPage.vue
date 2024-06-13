@@ -1,5 +1,7 @@
 <template>
-  <div class="container mx-auto px-4 h-full">
+  
+  <!-- <div class="container mx-auto px-4 h-full"> -->
+    <div class="relative md:pt-32  pt-12">
     <div class="flex content-center items-center justify-center h-full">
       <div class="w-full lg:w-6/12 px-4">
         <div

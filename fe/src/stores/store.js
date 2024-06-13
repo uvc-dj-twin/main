@@ -17,11 +17,15 @@ const useStore = createStore({
       state.isLoggedIn = true;
       state.userId = user.id;
       state.name=user.name;
-      state.userToken=user.token;
+      state.token=user.token;
+      localStorage.setItem('token', user.token);
     },
     logout(state) {
       state.isLoggedIn = false;
-      state.user = null;
+      state.userId = null;
+      state.name=null;
+      state.token=null;
+      localStorage.removeItem('token');
     },
     nochange(state) {
       state.dummy=false;

@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios'
-import { inject, onMounted, ref, setup } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 
 const dailyCount = ref()
 const dailyState = ref()

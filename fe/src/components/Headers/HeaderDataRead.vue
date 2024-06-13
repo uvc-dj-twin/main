@@ -19,21 +19,20 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <template>
   <!-- Header -->
-  <div class="relative md:pt-32 pb-32 pt-12">
+  <div class="">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
         
           <!-- New Users Card -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="flex">
 
             <router-link
       v-for="link in links"
       :key="link.path"
       :to="link.path"
-      class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
-      :class="{
+ class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"      :class="{
             'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes(link.path),
             'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
 

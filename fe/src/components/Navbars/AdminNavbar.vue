@@ -9,7 +9,7 @@
           v-for="link in links"
           :key="link.path"
           :to="link.path"
-          class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
+          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
           :class="{
             'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes(link.path),
             'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
@@ -19,25 +19,28 @@
         </router-link>
       </div>
       <div>
-       
-       
-
         <router-link
-        
           to="/myPage"
-          class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
+          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
           :class="{
             'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes('/myPage'),
             'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
       }"
         >
-        {{ `현재 시간:${newDate} 접속자 ${userName}님 ` }} 마이페이지
+       {{newDate}} {{ userName }}님 마이페이지
         </router-link>
-
-        <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
-        >
-          로그아웃
-        </button>
+        
+     
+        <router-link
+          to="/auth/login"
+          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
+          :class="{
+            'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes('/myPage'),
+            'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
+      }"
+        @click="handleLogout">
+       로그아웃
+        </router-link>
       </div>
     </div>
   </nav>
@@ -76,11 +79,16 @@ export default {
       newDate.value = new Date().toLocaleTimeString();}
       ,1000)
 
+const handleLogout = () => {
+  store.dispatch('logout');
+}
+    
     return {
       userName,
       links,
       newDate,
       isActive,
+      handleLogout,
     };
   },
 };
