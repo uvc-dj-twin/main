@@ -16,20 +16,21 @@
     </div>
     <div class="block vw-50%">
       <!-- Projects table -->
-      <table class="max-w-full items-center margin-left-auto bg-transparent border-collapse">
+      <table class="max-w-full items-center margin-left-auto bg-transparent border-collapse"
+      style="width: 100%">
         <thead>
-          <tr>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
+          <tr >
+            <th v-for="column in columnList" :key="column"
+              class=" align-middle border border-solid py-3 text-5xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
                   : 'bg-emerald-800 text-emerald-300 border-emerald-700',
               ]"
             >
-              장비명 
+              {{column}} 
             </th>
-            <th
+            <!-- <th
               class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
@@ -98,7 +99,8 @@
               ]"
             >
                상세보기
-            </th>
+            </th> -->
+
            
          
             <!-- 추가칼럼 설정용 
@@ -139,6 +141,11 @@
                     <div
                     style="width: 100%;"
                       class="big-circle"
+                      :class="[
+                       result.thresholdPercent >70 ? 'bg-red-500' : 
+                       result.thresholdPercent >50 ? 'bg-yellow-500' : 
+                       'bg-emerald-500'
+                      ]"
                     >
                     {{result.thresholdCount}}, 
                     
@@ -148,7 +155,7 @@
               </div>
             </td>
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <div class=" items-center">
                 <span class="mr-2 text-5xl">{{  result.currentFailCount }}/<br>{{ result.currentCount }}</span>
@@ -159,22 +166,34 @@
                   >
                     <div
                     :style="{ width: `${Math.round(result.currentRatioPercent)}%` }"
-                      class="  text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    > {{    `${Math.round(result.currentRatioPercent,1)}%` }}</div>
+                      class="  text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
+                      :class="[
+                       result.currentRatioPercent >70 ? 'bg-red-500' : 
+                       result.currentRatioPercent >50 ? 'bg-yellow-500' : 
+                       'bg-emerald-500'
+                      ]"
+                    
+                      > {{    `${Math.round(result.currentRatioPercent,1)}%` }}</div>
                   </div>
                 </div>
               </div>
             </td>
             
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> {{  result.currentResult}}
+              <i class="fas fa-circle mr-2"
+              :class="[result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
+              
+              ></i> 
+             
+                {{  result.currentResult}}
+             
             </td>
           
           
         <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <div class=" items-center">
               <span class="mr-2 text-5xl">{{  result.vibrationFailCount }}/<br>{{ result.vibrationCount }}</span>
@@ -184,33 +203,42 @@
                   >
                     <div
                     :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
-                      class="text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    > {{    `${Math.round(result.vibrationRatioPercent,1)}%` }}</div>
+                      class="text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
+                      :class="[
+                       result.currentRatioPercent >70 ? 'bg-red-500' : 
+                       result.currentRatioPercent >50 ? 'bg-yellow-500' : 
+                       'bg-emerald-500'
+                      ]"
+                      > {{    `${Math.round(result.vibrationRatioPercent,1)}%` }}</div>
                   </div>
                 </div>
               </div>
             </td>
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle text-orange-500 mr-2"></i> {{ result. vibrationResult }}
+              <i class="fas fa-circle mr-2"
+              :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
+              
+              ></i> 
+              
+                {{ result. vibrationResult }}
+
+              
             </td>
           
             <td
-              class="text-3xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
-          {{ result.vibrationTime?.split('.')[0].split('T')[1]}}   
+          <!-- {{  result.vibrationTime?.split('.')[0].split('T')[1] }}    -->
+          {{  result.vibrationTime }}   
           </td>
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
-              style="text-align: left;"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-center"
+              style="text-align: center;"
             >
-            <!-- {{ result }}
-            {{ result }}
-            {{ result }}
-            {{ result }}
-            {{ result }} -->
+            
 
         
             <ModalGraph :data="{id:result.equipmentId ,date:result.vibrationTime}"/>            <!-- 상세보기 버튼  -->
@@ -262,6 +290,8 @@ export default {
     },
   },
   setup(props) {
+    const columnList= ['장비명','Threshold','전류검사','전류판정','전동검사','전동판정','검사시간','상세보기']
+
 
     onMounted(() =>{
       console.log(props.dataRealtimeCard)
@@ -270,7 +300,7 @@ export default {
 
 
     return {
-      props,
+      props,columnList
       
       
     };
@@ -287,7 +317,7 @@ export default {
     width: 300px; /* 조절 가능한 크기 */
     height: 100px; /* 조절 가능한 크기 */
     border-radius: 50%; /* 원 모양 */
-    background: linear-gradient(to bottom, green "`${100-Math.round(result.thresholdPercent, 1)}%`", yellow "`${Math.round(result.thresholdPercent, 1)}%`"); /* 배경색은 빨강색 60%, 하향색 40% */
+    /* 배경색은 빨강색 60%, 하향색 40% */
     display: flex;
     flex-direction: column;
     justify-content: center;

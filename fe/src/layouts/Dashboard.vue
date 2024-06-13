@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div
+  :class="[
+                       failCount >=10 ? 'bg-red-500' : 
+                       failCount>= 1 ? 'bg-yellow-500' : 
+                       'bg-emerald-500'
+                      ]"
+  >
     <sidebar />
     <div class="relative md:ml-64 ">
       <admin-navbar style="top: 0;" />
@@ -15,11 +21,15 @@
 <script>
 import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
 import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
+import {useStore} from "vuex"
 export default {
   setup() {
+    const store = useStore()
+    const failCount = store.state.failCount
     return {
       AdminNavbar,
       FooterAdmin,
+      failCount
     }
   }
 };
