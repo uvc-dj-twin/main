@@ -129,11 +129,15 @@ const service = {
   async machineStatistics(params) {
     let result = null;
 
-    const kstOffset = 9 * 60 * 60 * 1000;
+    let isOneDay = false;
     let startDate = new Date(params.startDate);
     startDate.setHours(0, 0, 0, 0);
     let endDate = new Date(params.endDate);
     endDate.setHours(0, 0, 0, 0);
+    if (startDate.getTime() === endDate.getTime()) {
+      isOneDay = true;
+      console.log('isOneDay:', isOneDay);
+    }
     endDate = new Date(endDate.setDate(endDate.getDate() + 1));
 
     try {
@@ -148,10 +152,14 @@ const service = {
         labels: [],
       };
 
-      for (; params.startDate <= params.endDate; params.startDate.setDate(params.startDate.getDate() + 1)) {
+      for (; params.startDate < endDate;
+        isOneDay ? params.startDate.setHours(params.startDate.getHours() + 1) : params.startDate.setDate(params.startDate.getDate() + 1)) {
+        if (params.startDate > new Date(Date.now())) {
+          break;
+        }
         const startUTC = new Date(params.startDate.getTime());
         let endUTC = new Date(startUTC)
-        endUTC = new Date(endUTC.setDate(endUTC.getDate() + 1));
+        endUTC = isOneDay ? new Date(endUTC.setHours(endUTC.getHours() + 1)) : new Date(endUTC.setDate(endUTC.getDate() + 1));
         const currentStat = await sensorDao.countFailPredict({
           serialNo: machineInfo.serialNo,
           startDate: startUTC.toISOString(),
@@ -166,7 +174,7 @@ const service = {
         })
 
         dailyTrend.data.push(currentStat + vibrationStat);
-        dailyTrend.labels.push(new Date(startUTC.getTime() + kstOffset));
+        dailyTrend.labels.push(isOneDay ? startUTC.getHours() : startUTC.toLocaleDateString());
       }
 
       // totalCount
