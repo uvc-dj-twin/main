@@ -32,7 +32,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
             <form class="flex items-center lg:ml-auto mr-3 my-8 w-full" action="/search" method="get"
               @submit.prevent="handleSubmit">
               <div class="relative flex w-full items-stretch">
-                <div class="flex-grow relative" style="flex-grow: 2;">
+                <div class="relative mr-4" style="width: 30%;">
                   <select
                     class="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-state" name="q" v-model="selectedValue">
@@ -45,8 +45,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
                   </div>
                 </div>
                 <input type="text" placeholder="Search here..."
-                  class="flex-grow border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full"
-                  style="flex-grow: 1;"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full"
                   v-model="searchValue" />
                 <button class="absolute right-0 top-0 mt-3 mr-4" type="submit">
                   <i class="fas fa-search"></i>
