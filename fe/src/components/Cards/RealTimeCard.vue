@@ -16,7 +16,7 @@
     </div>
     <div class="block vw-50%">
       <!-- Projects table -->
-      <table class="max-w-full items-center margin-left-auto bg-transparent border-collapse"
+      <table class="w-full max-w-full items-center margin-left-auto bg-transparent border-collapse"
       style="width: 100%">
         <thead>
           <tr >
