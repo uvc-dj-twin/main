@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="p-8">
     <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4">
-        <!-- <HeaderStats></HeaderStats> -->
-        <h1>장비와 날짜, 조회시각을 선택하세요</h1>
+      <div class="w-full">
+       
 
-        <div class="flex">
+        <div class="flex px-4">
+
+          <div class="button-container">
+            <HeaderDataRead></HeaderDataRead>
+</div>
           <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
           <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
 
@@ -38,6 +41,8 @@
 </template>
 <script>
 import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
+import HeaderDataRead from "@/components/Headers/HeaderDataRead.vue";
+
 import { ref } from "vue";
 import axios from "axios";
 import {onMounted} from "vue";
@@ -57,6 +62,7 @@ import  TimePicker from "@/components/Calenders/TimePicker.vue";
 
 export default {
   components: {
+    HeaderDataRead,
     EquipmentTable,
     DatePicker,
     TimePicker,
@@ -498,6 +504,21 @@ const handleId = ()=>{
 
 .range .tabs-wrap {
   padding: 12px 0px;
+}
+
+/* 기간조회와 세부조회 버튼을 감싸는 div 스타일 */
+.button-container {
+  display: flex;
+  flex-direction: row; /* 가로로 정렬 */
+  justify-content: center; /* 가운데 정렬 */
+  gap: 10px; /* 버튼 사이 간격 */
+}
+
+/* 개별 버튼 스타일 */
+.button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  /* 추가적인 스타일 */
 }
 </style>
 

@@ -1,17 +1,21 @@
 <template>
-  <div>
+  <div class="p-8">
     <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4">
-        <h1>구간을 선택하세요</h1>
-        <div class="flex">
-          <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate"></EquipmentDropdown>
-          <div class="wrapper">
-            <ejs-daterangepicker ref="dateRangePicker" 
-              :startDate="startVal"
-              :endDate="endVal"
-              :placeholder="waterMark"
-            ></ejs-daterangepicker>
-          </div>
+      <div class="w-full">
+        <div class="flex flex-wrap">
+        <HeaderDataRead/>
+          
+            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate"></EquipmentDropdown>
+            <div
+            style="width:200px;
+            height:60px">
+              <ejs-daterangepicker ref="dateRangePicker" 
+            style="width: 200px;"
+          :startDate="startVal"
+        :endDate="endVal"
+      :placeholder="waterMark"
+    ></ejs-daterangepicker>
+    </div>
           <button
             class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"            
@@ -49,6 +53,7 @@
 <script>
 import { DateRangePickerComponent as EjsDaterangepicker } from "@syncfusion/ej2-vue-calendars";
 import EquipmentDropdown from "@/components/Dropdowns/EquipmentDropdown.vue";
+import HeaderDataRead from "@/components/Headers/HeaderDataRead.vue";
 import PieChart from '@/components/Cards/PieChart.vue'
 import CardLineChart from '@/components/Cards/CardLineChart.vue'
 import data from "@/data/statistics.js";
@@ -59,6 +64,7 @@ import { onMounted } from "vue";
 
 export default {
   components: {
+    HeaderDataRead,
     EjsDaterangepicker,
     EquipmentDropdown,
     PieChart,
@@ -206,3 +212,10 @@ export default {
 };
 </script>
 
+
+<style>
+
+.e-input-group.e-control-wrapper.e-date-range-wrapper {
+  height: 100%;
+}
+</style>

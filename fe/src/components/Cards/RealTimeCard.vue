@@ -1,27 +1,26 @@
 <template>
-  <div
-    
+  
+  <div class="md:px-10 mx-auto w-full overflow-x-auto"
     :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
-        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-          <h3
-            class="font-semibold text-lg"
-            :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
-          >
-            실시간 모니터링 결과
-          </h3>
+        <div class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1"
+        
+        >
+            
+          Monitoring Board
+          
         </div>
       </div>
     </div>
-    <div class="block vw-50% overflow-x-hidden">
+    <div class="block vw-50%">
       <!-- Projects table -->
-      <table class="items-center w-full margin-left-auto bg-transparent border-collapse">
+      <table class="max-w-full items-center margin-left-auto bg-transparent border-collapse">
         <thead>
           <tr>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -31,7 +30,7 @@
               장비명 
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -41,7 +40,7 @@
               Threshold 
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -51,7 +50,7 @@
               전류검사 
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -61,17 +60,7 @@
               전류 판정
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-               검사시간
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -81,7 +70,7 @@
               전동검사
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -91,7 +80,7 @@
                전동 판정
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -101,7 +90,7 @@
                검사 시간
             </th>
             <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -114,7 +103,7 @@
          
             <!-- 추가칼럼 설정용 
               <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -128,8 +117,8 @@
             <th
               class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left flex items-center"
             >
-              <span
-                class="ml-3 font-bold"
+              <span 
+                class="ml-3 font-bold text-5xl"
                 :class="[
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
@@ -139,36 +128,38 @@
               </span>
             </th>
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <div class="flex items-center">
-                <span class="mr-2">{{ result.thresholdCount }}<br> 
-                  <br></span>
+              
                 <div class="relative w-full">
                   <div
                     
                   >
                     <div
-                    style="width: 90%;"
+                    style="width: 100%;"
                       class="big-circle"
-                    >{{ Math.round(result.thresholdPercent, 1) }}% </div>
+                    >
+                    {{result.thresholdCount}}, 
+                    
+                    {{ Math.round(result.thresholdPercent, 1) }}% </div>
                   </div>
                 </div>
               </div>
             </td>
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-            <div class="flex items-center">
-                <span class="mr-2">{{  result.currentFailCount }} /{{ result.currentCount }}
-                  <br></span>
+            <div class=" items-center">
+                <span class="mr-2 text-5xl">{{  result.currentFailCount }}/<br>{{ result.currentCount }}</span>
                 <div class="relative w-full">
                   <div
-                    class="overflow-hidden h-2 text-xl flex rounded bg-red-200"
+                    class=" h-12 text-xl flex rounded bg-red-200"
+                    
                   >
                     <div
                     :style="{ width: `${Math.round(result.currentRatioPercent)}%` }"
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+                      class="  text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                     > {{    `${Math.round(result.currentRatioPercent,1)}%` }}</div>
                   </div>
                 </div>
@@ -176,51 +167,43 @@
             </td>
             
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
               <i class="fas fa-circle text-orange-500 mr-2"></i> {{  result.currentResult}}
             </td>
           
-            <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+          
+        <td
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-         <!-- {{`${result.currentTime.toLocaleDateString()} ${result.currentTime.getHours()}:${result.currentTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
-        {{ result.currentTime.split('.')[0]}} 
-        </td>
-            <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
-            >
-            <div class="flex items-center">
-                <span class="mr-2">{{result.vibrationFailCount}} / {{ result.vibrationCount }}
-                  <br></span>
+            <div class=" items-center">
+              <span class="mr-2 text-5xl">{{  result.vibrationFailCount }}/<br>{{ result.vibrationCount }}</span>
                 <div class="relative w-full">
                   <div
-                    class="overflow-hidden h-2 text-xl flex rounded bg-red-200"
+                    class=" h-12 text-xl flex rounded bg-red-200"
                   >
                     <div
-                      :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
-                      
-                      class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                    >{{  `${Math.round(result.vibrationRatioPercent,1)}%`  }}</div>
+                    :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
+                      class="text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+                    > {{    `${Math.round(result.vibrationRatioPercent,1)}%` }}</div>
                   </div>
                 </div>
               </div>
-              
             </td>
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
               <i class="fas fa-circle text-orange-500 mr-2"></i> {{ result. vibrationResult }}
             </td>
           
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-3xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
-          {{ result.vibrationTime.split('.')[0]}}   
+          {{ result.vibrationTime?.split('.')[0].split('T')[1]}}   
           </td>
             <td
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
+              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
             <!-- {{ result }}
@@ -231,10 +214,6 @@
 
         
             <ModalGraph :data="{id:result.equipmentId ,date:result.vibrationTime}"/>            <!-- 상세보기 버튼  -->
-        
-         
-
-            
             </td>
           </tr>
         </tbody>
@@ -308,7 +287,7 @@ export default {
     width: 300px; /* 조절 가능한 크기 */
     height: 100px; /* 조절 가능한 크기 */
     border-radius: 50%; /* 원 모양 */
-    background: linear-gradient(to bottom, gray 40%, yellow 60%); /* 배경색은 빨강색 60%, 하향색 40% */
+    background: linear-gradient(to bottom, green "`${100-Math.round(result.thresholdPercent, 1)}%`", yellow "`${Math.round(result.thresholdPercent, 1)}%`"); /* 배경색은 빨강색 60%, 하향색 40% */
     display: flex;
     flex-direction: column;
     justify-content: center;

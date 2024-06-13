@@ -19,7 +19,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <template>
   <!-- Header -->
-  <div class="relative md:pt-32 pb-32 pt-12">
+  <div class="">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
@@ -86,8 +86,9 @@ export default {
     menu:Array,
   },
   setup(props, {emit}) {
-    const selectedValue = ref(props.menu[0]);
+    const selectedValue = ref([]);
     const searchValue = ref('');
+    
 
     const handleSubmit = () => {
       emit('handleSearch', selectedValue.value, searchValue.value);

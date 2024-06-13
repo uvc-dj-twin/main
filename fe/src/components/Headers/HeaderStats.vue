@@ -26,7 +26,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <template>
   <!-- Header -->
-  <div class="relative md:pt-32  pt-12">
+  <div class="relative">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
@@ -57,7 +57,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
         </div>
       </div>
     </div>
-    <button @click="editCount">버튼</button>
+    <!-- <button @click="editCount">버튼</button> -->
   </div>
 </template>
 

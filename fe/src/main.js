@@ -70,6 +70,7 @@ const routes = [
     redirect: "/dashboard",
     component: DashboardLayout,
     name:"Dashboard",
+    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dashboard",
@@ -86,6 +87,7 @@ const routes = [
     path: "/dataread", // layouts/dataread
     redirect:"/dataread/statistics",
     component: DataRead,
+    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dataread/statistics", //views/
@@ -101,6 +103,7 @@ const routes = [
     path: "/auth",
     redirect: "/auth/login",
     component: Auth,
+    name:'Login',
     children: [
       {
         path: "/auth/login",
@@ -117,6 +120,7 @@ const routes = [
     path: "/admin",
     redirect: "/admin/groupMng",
     component: Admin,
+    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/admin/groupMng",
@@ -129,29 +133,33 @@ const routes = [
     ],
   },
   
-
-
-
-
-
-
-
-
-
-
-
-
   { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 
+// 네비게이션 가드 설정
+// 네비게이션 가드 설정
+
+//라우터 생성
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+//생성된 라우터에 추가 
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!store.state.token;
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      next({ name: 'Login' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 const app = createApp(App)
 
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhOYVBpR2Nbe05xflRDal5YVAciSV9jS3pTcEVgWX5fdXdVRGJVWQ==');
 
 //socket 사용추가 
 app.use(router);
@@ -161,3 +169,4 @@ app.use(store);
 
 app.mount("#app");
 
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhOYVBpR2Nbe05xflRDal5YVAciSV9jS3pTcEVgWX5fdXdVRGJVWQ==');

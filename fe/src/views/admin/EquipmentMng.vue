@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4">
-        <HeaderForm></HeaderForm>
+      <div class="w-full">
+        <HeaderForm :menu="equipmentList"></HeaderForm>
         <div></div>
         <button @click="handlePages"> </button>
         <button @click="handlePages"> 테스트 조회버튼 </button>
@@ -125,7 +125,7 @@
 // import CardPageVisits from "@/components/Cards/CardPageVisits.vue";
 // import CardSocialTraffic from "@/components/Cards/CardSocialTraffic.vue";
 import HeaderForm from "@/components/Headers/HeaderForm.vue";
-import { ref,watch } from "vue";
+import { ref,watch,onMounted } from "vue";
 
 import { rippleMouseHandler } from "@syncfusion/ej2-buttons";
 
@@ -172,6 +172,7 @@ export default {
   },
   setup() {
     const DeleteMachineArray = ref([]);
+    const equipmentList = ref([]);
     
   const columnList=['장비명','Threshold','그룹A','그룹B','그룹C','저장']
   const pages=ref(0);
@@ -179,6 +180,31 @@ export default {
   const limit=ref(30);
   const name=ref('설비')
 const groupName=ref('1번')
+
+
+onMounted( //장비목록 불러오는 API GET 실행
+        axios
+        .get(`http://192.168.0.64:3000/board/machines`, {
+          headers: {
+            authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+          }
+        })
+        .then((response) => {
+          // 요청이 성공하면 실행되는 코드
+          console.log('Response:', response.data)
+          
+          equipmentList.value = response.data
+          console.log(equipmentList.value)
+        //   equipmentList.value =response.data.map((x)=>x.name)
+        //   console.log(equipmentList.value)
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행되는 코드
+          console.error('Error:', error)
+
+        })
+      )
 
     const handlePages = (event) => {
       currentPage.value=event.target.value
@@ -353,7 +379,7 @@ const getValue=() => {
 
 
       return {
-    columnList,data,pages,handlePages,addDeleteMachine,checkTF,limit,editEvent
+    columnList,data,pages,handlePages,addDeleteMachine,checkTF,limit,editEvent,equipmentList
   }
 
 
