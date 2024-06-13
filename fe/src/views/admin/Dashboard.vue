@@ -26,7 +26,7 @@ import HeaderStats from "@/components/Headers/HeaderStats.vue";
 import { ref,onMounted,inject} from 'vue';
 
 import axios from 'axios';
-
+import {useStore} from 'vuex';
 
 
 
@@ -44,6 +44,7 @@ export default {
     const dailyCount =ref();
     const dailyState =ref();
     const realtimeResult =ref();
+    const store=useStore();
 
     //socket//
     onMounted(() => {
@@ -101,6 +102,9 @@ export default {
     passCount: totalEquipments - equipmentsWithFailures,
     failCount: equipmentsWithFailures
   }
+
+  store.state.failCount = dailyState.value.failCount 
+  // failCount store 저장
 }
 
 const changeData = (data) => {
@@ -117,7 +121,7 @@ const changeData = (data) => {
     newData[`${type}Count`] = data.count
     newData[`${type}FailCount`] = data.failCount
     newData[`${type}Result`] = data.result
-    newData[`${type}Time`] = new Date(data.time / 1000)
+    newData[`${type}Time`] = new Date(data.time / 1000).toLocaleTimeString('ko-KR')
     newData[`${type}RatioPercent`] = data.ratioPercent
     newData.thresholdPercent =
       (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *

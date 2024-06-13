@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg"
+    class="text-5xl text-center relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg"
   >
     <div class="flex-auto p-4">
       <div class="flex flex-wrap">
@@ -9,38 +9,38 @@
             {{ statSubtitle }}
           </h5>
             <br>
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold text-blueGray-700">
             {{ statDescripiron1 }}
           </span>
           <br>
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold text-blueGray-700">
             {{ statTitle1 }}
           </span>
           <br>
 
 
 
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold  text-blueGray-700">
             {{ statDescripiron2 }}
           </span>
           <br>
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold  text-blueGray-700">
             {{ statTitle2 }}
           </span>
     
           <br>
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold  text-blueGray-700">
             {{ statDescripiron3 }}
           </span>
           <br>
-          <span class="font-semibold text-xl text-blueGray-700">
+          <span class="font-semibold text-blueGray-700">
             {{ statTitle3 }}
           </span>
          
           
           
         </div>
-        <div class="relative w-auto pl-4 flex-initial">
+        <div class="text-3xl relative w-auto pl-4 flex-initial">
           <div
             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full"
             :class="[statIconColor]"

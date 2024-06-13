@@ -10,6 +10,7 @@ const useStore = createStore({
     groupName: 'OPC',
     dummy:false,
     equipmentlist: ['L-SF-04'],
+    failCount:0,
 
   },
   mutations: {
@@ -30,6 +31,12 @@ const useStore = createStore({
     nochange(state) {
       state.dummy=false;
     },
+    checkAlarm(state,failCount) {
+      state.failCount=failCount;
+    },
+
+
+    
     // loadEquipment(state, equipmentlist) {
     //   state.equipmentlist = equipmentlist
     // },
@@ -167,6 +174,9 @@ const useStore = createStore({
       console.log(groupName)
       const groupList = ['L-SF-04','L-SF-05','L-SF-06']
        commit('loadEquipment', groupList); // Mutation loadEquipment실행, groupList를 전달
+    },
+    checkAlarm({ commit }) {
+      commit('checkAlarm');
     },
   },
   getters: {
