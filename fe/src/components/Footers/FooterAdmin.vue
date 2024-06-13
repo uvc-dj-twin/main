@@ -29,7 +29,7 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
 <template>
   <!-- 푸터 컴포넌트 -->
   <footer class="block py-4"
-  style="position: fixed;
+  style="
   bottom:0;
   width:100%;">
     <div class="container mx-auto px-4">

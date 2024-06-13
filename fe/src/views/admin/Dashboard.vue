@@ -110,9 +110,9 @@ export default {
     passCount: totalEquipments - equipmentsWithFailures,
     failCount: equipmentsWithFailures
   }
-
   store.state.failCount = dailyState.value.failCount 
-  // failCount store 저장
+
+
 }
 
 const changeData = (data) => {

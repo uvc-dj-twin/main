@@ -114,7 +114,7 @@ export default {
         console.log('성공')
         console.log("유저id:",store.state.userId)
         console.log("유저이름:",store.state.name)
-        console.log("유저 토큰:",store.state.userToken)
+        console.log("유저 토큰:",store.state.token)
 
         // const redirectPath = '/dashboard'; 
 

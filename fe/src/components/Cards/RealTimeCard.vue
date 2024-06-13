@@ -17,11 +17,11 @@
     <div class="block vw-50%">
       <!-- Projects table -->
       <table class="w-full max-w-full items-center margin-left-auto bg-transparent border-collapse"
-      style="width: 100%">
+      >
         <thead>
           <tr >
             <th v-for="column in columnList" :key="column"
-              class=" align-middle border border-solid py-3 text-5xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
+              class="text-3xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -30,107 +30,25 @@
             >
               {{column}} 
             </th>
-            <!-- <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              Threshold 
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              전류검사 
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              전류 판정
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              전동검사
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-               전동 판정
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-               검사 시간
-            </th>
-            <th
-              class=" align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-               상세보기
-            </th> -->
-
-           
-         
-            <!-- 추가칼럼 설정용 
-              <th
-              class=" align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-conter"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            ></th> -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="(result,index) in props.dataRealtimeCard" :key="index">
             <th
-              class="border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-left flex items-center"
+              class="text-3xl border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 text-left flex items-center"
             >
               <span 
-                class="ml-3 font-bold text-5xl"
+                class="ml-3 font-bold"
                 :class="[
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
               >{{ result.equipmentSerialNo }}
-              <br>
-              {{ result.equipmentName }}
+             <br>
+            {{ result.equipmentName }}
               </span>
             </th>
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-xl border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
             <div class="flex items-center">
               
@@ -138,7 +56,7 @@
                   <div
                     
                   >
-                    <div
+                    <div 
                     style="width: 100%;"
                       class="big-circle"
                       :class="[
@@ -147,26 +65,25 @@
                        'bg-emerald-500'
                       ]"
                     >
-                    {{result.thresholdCount}}, 
                     
-                    {{ Math.round(result.thresholdPercent, 1) }}% </div>
+                    {{ Math.round(result.thresholdPercent, 1) }}% ({{result.thresholdCount}}) </div>
                   </div>
                 </div>
               </div>
             </td>
             <td
-              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center  border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <div class=" items-center">
-                <span class="mr-2 text-5xl">{{  result.currentFailCount }}/<br>{{ result.currentCount }}</span>
+                <span class="mr-2 ">{{  result.currentFailCount }}/<br>{{ result.currentCount }}</span>
                 <div class="relative w-full">
                   <div
-                    class=" h-12 text-xl flex rounded bg-red-200"
+                    class=" h-12 flex rounded bg-red-200"
                     
                   >
                     <div
                     :style="{ width: `${Math.round(result.currentRatioPercent)}%` }"
-                      class="  text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
+                      class="  shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
                       :class="[
                        result.currentRatioPercent >70 ? 'bg-red-500' : 
                        result.currentRatioPercent >50 ? 'bg-yellow-500' : 
@@ -180,9 +97,9 @@
             </td>
             
             <td
-              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle mr-2"
+              <i class="text-5xl fas fa-circle mr-2"
               :class="[result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
               
               ></i> 
@@ -193,17 +110,17 @@
           
           
         <td
-              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
             <div class=" items-center">
-              <span class="mr-2 text-5xl">{{  result.vibrationFailCount }}/<br>{{ result.vibrationCount }}</span>
+              <span class="mr-2">{{  result.vibrationFailCount }}/<br>{{ result.vibrationCount }}</span>
                 <div class="relative w-full">
                   <div
-                    class=" h-12 text-xl flex rounded bg-red-200"
+                    class=" h-12 flex rounded bg-red-200"
                   >
                     <div
                     :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
-                      class="text-5xl shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
+                      class=" shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
                       :class="[
                        result.currentRatioPercent >70 ? 'bg-red-500' : 
                        result.currentRatioPercent >50 ? 'bg-yellow-500' : 
@@ -215,9 +132,9 @@
               </div>
             </td>
             <td
-              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
-              <i class="fas fa-circle mr-2"
+              <i class="text-5xl fas fa-circle mr-2"
               :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
               
               ></i> 
@@ -228,14 +145,14 @@
             </td>
           
             <td
-              class="text-center text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
           <!-- {{  result.vibrationTime?.split('.')[0].split('T')[1] }}    -->
           {{  new Date(result.vibrationTime).toLocaleTimeString('ko-KR') }}   
           </td>
             <td
-              class="text-5xl border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4 text-center"
+              class="border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center"
               style="text-align: center;"
             >
             

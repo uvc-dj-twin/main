@@ -27,7 +27,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="relative">
-    <div class="px-4 md:px-10 mx-auto w-full">
+    <div class="px-4 py-8 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
@@ -46,7 +46,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
            <!-- Traffic Card -->
            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              :statSubtitle="props.dailyState.statSubtitle"
+              :statSubtitle="newUsersStat.statSubtitle"
               :statTitle1="props.dailyState.totalCount"
               :statTitle2="props.dailyState.passCount"
               :statTitle3="props.dailyState.failCount"
@@ -98,7 +98,7 @@ export default {
     }
 
     const totalStat = ref({
-      statSubtitle: "<금일 검사 현황>",
+      statSubtitle: "금일 검사 현황",
       statTitle1: props.dailyCount.totalCount,
       statTitle2: props.dailyCount.passCount,
       statTitle3: props.dailyCount.failCount,
