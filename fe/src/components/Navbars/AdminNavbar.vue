@@ -1,6 +1,6 @@
 <template>
   <!-- Navbar -->
-  <nav class=" top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+  <nav class="bg-color2 top-0 left-0 w-full z-10 md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
     <div class="top-0 w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
       <!-- Brand -->
       <div class="flex-col md:flex-row list-none items-center hidden md:flex">
@@ -11,8 +11,8 @@
           :to="link.path"
           class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
           :class="{
-            'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes(link.path),
-            'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
+            'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
+            'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
           }"
         >
           {{ link.name }}
@@ -21,7 +21,7 @@
       <div>
         <router-link
           to="/myPage"
-          class="bg-indigo-500 text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
+          class="bg-color1 text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
         >
        {{newDate}} {{ userName }}님 마이페이지
         </router-link>
@@ -29,7 +29,7 @@
      
         <router-link
           to="/auth/login"
-          class="text-2xl bg-indigo-500 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
+          class="text-2xl bg-color1 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
         @click="handleLogout">
        로그아웃
         </router-link>

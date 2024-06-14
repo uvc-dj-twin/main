@@ -36,9 +36,9 @@ export default {
     // });
 
     const currentColor = computed(() => {
-      if (store.state.failCount >= 2) {
+      if (store.state.failCount >= 20) {
         return 'bg-red-500';
-      } else if (store.state.failCount >= 1) {
+      } else if (store.state.failCount >= 10) {
         return 'bg-orange-500';
       } else {
         return 'bg-white';

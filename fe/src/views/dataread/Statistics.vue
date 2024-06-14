@@ -1,8 +1,8 @@
 <template>
   <div class="p-8 container">
-    <div class="flex flex-wrap mt-4">
+    <div class=" flex flex-wrap mt-4">
       <div class="w-full">
-        <div class="flex flex-wrap"
+        <div class=" flex flex-wrap"
         style="justify-content: space-between; width:1330px">
           <div style="display:flex"> 
 
@@ -27,7 +27,7 @@
     <div>
       <button @click="getValue"
 
-class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-emerald-600"
+class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-emerald-600"
 style="height:64px"
 type="button"     
 click=""       
