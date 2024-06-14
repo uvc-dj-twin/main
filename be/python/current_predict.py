@@ -12,6 +12,8 @@ Fs = int(sys.argv[3])
 try:
   cur = pd.read_csv(sys.argv[1], header=None, skiprows=4)
   cur = np.asarray(cur)[:,0:3].transpose()
+  
+  rms_values = np.sqrt(np.mean(cur**2, axis=1)).tolist()
         
   TimeFeatureExtractor = Extract_Time_Features(cur)
   features_time = TimeFeatureExtractor.Features().flatten()
@@ -48,5 +50,5 @@ else:
                    'R_3x', 'S_3x', 'T_3x', 'R_4x', 'S_4x', 'T_4x']]
   xgb_joblib = joblib.load(sys.argv[5]) 
   y_pred = xgb_joblib.predict(df)
-  print(y_pred[0])
+  print(json.dumps({"code": str(y_pred[0]), "rms": rms_values}))
 
