@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-4 overflow-x-hidden">
+    <div class="flex flex-wrap mt-4">
       <div class="w-full">
 
 
