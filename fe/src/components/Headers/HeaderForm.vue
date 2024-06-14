@@ -20,7 +20,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="">
-    <div class="mx-auto my-8 py-8 w-full">
+    <div class=" mx-auto my-8 py-8 w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">

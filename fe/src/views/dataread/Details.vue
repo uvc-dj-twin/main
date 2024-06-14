@@ -4,7 +4,7 @@
       <div class="w-full ">
        
 
-        <div class="flex flex-wrap"
+        <div class=" flex flex-wrap"
         style="justify-content: space-between">
 
           <div class="button-container">
@@ -22,7 +22,7 @@
           <div
           style="display:flex;">
             <button @click="getValue"
-              class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-emerald-600"
+              class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-emerald-600"
               style="height:64px"
           >검색</button>
           </div>

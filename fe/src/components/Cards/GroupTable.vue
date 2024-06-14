@@ -3,7 +3,7 @@
       조회를 진행해주세요</div>
   <div v-else
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-    :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
+   
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
@@ -14,7 +14,7 @@
           >            
             {{editCheck ? '회원 관리 수정' : '회원 관리 조회'}}
             <button 
-           class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600 bg-emerald-500 active:bg-emerald-600"
+           class="get-started bg-color3 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
            style="min-width: 200px; max-width: 400px"
            @click="handleEdit">{{editCheck ? '그룹 저장' : '그룹 수정'}}</button>
 
@@ -48,7 +48,7 @@
             </div>
   
             <button class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
-            :class="[editCheck ? 'bg-emerald-500 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
+            :class="[editCheck ? 'bg-color3 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
             @click="checkGroupAll"
             >일괄 변경</button>
           </div>
@@ -64,63 +64,34 @@
           <tr>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
             >
               선택
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+             
             >
               이름 
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+            
             >
                메일
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+             
             >
               현재 그룹
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+            
             > 최종 그룹 
             </th>
 
-            <!-- 추가칼럼 설정용 
-              <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            ></th> -->
+         
           </tr>
         </thead>
         <tbody>
