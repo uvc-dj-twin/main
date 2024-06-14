@@ -1,5 +1,5 @@
 <template>
-  <div v-if="people.length == 0" class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+  <div v-if="people.length == 0" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
       조회를 진행해주세요</div>
   <div v-else
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"

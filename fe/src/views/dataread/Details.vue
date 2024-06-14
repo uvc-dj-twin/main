@@ -1,20 +1,31 @@
 <template>
   <div class="p-8">
     <div class="flex flex-wrap mt-4">
-      <div class="w-full">
+      <div class="w-full ">
        
 
-        <div class="flex px-4">
+        <div class="flex flex-wrap"
+        style="justify-content: space-between">
 
           <div class="button-container">
             <HeaderDataRead></HeaderDataRead>
 </div>
-          <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
-          <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
+          <div>
+            
+            <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
+            <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
+          </div>
 
           <DatePicker  @update:value="handleUpdateDate"></DatePicker>
           <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
-          <button @click="getValue">검색</button>
+      
+          <div
+          style="display:flex;">
+            <button @click="getValue"
+              class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-emerald-600"
+              style="height:64px"
+          >검색</button>
+          </div>
           
         </div>
       
@@ -80,7 +91,7 @@ export default {
   },
   setup() {
     //초기화 관련 - 테이블 칼럼, 장비목록, 고장목록
-    const columnList=['전류 검사 결과','전류 검사 시간','진동 검사 결과','진동 검사 시간','상세보기']
+    const columnList=['검사 결과','전류 검사 시간','검사 결과','진동 검사 시간','상세보기']
     const equipmentList = ref(
       [{
         id:1,

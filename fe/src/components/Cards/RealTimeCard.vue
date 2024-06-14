@@ -97,7 +97,7 @@
             </td>
             
             <td
-              class="text-center border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-left border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
               <i class="text-5xl fas fa-circle mr-2"
               :class="[result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
@@ -132,7 +132,7 @@
               </div>
             </td>
             <td
-              class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-left border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
               <i class="text-5xl fas fa-circle mr-2"
               :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 

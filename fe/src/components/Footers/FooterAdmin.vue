@@ -28,79 +28,54 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
 
 <template>
   <!-- 푸터 컴포넌트 -->
-  <footer class="block py-4"
-  style="
-  bottom:0;
-  width:100%;">
-    <div class="container mx-auto px-4">
+  <footer class="block py-4" style="bottom:0; width:100%;">
+    <div class="container px-4">
       <!-- 푸터 상단의 가로줄 -->
       <hr class="mb-4 border-b-1 border-blueGray-200" />
       <div class="flex flex-wrap items-center md:justify-between justify-center">
         <!-- 저작권 정보 섹션 -->
         <div class="w-full md:w-4/12 px-4">
-          <div class="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left">
-            Copyright © {{ date }}
+          <div class="text-sm text-blueGray-500 font-semibold py-1 md:text-left text-center"
+          style="display: flex; align-items: center;">
+            <p style="margin-right: 10px;">
+              Copyright © {{ date }}
+            </p>
             <a
               href="https://www.creative-tim.com?ref=vn-footer-admin"
-              class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
-            >
-            DJ-Twin
+              class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1 flex items-center"
+              style="display: flex; align-items: center; text-decoration: none;">
+              <p style="margin-right: 10px;">
+                DJ-Twin
+              </p>
+              <img
+                alt="..."
+                class="rounded-full align-middle border-none shadow-lg"
+                :src="logoSrc"
+                style="height: 48px; width: 48px;"
+              />
             </a>
           </div>
         </div>
-        <!-- 링크 섹션 -->
-        <!-- <div class="w-full md:w-8/12 px-4">
-          <ul class="flex flex-wrap list-none md:justify-end justify-center">
-            <li>
-              <a
-                href="https://www.creative-tim.com?ref=vn-footer-admin"
-                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-              >
-                Creative Tim
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.creative-tim.com/presentation?ref=vn-footer-admin"
-                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="http://blog.creative-tim.com?ref=vn-footer-admin"
-                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-              >
-                Blog
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/creativetimofficial/vue-notus/blob/main/LICENSE.md?ref=vn-footer-admin"
-                class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-              >
-                MIT License
-              </a>
-            </li>
-          </ul>
-        </div> -->
       </div>
     </div>
   </footer>
 </template>
 
+
 <script>
 import { ref } from 'vue'; // Vue 3의 ref를 가져옵니다.
+import logo from "@/assets/img/logo.jpg";
 
 export default {
   setup() {
     // 현재 연도를 저장하는 반응형 변수 date를 선언합니다.
     const date = ref(new Date().getFullYear());
+    const logoSrc =logo;
 
     // 반환된 객체 안에 date를 포함하여 템플릿에서 사용할 수 있도록 합니다.
     return {
       date,
+      logoSrc
     };
   },
 };
