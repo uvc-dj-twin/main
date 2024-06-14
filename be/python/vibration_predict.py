@@ -12,6 +12,8 @@ Fs = int(sys.argv[3])
 try:
   vib = pd.read_csv(sys.argv[1], header=None, skiprows=4)
   vib = np.asarray(vib)[:,0:-1].transpose()
+  
+  rms_values = np.sqrt(np.mean(vib**2, axis=1)).tolist()
         
   TimeFeatureExtractor = Extract_Time_Features(vib)
   features_time = TimeFeatureExtractor.Features()
@@ -37,5 +39,5 @@ else:
   
   xgb_joblib = joblib.load(sys.argv[5]) 
   y_pred = xgb_joblib.predict(X)
-  print(y_pred[0])
+  print(json.dumps({"code": str(y_pred[0]), "rms": rms_values}))
 

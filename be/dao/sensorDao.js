@@ -29,6 +29,7 @@ const dao = {
           |> range(start: ${start}, stop: ${end})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+          |> filter(fn: (r) => r._field == "code")
           |> count()
       `;
 
@@ -131,21 +132,27 @@ const dao = {
           |> limit(n: 1)
       `;
 
-      let nextCalled = false;
+      let result = {
+        time: null,
+        code: -1,
+        rms: 0,
+      }
       queryApi.queryRows(fluxQuery, {
         next(row, tableMeta) {
           const o = tableMeta.toObject(row);
-          nextCalled = true;
-          resolve({ time: o._time, code: o._value });
+          if (o._field === 'code') {
+            result.time = o._time;
+            result.code = o._value;
+          } else if (o._field === 'rms') {
+            result.rms = o._value;
+          }
         },
         error(err) {
           console.error(`Error running InfluxDB query: ${err.message}`);
           reject(err);
         },
         complete() {
-          if (!nextCalled) {
-            resolve(null);
-          }
+          resolve(result);
         }
       });
 
@@ -226,32 +233,62 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
-      
+
       try {
         // 조회 시간 설정
         const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
-  
+
         const startKST = new Date(params.startDate);
         const startUTC = new Date(startKST.getTime() - kstOffset);
-  
+
         const endKST = new Date(params.endDate);
         const endUTC = new Date(endKST.getTime() - kstOffset);
-  
+
         const start = startUTC.toISOString();
         const end = endUTC.toISOString();
-  
+
         let fluxQuery = `
           from(bucket: "test")
           |> range(start: ${start}, stop: ${end})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-          |> filter(fn: (r) => r._field == "code")
         `;
-        
-        const rows = await queryApi.collectRows(fluxQuery, (values, tableMeta) => {
+
+        const codeQuery = fluxQuery + '|> filter(fn: (r) => r._field == "code")';
+        const rmsQuery = fluxQuery + '|> filter(fn: (r) => r._field == "rms")';
+
+        const codePromise = queryApi.collectRows(codeQuery, (values, tableMeta) => {
           return tableMeta.toObject(values);
         });
-        resolve(rows);
+
+        const rmsPromise = queryApi.collectRows(rmsQuery, (values, tableMeta) => {
+          return tableMeta.toObject(values);
+        });
+
+        // code와 rms 쿼리 모두 완료되면 처리
+        Promise.all([codePromise, rmsPromise])
+          .then(([codeRows, rmsRows]) => {
+            const combinedResults = [];
+
+            // code와 rms 결과를 합쳐서 combinedResults에 저장
+            for (let i = 0; i < codeRows.length; i++) {
+              const codeResult = codeRows[i];
+              const rmsResult = rmsRows[i];
+
+              // _time, _code, _rms 형태로 결과 저장
+              const combinedResult = {
+                _time: codeResult._time,
+                _code: codeResult._value,
+                _rms: rmsResult ? rmsResult._value : null
+              };
+
+              combinedResults.push(combinedResult);
+            }
+            resolve(combinedResults);
+          })
+          .catch(err => {
+            reject(err);
+          });
       } catch (err) {
         console.log(`sensorDao.detailsData error: ${err.message}`);
         reject(err);
@@ -287,6 +324,7 @@ const dao = {
       queryApi.queryRows(fluxQuery, {
         next(row, tableMeta) {
           const o = tableMeta.toObject(row);
+          console.log('nearestPredict : ', o);
           nextCalled = true;
           resolve(o);
         },

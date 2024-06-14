@@ -128,13 +128,15 @@ const predict = async (data, csvPath, type) => {
   };
   try {
     const result = await PythonShell.run(predictPath, options);
-    const code = parseInt(result[0]);
+    const { code, rms } = JSON.parse(result[0])
     const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
     const point = new Point(_measurement)
       .tag('serial_no', data.machine)
       .intField('start_time', data.startTime)
       .intField('code', code)
+      .stringField('rms', rms)
       .timestamp(data.endTime);
+    data.rms = rms;
     await writeApi.writePoint(point);
     await writeApi.close();
     return code;
@@ -164,9 +166,15 @@ const sendSocket = async (io, type, data, result) => {
   });
   socketInfo.failCount = failCount;
   socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
-  const codeInfo = await codeDao.info({machineId: machine.id, code: result})
+  const codeInfo = await codeDao.info({ machineId: machine.id, code: result })
   socketInfo.result = codeInfo.name;
   socketInfo.time = data.endTime;
+  socketInfo.rms = data.rms;
+  // let vibrationData = [];
+  // for (let i = 0; i < data.data.length; i += (type === 'currents' ? 100 : 200)) {
+  //   vibrationData.push(data.data[i]);
+  // }
+  // socketInfo.vibrationData = vibrationData;
   let groupIds = [];
   for (const group of groups) {
     groupIds.push(group.id);

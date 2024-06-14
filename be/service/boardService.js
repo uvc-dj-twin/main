@@ -62,6 +62,7 @@ const service = {
           const currentResultInfo = await codeDao.info({ machineId: machine.id, code: currentLastPredict.code })
           machineInfo.currentResult = currentResultInfo.name;
           machineInfo.currentTime = currentLastPredict.time;
+          machineInfo.currentRms = currentLastPredict.rms;
 
           const vibrationLastPredict = await sensorDao.lastPredict({
             serialNo: machine.serialNo,
@@ -70,6 +71,7 @@ const service = {
           const vibrationResultInfo = await codeDao.info({ machineId: machine.id, code: vibrationLastPredict.code })
           machineInfo.vibrationResult = vibrationResultInfo.name;
           machineInfo.vibrationTime = vibrationLastPredict.time;
+          machineInfo.vibrationRms = vibrationLastPredict.rms;
 
           machineInfo.thresholdPercent = (Math.max(currentFailCount, vibrationFailCount) / machine.threshold) * 100;
 
@@ -303,35 +305,41 @@ const service = {
 
       const kstOffset = 9 * 60 * 60 * 1000;
 
-      currentResults.forEach(({ _value, _time }) => {
+      currentResults.forEach(({ _code, _time, _rms }) => {
         const time = new Date(new Date(_time).getTime() + kstOffset).toISOString().replace('Z', '').replace('T', ' ');
-        const value = codeMap[_value];
+        const value = codeMap[_code];
         if (!resultMap[time]) {
           resultMap[time] = {
             currentResult: value,
             currentTime: time,
+            currentRms: _rms,
             vibrationResult: "",
-            vibrationTime: ""
+            vibrationTime: "",
+            vibrationRms: null,
           };
         } else {
           resultMap[time].currentResult = value;
           resultMap[time].currentTime = time;
+          resultMap[time].currentRms = _rms;
         }
       });
 
-      vibrationResults.forEach(({ _value, _time }) => {
+      vibrationResults.forEach(({ _code, _time, _rms }) => {
         const time = new Date(new Date(_time).getTime() + kstOffset).toISOString().replace('Z', '').replace('T', ' ');
-        const value = codeMap[_value];
+        const value = codeMap[_code];
         if (!resultMap[time]) {
           resultMap[time] = {
             currentResult: "",
             currentTime: "",
+            currentRms: null,
             vibrationResult: value,
-            vibrationTime: time
+            vibrationTime: time,
+            vibrationRms: _rms
           };
         } else {
           resultMap[time].vibrationResult = value;
           resultMap[time].vibrationTime = time;
+          resultMap[time].vibrationRms = _rms;
         }
       });
 
