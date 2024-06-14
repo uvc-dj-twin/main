@@ -24,11 +24,11 @@
             
          
             <th v-for="(column ,index) in props.columnList" :key="index"
-            class="text-3xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
+            class="text-5xl px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
 
            
             >
-              {{ column }}
+              {{ column }}   {{ column }}
             </th>
           
           </tr>

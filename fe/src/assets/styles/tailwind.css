@@ -1225,6 +1225,23 @@ select {
           appearance: none;
 }
 
+.bg-color1 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 25, 50, var(--tw-bg-opacity));
+}
+.bg-color2 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(50,107,152, var(--tw-bg-opacity));
+}
+.bg-color3 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(19,161,249, var(--tw-bg-opacity));
+}
+.bg-color4 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(152,241,248, var(--tw-bg-opacity));
+}
+
 .bg-fixed {
   background-attachment: fixed;
 }

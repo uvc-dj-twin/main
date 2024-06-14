@@ -5,7 +5,7 @@
         <HeaderForm :menu="menu" @handleSearch="handleSearch" />
         <div></div>
         <button
-          class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600 bg-emerald-500 active:bg-emerald-600"
+          class="bg-color3 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
           @click="editEvent">{{ editCheck ? '저장' : '수정' }}</button>
 
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
@@ -13,7 +13,7 @@
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
               <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3 class="font-semibold text-lg" :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']">
+                <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1">
                   장비 테이블
                 </h3>
               </div>
@@ -23,12 +23,19 @@
             <table class="items-center w-full bg-transparent border-collapse">
               <thead>
                 <tr>
-                  <th class="text-center">   장비명 </th>
-                  <th>Threshold</th>
+                  <th 
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    >
+                    장비명 </th>
+                    <th 
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    >Threshold</th>
                   <th v-for="(group, index) in groupList" :key="index"
-                    class="px-6 align-middle border border-solid py-3 text-xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                     >그룹 {{ group.name }}</th>
-                  <th>삭제여부</th>
+                    <th 
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    >삭제</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,7 +55,7 @@
                       <div class="content-wrapper">
                         <div class="container switch-control">
                           <div>
-                            <label for="groupA" style="padding: 10px 70px 10px 0"> 권한부여 </label>
+                            <label for="groupA" style="padding: 10px 10px 10px 0"> 권한부여 </label>
                             <input type="checkbox" v-model="group.access" @click="checkTF(index, groupIndex)"
                               placeholder="Search here..." :disabled="!editCheck" />
                           </div>
@@ -56,24 +63,12 @@
                       </div>
                     </div>
                   </td>
-                  <!-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
-                    <div class="col-lg-12 control-section">
-                      <div class="content-wrapper">
-                        <div class="container switch-control">
-                          <div>
-                            <label for="groupB" style="padding: 10px 70px 10px 0"> 권한부여 </label>
-                            <input type="checkbox" v-model="machine.groups[1]" @click="checkTF(index, 'GroupB')" placeholder="Search here..."/>
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </td> -->
+                 
                 
                   <td>
                     <button @click="addDeleteMachine(machine.id)"
                    
-          class="text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600 bg-emerald-500 active:bg-emerald-600"
+          class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
                     style="text-align: right;">삭제</button>
                   </td>
                 </tr>
@@ -88,7 +83,7 @@
     </div>
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button
-        class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+        class="bg-color3 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
         type="button" style="transition: all .15s ease" v-for="(page) in pages" :key="page" value="page"
         @click="handlePages">
         {{ page }}
@@ -155,7 +150,7 @@ export default {
     const menu = ['장비명', '그룹명'];
     const DeleteMachineArray = ref([]);
 
-    const columnList = ['장비명', 'Threshold', '그룹A', '그룹B', '그룹C', '삭제여부']
+    const columnList = ['장비명', 'Threshold', '그룹A', '그룹B', '그룹C', '삭제요청']
     const pages = ref(0);
     const currentPage = ref(1);
     const limit = ref(30);
