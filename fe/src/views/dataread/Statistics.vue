@@ -1,14 +1,19 @@
 <template>
-  <div class="p-8">
+  <div class="p-8 container">
     <div class="flex flex-wrap mt-4">
       <div class="w-full">
-        <div class="flex flex-wrap">
-        <HeaderDataRead/>
+        <div class="flex flex-wrap"
+        style="justify-content: space-between; width:1330px">
+          <div style="display:flex"> 
+
+            <HeaderDataRead/>
+            <EquipmentDropdown 
+            :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate">
+          </EquipmentDropdown>
           
-            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate"></EquipmentDropdown>
-            <div class="wrapper"
-            style="width:200px;
-            height:60px">
+            <div class="wrapper text-2xl font-bold " 
+            style="width: 200px;display: flex;align-content: space-around;flex-direction: row;flex-wrap: wrap;">
+            날짜 선택
               <ejs-daterangepicker ref="dateRangePicker" 
             style="width: 200px;"
           :startDate="startVal"
@@ -16,16 +21,25 @@
       :placeholder="waterMark"
     ></ejs-daterangepicker>
     </div>
-          <button
-            class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button"     
-            click=""       
-          >
-            조회
-          </button>
-          <button @click="getValue">Get Value</button>
+          </div>
+      
 
-          {{ startVal }} ~ {{ endVal }}
+    <div>
+      <button @click="getValue"
+
+class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-emerald-600"
+style="height:64px"
+type="button"     
+click=""       
+>
+조회
+</button>
+
+    </div>
+         
+         
+
+          <!-- {{ startVal }} ~ {{ endVal }} -->
         </div>
         <div v-if="showGraph"> 
           <div>
@@ -38,15 +52,6 @@
         <div v-else class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">조회를 진행해주세요</div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
 
   </div>
 </template>
@@ -61,7 +66,13 @@ import data from "@/data/statistics.js";
 import {ref}  from "vue";
 import axios  from "axios";
 import { onMounted } from "vue";
+
+import '@syncfusion/ej2-base/styles/material.css';
+import '@syncfusion/ej2-buttons/styles/material.css';
+import '@syncfusion/ej2-calendars/styles/material.css';
 // import {onMounted}  from "vue";
+
+
 
 export default {
   components: {
@@ -72,8 +83,8 @@ export default {
     CardLineChart,
   },
   setup() {
-    const startVal = ref(new Date("01/06/2024 12:00 PM"));
-    const endVal = ref(new Date("06/06/2024 5:00 PM"));
+    const startVal = ref(new Date("06/06/2024 12:00 PM"));
+    const endVal = ref(new Date("06/20/2024 5:00 PM"));
     const selectedValue = ref('option1');
     const waterMark = "Select a Range";
     const equipmentList = ref(['가짜장비1','L-SF-05'])
@@ -214,9 +225,31 @@ export default {
 </script>
 
 
-<style>
-
-.e-input-group.e-control-wrapper.e-date-range-wrapper {
-  height: 100%;
+<style module>
+.e-input-group.e-control-wrapper.e-date-range-wrapper.e-valid-input {
+  font-size: var(--font-size-extra-large);
 }
+
+
+.wrapper {
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .container {
+  display: flex;
+  justify-content: space-between; /* div 요소 사이에 공간을 동일하게 분배합니다 */
+  align-items: center; /* 세로 방향 가운데 정렬 */
+  height: 100px; /* 예시로 설정한 높이. 필요에 따라 조정하세요 */
+  background-color: #f0f0f0; /* 배경색 추가 */
+  padding: 0 20px; /* 좌우 여백을 추가하여 내용이 너무 가깝지 않게 합니다 */
+}
+
+.item {
+  /* 각각의 div 요소에 스타일을 추가할 수 있습니다 */
+  padding: 10px; /* 내부 여백을 추가하여 내용을 좀 더 간격있게 합니다 */
+  background-color: #ccc; /* 예시로 배경색 추가 */
+}
+
+
 </style>
