@@ -5,10 +5,12 @@
         <div class="flex flex-wrap">
         <HeaderDataRead/>
           
-            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate"></EquipmentDropdown>
-            <div class="wrapper"
-            style="width:200px;
-            height:60px">
+            <EquipmentDropdown 
+            class="text-xl"
+            :equipmentList="equipmentList" :value="selectedValue"  @update:value="handleUpdate">
+          </EquipmentDropdown>
+            <div class="wrapper" text-xl
+            style="width: 200px;display: flex;align-content: space-around;flex-direction: row;flex-wrap: wrap;">
               <ejs-daterangepicker ref="dateRangePicker" 
             style="width: 200px;"
           :startDate="startVal"
@@ -16,16 +18,16 @@
       :placeholder="waterMark"
     ></ejs-daterangepicker>
     </div>
-          <button
+          <button @click="getValue"
             class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"     
             click=""       
           >
             조회
           </button>
-          <button @click="getValue">Get Value</button>
+         
 
-          {{ startVal }} ~ {{ endVal }}
+          <!-- {{ startVal }} ~ {{ endVal }} -->
         </div>
         <div v-if="showGraph"> 
           <div>
@@ -38,15 +40,6 @@
         <div v-else class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">조회를 진행해주세요</div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
 
   </div>
 </template>
@@ -61,7 +54,13 @@ import data from "@/data/statistics.js";
 import {ref}  from "vue";
 import axios  from "axios";
 import { onMounted } from "vue";
+
+import '@syncfusion/ej2-base/styles/material.css';
+import '@syncfusion/ej2-buttons/styles/material.css';
+import '@syncfusion/ej2-calendars/styles/material.css';
 // import {onMounted}  from "vue";
+
+
 
 export default {
   components: {
@@ -72,8 +71,8 @@ export default {
     CardLineChart,
   },
   setup() {
-    const startVal = ref(new Date("01/06/2024 12:00 PM"));
-    const endVal = ref(new Date("06/06/2024 5:00 PM"));
+    const startVal = ref(new Date("06/06/2024 12:00 PM"));
+    const endVal = ref(new Date("06/20/2024 5:00 PM"));
     const selectedValue = ref('option1');
     const waterMark = "Select a Range";
     const equipmentList = ref(['가짜장비1','L-SF-05'])
@@ -214,9 +213,15 @@ export default {
 </script>
 
 
-<style>
+<style module>
 
 .e-input-group.e-control-wrapper.e-date-range-wrapper {
   height: 100%;
 }
+.wrapper {
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+
 </style>

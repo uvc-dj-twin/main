@@ -12,6 +12,9 @@
               <h6 class="text-blueGray-500 text-sm font-bold">
                 My Page
               </h6>
+              <div class='wrapper'>
+        <ejs-daterangepicker :startDate="startVal" :endDate="endVal" :placeholder="waterMark"></ejs-daterangepicker>
+      </div>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
@@ -133,8 +136,29 @@ import { onMounted, ref } from "vue";
 import axios from 'axios'
 import { useStore } from "vuex";
 
+import { DateRangePickerComponent as EjsDaterangepicker } from '@syncfusion/ej2-vue-calendars';
+
+
+
 export default {
+  components: {
+    EjsDaterangepicker
+  },
   setup() {
+
+
+const startVal = new Date("11/12/2019 12:00 PM");
+const endVal = new Date("11/25/2019 5:00 PM");
+const waterMark = 'Select a Range';
+       
+
+    ///////
+
+
+
+
+
+
     const store = useStore(); //stor 불러오기 
     const userId =store.state.userId; // store 유저명 불러오기    
     const name = ref('홍길동')
@@ -208,7 +232,14 @@ export default {
         
       }
     return {
-      name,phone,groupName,email,userId,userRoll,editEvent}
+      name,phone,groupName,email,userId,userRoll,editEvent,
+      startVal,endVal,waterMark}
   } 
 }
 </script>
+
+<style scoped>
+
+
+
+</style>
