@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-blueGray-700">
+  <div class="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg rounded bg-blueGray-700">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -17,7 +17,7 @@
     <div class="p-4 flex-auto">
       <!-- Chart -->
       <div class="relative h-full w-150-px">
-        <canvas ref="chart" ></canvas>
+        <canvas ref="chart"></canvas>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import Chart from "chart.js";
-import {watch} from "vue";
+import { watch } from "vue";
 
 export default {
   props: {
@@ -36,6 +36,11 @@ export default {
       required: true,
       default: () => ({}),
     },
+    title: {
+      type: String,
+      required: true,
+      default: "",
+    }
   },
   setup(props) {
     const chart = ref(null);
@@ -45,7 +50,7 @@ export default {
         console.log("차트", myChart);
         console.log(props.data);
 
-        myChart.data.datasets[0].data = [10,0, 100, 0, 10000];
+        myChart.data.datasets[0].data = [10, 0, 100, 0, 10000];
         myChart.data.labels = props.data.labels;
 
         myChart.update();
@@ -71,11 +76,12 @@ export default {
           maintainAspectRatio: false,
           responsive: true,
           title: {
-            display: false,
-            text: "Sales Charts",
+            display: true,
+            text: props.title,
             fontColor: "white",
           },
           legend: {
+            display: false,
             labels: {
               fontColor: "white",
             },
@@ -91,18 +97,19 @@ export default {
             intersect: true,
           },
           scales: {
-            x: {
+            xAxes: [{
               ticks: {
                 fontColor: "rgba(255,255,255,.7)",
+                maxRotation: 0,
+                autoSkip: true,
               },
               display: true,
               scaleLabel: {
                 display: false,
-                labelString: "Month",
+                labelString: "Time",
                 fontColor: "white",
               },
-              grid: {
-                display: false,
+              gridLines: {
                 borderDash: [2],
                 borderDashOffset: [2],
                 color: "rgba(33, 37, 41, 0.3)",
@@ -110,10 +117,12 @@ export default {
                 zeroLineBorderDash: [2],
                 zeroLineBorderDashOffset: [2],
               },
-            },
-            y: {
+            }],
+            yAxes: [{
               ticks: {
                 fontColor: "rgba(255,255,255,.7)",
+                min: 0,
+                stepSize: 1,
               },
               display: true,
               scaleLabel: {
@@ -121,7 +130,7 @@ export default {
                 labelString: "Value",
                 fontColor: "white",
               },
-              grid: {
+              gridLines: {
                 borderDash: [3],
                 borderDashOffset: [3],
                 drawBorder: false,
@@ -130,8 +139,7 @@ export default {
                 zeroLineBorderDash: [2],
                 zeroLineBorderDashOffset: [2],
               },
-              min: 0,
-            },
+            }],
           },
         },
       };
@@ -145,16 +153,12 @@ export default {
     const updateChart = () => {
       console.log('업데이트 실행진입')
       console.log('업데이트 실행진입')
-   
+
 
       if (myChart) {
-        console.log('수정진입')
-        console.log(props.data.data[0])
         myChart.data.datasets[0].data = props.data.data;
         myChart.data.labels = props.data.labels;
         myChart.update();
-        console.log('수정완료')
-
       }
     };
 
@@ -162,8 +166,7 @@ export default {
       updateChart();
     }, { deep: true });
 
-    return { chart, addData,watcher };
+    return { chart, addData, watcher };
   },
 };
 </script>
-

@@ -168,6 +168,7 @@ const sendSocket = async (io, type, data, result) => {
   socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
   const codeInfo = await codeDao.info({ machineId: machine.id, code: result })
   socketInfo.result = codeInfo.name;
+  socketInfo.resultCode = codeInfo.code;
   socketInfo.time = data.endTime;
   socketInfo.rms = data.rms;
   // let vibrationData = [];
