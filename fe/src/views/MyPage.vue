@@ -9,18 +9,15 @@
         >
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
-              <h6 class="text-blueGray-500 text-sm font-bold">
+              <h6 class="text-5xl text-blueGray-500 text-sm font-bold">
                 My Page
               </h6>
-              <div class='wrapper'>
-        <ejs-daterangepicker :startDate="startVal" :endDate="endVal" :placeholder="waterMark"></ejs-daterangepicker>
-      </div>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-            <div class="text-blueGray-400 text-center mb-3 font-bold">
-              <small>회원정보 확인 및 비밀번호를 바꾸실 수 있습니다.</small>
+            <div class="text-3xl text-blueGray-400 text-center mb-3 font-bold">
+             
             </div>
             <form>
               <div class="relative w-full mb-3">
@@ -136,29 +133,11 @@ import { onMounted, ref } from "vue";
 import axios from 'axios'
 import { useStore } from "vuex";
 
-import { DateRangePickerComponent as EjsDaterangepicker } from '@syncfusion/ej2-vue-calendars';
-
 
 
 export default {
-  components: {
-    EjsDaterangepicker
-  },
+
   setup() {
-
-
-const startVal = new Date("11/12/2019 12:00 PM");
-const endVal = new Date("11/25/2019 5:00 PM");
-const waterMark = 'Select a Range';
-       
-
-    ///////
-
-
-
-
-
-
     const store = useStore(); //stor 불러오기 
     const userId =store.state.userId; // store 유저명 불러오기    
     const name = ref('홍길동')
@@ -233,7 +212,7 @@ const waterMark = 'Select a Range';
       }
     return {
       name,phone,groupName,email,userId,userRoll,editEvent,
-      startVal,endVal,waterMark}
+      }
   } 
 }
 </script>

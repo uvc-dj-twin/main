@@ -21,11 +21,7 @@
       <div>
         <router-link
           to="/myPage"
-          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
-          :class="{
-            'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes('/myPage'),
-            'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
-      }"
+          class="bg-indigo-500 text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
         >
        {{newDate}} {{ userName }}님 마이페이지
         </router-link>
@@ -33,11 +29,7 @@
      
         <router-link
           to="/auth/login"
-          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
-          :class="{
-            'bg-emerald-500 active:bg-emerald-600': this.$route.path.includes('/myPage'),
-            'bg-indigo-500 active:bg-emerald-600': !(this.$route.path.includes('/myPage')),
-      }"
+          class="text-2xl bg-indigo-500 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-indigo-500 active:bg-indigo-600"
         @click="handleLogout">
        로그아웃
         </router-link>
