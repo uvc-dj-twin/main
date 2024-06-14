@@ -1,21 +1,37 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4">
-      <div class="w-full">
+      <div > 
+
+
+    <div style="justify-content: space-between">   
+
+         <div class="w-full" style="display:flex">
+          <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1">
+                  장비 테이블
+          </h3>
+
+          <div > 
         <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-        <div></div>
-        <button
+        <div>
+          <button
           class="bg-color3 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
           @click="editEvent">{{ editCheck ? '저장' : '수정' }}</button>
+        </div>
+      </div>
+
+
+      </div>
+
+        </div>
+    
 
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
           >
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
               <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1">
-                  장비 테이블
-                </h3>
+               
               </div>
             </div>
           </div>

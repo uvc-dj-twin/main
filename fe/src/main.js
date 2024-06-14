@@ -27,6 +27,8 @@ import Auth from "@/layouts/Auth.vue";
 // views for Admin layout
 
 import Dashboard from "@/views/admin/Dashboard.vue";
+import DashboardSingle from "@/views/admin/DashboardSingle.vue";
+
 
 
 
@@ -75,6 +77,10 @@ const routes = [
       {
         path: "/dashboard",
         component: Dashboard,
+      },
+      {
+        path: "/dashboard/1",
+        component: DashboardSingle,
       },
       {
         path: "/mypage",

@@ -63,7 +63,7 @@ export default {
           datasets: [
             {
               label: 'vertical',
-              backgroundColor: "#4c51bf",
+              backgroundColor: "white",
               borderColor: "#4c51bf",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               fill: false,
