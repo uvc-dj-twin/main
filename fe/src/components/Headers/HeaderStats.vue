@@ -27,31 +27,41 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="relative">
-    <div class="px-4 py-8 md:px-10 mx-auto w-full">
+    <div class="py-8 mx-auto w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
         
           <!-- New Users Card -->
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-            <card-stats
-              :statSubtitle="totalStat.statSubtitle" 
-              
-              :statTitle1="props.dailyCount.totalCount"
-              :statTitle2="props.dailyCount.passCount"
-              :statTitle3="props.dailyCount.failCount"
-
-            />
+          <div class="flex flex-wrap justify-between w-full xl:w-6/12 items-center">
+            <div class="p-2" style="width: 40%; height: 270px;">
+              <card-stats
+                :statSubtitle="totalStat.statSubtitle" 
+                
+                :statTitle1="props.dailyCount.totalCount"
+                :statTitle2="props.dailyCount.passCount"
+                :statTitle3="props.dailyCount.failCount"
+  
+                />
+            </div>
+            <div class="p-2" style="width: 60%; height: 270px;">
+              <CardLineChart :data="props.testChartData" title="이상 판별 수"/>
+            </div>
           </div>
            <!-- Traffic Card -->
-           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-            <card-stats
-              :statSubtitle="newUsersStat.statSubtitle"
-              :statTitle1="props.dailyState.totalCount"
-              :statTitle2="props.dailyState.passCount"
-              :statTitle3="props.dailyState.failCount"
-           
-            />
+           <div class="flex flex-wrap justify-between w-full xl:w-6/12 items-center">
+            <div class="p-2" style="width: 40%; height: 270px;">
+              <card-stats
+                :statSubtitle="newUsersStat.statSubtitle"
+                :statTitle1="props.dailyState.totalCount"
+                :statTitle2="props.dailyState.passCount"
+                :statTitle3="props.dailyState.failCount"
+             
+              />
+            </div>
+            <div class="p-2" style="width: 60%; height: 270px;">
+              <CardLineChart :data="props.machineChartData" title="이상 장비 수"/>
+            </div>
           </div>
     
         </div>
@@ -64,6 +74,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <script>
 import {  ref } from 'vue'; // Vue 3의 ref 함수 가져오기
 import CardStats from "@/components/Cards/CardStats.vue"; // CardStats 컴포넌트 가져오기
+import CardLineChart from "@/components/Cards/CardLineChartDashboard.vue";
 export default {
   components: {
     CardStats, // CardStats 컴포넌트 등록
@@ -77,6 +88,14 @@ export default {
       type: Object,
       default: () => ({ totalCount: 0, passCount: 0, failCount: 0 })
     },
+    testChartData: {
+      type: Object,
+      required: true,
+    },
+    machineChartData: {
+      type: Object,
+      required: true,
+    }
   },
   setup(props) {
  
@@ -150,6 +169,7 @@ export default {
       performanceStat,
       editCount,
       props,
+      CardLineChart,
     
     };
   },

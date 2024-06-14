@@ -1,15 +1,12 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-4 overflow-x-hidden">
+    <div class="flex flex-wrap mt-4">
       <div class="w-full">
 
 
 
-        <div class="flex flex-row">
-          <CardLineChart :data="testChartData" />
-        </div>
+        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData" :machineChartData="machineChartData" />
 
-        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" />
         <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
         <RealTimeCard :dataRealtimeCard="realtimeResult" />
 
@@ -56,6 +53,15 @@ export default {
       return { labels, data };
     });
     const realtimeTestData = ref({});
+    const realtimeFailCount = ref(0);
+    const machineChartData = computed(() => {
+      const labels = Object.keys(realtimeMachineData.value);
+      const data = Object.values(realtimeMachineData.value);
+
+      return { labels, data };
+    });
+    const realtimeMachineData = ref({});
+    const interval = ref(null);
 
 
     //socket//
@@ -81,6 +87,23 @@ export default {
           socket.on('vibrations', (data) => {
             changeData(data)
           })
+          interval.value = setInterval(() => {
+            const labelTime = new Date(Date.now()).toLocaleTimeString([], { hour12: false, minute: '2-digit', second: '2-digit' });
+            realtimeTestData.value[labelTime] = realtimeFailCount.value;
+            realtimeFailCount.value = 0;
+            const keys = Object.keys(realtimeTestData.value)
+            if (keys.length > 20) {
+              const recentKeys = keys.slice(-20);
+              const newObject = {};
+
+              recentKeys.forEach(key => {
+                newObject[key] = realtimeTestData.value[key];
+              });
+              realtimeTestData.value = newObject;
+            }
+
+            realtimeMachineData.value[labelTime] = dailyState.value.failCount;
+          }, 3000);
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
@@ -94,6 +117,9 @@ export default {
       if (socket) {
         socket.off('currents');
         socket.off('vibrations');
+      }
+      if (interval) {
+        clearInterval(interval.value);
       }
     });
 
@@ -123,11 +149,9 @@ export default {
         failCount: equipmentsWithFailures
       }
       store.state.failCount = dailyState.value.failCount
-
-
     }
 
-    const changeData = (data) => {
+    const changeData = async (data) => {
       const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
       // 해당 객체가 존재하는 경우 업데이트
       if (index !== -1) {
@@ -147,19 +171,10 @@ export default {
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
         realtimeResult.value[index] = newData
-        setDailyInfo()
-        realtimeTestData.value[new Date(data.time / 1000).toLocaleTimeString()] = dailyCount.value.failCount;
-        const keys = Object.keys(realtimeTestData.value)
-        if (keys.length > 10) {
-          const recentKeys = keys.slice(-10);
-          const newObject = {};
-
-          recentKeys.forEach(key => {
-            newObject[key] = realtimeTestData.value[key];
-          });
-          realtimeTestData.value = newObject;
+        if (data.resultCode !== 0) {
+          realtimeFailCount.value += 1
         }
-        console.log('test:', realtimeTestData.value);
+        setDailyInfo()
         console.log('Updated realtimeResult:', realtimeResult.value[index])
       } else {
         console.log(`Equipment with ID ${data.equipmentId} not found.`)
@@ -195,7 +210,7 @@ export default {
       dailyCount,
       dailyState,
       realtimeResult,
-      CardLineChart, testChartData, realtimeTestData
+      CardLineChart, testChartData, realtimeTestData, realtimeMachineData, machineChartData
 
 
 

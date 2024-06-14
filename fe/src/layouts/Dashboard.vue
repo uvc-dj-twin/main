@@ -1,13 +1,10 @@
 <template>
-<div id="bg-class"
-:class="[
-  currentColor
-]">
+<div>
     <sidebar />
     <div class="relative md:ml-64 ">
       <admin-navbar style="top: 0;" />
-      <div class="p-8">
-        <div class="">
+      <div class=" px-4 md:px-10 mx-auto w-full -m-24">
+        <div class="mt-20">
           <router-view />
         </div>
         <footer-admin />

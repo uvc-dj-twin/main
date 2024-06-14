@@ -1,6 +1,6 @@
 <template>
   
-  <div class="md:px-10 mx-auto w-full overflow-x-auto"
+  <div class="mx-auto w-full overflow-x-auto scrollable-container overflow-y-scroll"
     :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
