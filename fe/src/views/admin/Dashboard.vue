@@ -1,32 +1,36 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4 overflow-x-hidden">
-    <div class="w-full">
-    
+      <div class="w-full">
 
 
-  
-      
-      <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState"/><!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
-      <RealTimeCard :dataRealtimeCard="realtimeResult"/>
 
-      <!-- <h1>{{ realtimeResult }}</h1>   
+        <div class="flex flex-row">
+          <CardLineChart :data="testChartData" />
+        </div>
+
+        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" />
+        <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
+        <RealTimeCard :dataRealtimeCard="realtimeResult" />
+
+        <!-- <h1>{{ realtimeResult }}</h1>   
       <h1>{{ dailyCount }}</h1>       
       <h1>{{ dailyState }}</h1>       
      -->
-      
+
+      </div>
     </div>
-  </div>
   </div>
 </template>
 <script>
 import RealTimeCard from "@/components/Cards/RealTimeCard.vue";
 import HeaderStats from "@/components/Headers/HeaderStats.vue";
+import CardLineChart from "@/components/Cards/CardLineChartDashboard.vue";
 // import data from "@/data/dashboard.js";
-import { ref,onMounted,inject, onUnmounted} from 'vue';
+import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
 
 import axios from 'axios';
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 
 
 
@@ -40,11 +44,19 @@ export default {
     // CardSocialTraffic,
   },
   setup() {
-   
-    const dailyCount =ref();
-    const dailyState =ref();
-    const realtimeResult =ref();
-    const store=useStore();
+
+    const dailyCount = ref();
+    const dailyState = ref();
+    const realtimeResult = ref();
+    const store = useStore();
+    const testChartData = computed(() => {
+      const labels = Object.keys(realtimeTestData.value);
+      const data = Object.values(realtimeTestData.value);
+
+      return { labels, data };
+    });
+    const realtimeTestData = ref({});
+
 
     //socket//
     onMounted(() => {
@@ -89,67 +101,79 @@ export default {
       let totalCount = 0
       let failCount = 0
 
-  realtimeResult.value.forEach((equipment) => {
-    totalCount += equipment.currentCount + equipment.vibrationCount
-    failCount += equipment.currentFailCount + equipment.vibrationFailCount
-  })
+      realtimeResult.value.forEach((equipment) => {
+        totalCount += equipment.currentCount + equipment.vibrationCount
+        failCount += equipment.currentFailCount + equipment.vibrationFailCount
+      })
 
-  const totalEquipments = realtimeResult.value.length
-  const equipmentsWithFailures = realtimeResult.value.filter(
-    (equipment) =>
-      equipment.vibrationFailCount >= equipment.thresholdCount || equipment.currentFailCount >= equipment.thresholdCount
-  ).length
+      const totalEquipments = realtimeResult.value.length
+      const equipmentsWithFailures = realtimeResult.value.filter(
+        (equipment) =>
+          equipment.vibrationFailCount >= equipment.thresholdCount || equipment.currentFailCount >= equipment.thresholdCount
+      ).length
 
-  dailyCount.value = {
-    totalCount: totalCount,
-    passCount: totalCount - failCount,
-    failCount: failCount
-  }
-  dailyState.value = {
-    totalCount: totalEquipments,
-    passCount: totalEquipments - equipmentsWithFailures,
-    failCount: equipmentsWithFailures
-  }
-  store.state.failCount = dailyState.value.failCount 
+      dailyCount.value = {
+        totalCount: totalCount,
+        passCount: totalCount - failCount,
+        failCount: failCount
+      }
+      dailyState.value = {
+        totalCount: totalEquipments,
+        passCount: totalEquipments - equipmentsWithFailures,
+        failCount: equipmentsWithFailures
+      }
+      store.state.failCount = dailyState.value.failCount
 
 
-}
-
-const changeData = (data) => {
-  const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
-  // 해당 객체가 존재하는 경우 업데이트
-  if (index !== -1) {
-    const newData = {
-      ...realtimeResult.value[index]
     }
-    newData.equipmentName = data.equipmentName
-    newData.equipmentSerialNo = data.equipmentSerialNo
-    newData.thresholdCount = data.thresholdCount
-    const type = data.type === 'currents' ? 'current' : 'vibration'
-    newData[`${type}Count`] = data.count
-    newData[`${type}FailCount`] = data.failCount
-    newData[`${type}Result`] = data.result
-    newData[`${type}Time`] = new Date(data.time / 1000).toISOString('ko-KR')
-    newData[`${type}RatioPercent`] = data.ratioPercent
-    newData.thresholdPercent =
-      (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
-      100
-    realtimeResult.value[index] = newData
-    setDailyInfo()
-    console.log('Updated realtimeResult:', realtimeResult.value[index])
-  } else {
-    console.log(`Equipment with ID ${data.equipmentId} not found.`)
-  }
-}
+
+    const changeData = (data) => {
+      const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
+      // 해당 객체가 존재하는 경우 업데이트
+      if (index !== -1) {
+        const newData = {
+          ...realtimeResult.value[index]
+        }
+        newData.equipmentName = data.equipmentName
+        newData.equipmentSerialNo = data.equipmentSerialNo
+        newData.thresholdCount = data.thresholdCount
+        const type = data.type === 'currents' ? 'current' : 'vibration'
+        newData[`${type}Count`] = data.count
+        newData[`${type}FailCount`] = data.failCount
+        newData[`${type}Result`] = data.result
+        newData[`${type}Time`] = new Date(data.time / 1000).toISOString('ko-KR')
+        newData[`${type}RatioPercent`] = data.ratioPercent
+        newData.thresholdPercent =
+          (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
+          100
+        realtimeResult.value[index] = newData
+        setDailyInfo()
+        realtimeTestData.value[new Date(data.time / 1000).toLocaleTimeString()] = dailyCount.value.failCount;
+        const keys = Object.keys(realtimeTestData.value)
+        if (keys.length > 10) {
+          const recentKeys = keys.slice(-10);
+          const newObject = {};
+
+          recentKeys.forEach(key => {
+            newObject[key] = realtimeTestData.value[key];
+          });
+          realtimeTestData.value = newObject;
+        }
+        console.log('test:', realtimeTestData.value);
+        console.log('Updated realtimeResult:', realtimeResult.value[index])
+      } else {
+        console.log(`Equipment with ID ${data.equipmentId} not found.`)
+      }
+    }
 
 
 
-// API 토큰
+    // API 토큰
 
-// const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+    // const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
 
 
-// API요청 
+    // API요청 
     // axios.get('http://192.168.0.64:3000/board/monitoring-data',{
     //   headers: {
     //     authorization: token
@@ -171,11 +195,11 @@ const changeData = (data) => {
       dailyCount,
       dailyState,
       realtimeResult,
-      
+      CardLineChart, testChartData, realtimeTestData
 
-      
-     
-  }
+
+
+    }
   }
 };
 </script>
