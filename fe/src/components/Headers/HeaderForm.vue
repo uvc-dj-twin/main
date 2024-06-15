@@ -20,7 +20,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="">
-    <div class=" mx-auto my-8 py-8 w-full">
+    <div class=" mx-auto my-8 w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
@@ -31,10 +31,12 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
             <!-- Search bar -->
             <form class="flex items-center lg:ml-auto mr-3 my-8 w-full" action="/search" method="get"
               @submit.prevent="handleSubmit">
-              <div class="relative flex w-full items-stretch">
+              <div class="relative flex w-full items-stretch"
+              style="width:700px; gap:10px">
                 <div class="relative mr-4" style="width: 30%;">
                   <select
                     class="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    style="width:200px"
                     id="grid-state" name="q" v-model="selectedValue">
                     <option :value="option" v-for="(option, index) in menu" :key="index">{{ option }}</option>
                   </select>
@@ -46,8 +48,9 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
                 </div>
                 <input type="text" placeholder="Search here..."
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full"
-                  v-model="searchValue" />
-                <button class="absolute right-0 top-0 mt-3 mr-4" type="submit">
+                  v-model="searchValue" 
+                  style="width: 400px;"/>
+                  <button class="absolute right-0 top-0 mt-3 mr-4" type="submit">
                   <i class="fas fa-search"></i>
                 </button>
               </div>
