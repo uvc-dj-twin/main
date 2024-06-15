@@ -37,10 +37,33 @@ const service = {
     });
   },
 
+  async create(params) {
+    let result = null;
+
+    try {
+      result = await machineDao.create({
+        serialNo: params.serialNo,
+        name: params.name,
+        threshold: params.threshold,
+      });
+      logger.debug(`(machineService.create) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(machineService.create) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   async editList(params) {
     let result = {};
 
     try {
+      // 장비 정보 수정
       for (const machine of params.machines) {
         await machineDao.update({
           id: machine.id,
@@ -61,6 +84,15 @@ const service = {
           }
         }
 
+      }
+
+      // 장비 삭제
+      console.log('deleted machines : ', params.deletedMachines);
+      if (params.deletedMachines) {
+        for (const machineId of params.deletedMachines) {
+          console.log('deleted id : ', machineId);
+          await machineDao.delete({ id: machineId });
+        }
       }
     } catch (err) {
       logger.error(`(machineService.editList) ${err.toString()}`);

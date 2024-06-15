@@ -128,6 +128,7 @@ const dao = {
         from(bucket: "test")
           |> range(start: -30d, stop: ${end})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
+          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
           |> sort(columns: ["_time"], desc: true)
           |> limit(n: 1)
       `;

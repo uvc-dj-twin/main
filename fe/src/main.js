@@ -55,13 +55,16 @@ import GroupMng from "@/views/admin/GroupMng.vue";
 
 // routes
 
-///////socket test//
+///////socket//
 import socketPlugin from './plugins/socketPlug';
 import {host} from './config';
 
 
 //store
 import store from "./stores/store";
+
+// axios
+import axiosPlugin from './plugins/axios';
 
 
 const routes = [
@@ -164,6 +167,7 @@ const app = createApp(App)
 //socket 사용추가 
 app.use(router);
 app.use(socketPlugin, {host})
+app.use(axiosPlugin);
 app.use(store);
 
 

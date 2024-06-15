@@ -50,10 +50,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import CardLineChart from '@/components/Cards/CardLineChartDetail.vue';
 import CardLineChart2 from '@/components/Cards/CardLineChart2.vue';
-import axios from 'axios'
 export default {
   components:{
     CardLineChart,
@@ -67,6 +66,7 @@ export default {
     },
   },
   setup(props) {
+    const axios = inject('axios')
 
     
 const vert1 = [
@@ -116,7 +116,7 @@ console.log(props)
     if (props.data.id) {
       console.log(props.data)
       axios
-        .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
+        .get(`/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

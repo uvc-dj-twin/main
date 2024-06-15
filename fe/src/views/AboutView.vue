@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import { inject, onMounted, ref } from 'vue'
 
 const dailyCount = ref()
@@ -62,10 +61,12 @@ const changeData = (data) => {
 
 export default {
   setup() {
+    const axios = inject('axios')
+
     onMounted(() => {
       const socket = inject('socket')
       axios
-        .get('http://192.168.0.64:3000/board/monitoring-data', {
+        .get(`/board/monitoring-data`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

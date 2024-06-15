@@ -69,7 +69,7 @@
                     <button @click="addDeleteMachine(machine.id)"
                    
           class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-                    style="text-align: right;">삭제</button>
+                    style="text-align: right;" :disabled="!editCheck">{{ DeleteMachineArray.includes(machine.id) ? '취소' : '삭제' }}</button>
                   </td>
                 </tr>
               </tbody>
@@ -101,11 +101,9 @@
 // import CardPageVisits from "@/components/Cards/CardPageVisits.vue";
 // import CardSocialTraffic from "@/components/Cards/CardSocialTraffic.vue";
 import HeaderForm from "@/components/Headers/HeaderForm.vue";
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, inject } from "vue";
 
 import { rippleMouseHandler } from "@syncfusion/ej2-buttons";
-
-import axios from "axios";
 
 // 감시할 data의 상태를 추가
 // 이 예제에서는 'test' 변수의 상태를 감시합니다.
@@ -158,6 +156,7 @@ export default {
     const searchValue = ref('')
     const groupList = ref([])
     const editCheck = ref(false)
+    const axios = inject('axios');
 
     onMounted(() => {
       getValue();
@@ -180,7 +179,7 @@ export default {
       const selectedMap = { 장비명: 'name', 그룹명: 'group' }
 
       axios
-        .get(`http://192.168.0.64:3000/admin/machines?${selectedMap[selectedOption.value]}=${searchValue.value}&limit=${limit.value}&page=${currentPage.value}`, {
+        .get(`/admin/machines?${selectedMap[selectedOption.value]}=${searchValue.value}&limit=${limit.value}&page=${currentPage.value}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -219,18 +218,20 @@ export default {
 
     ////// 삭제할 장비를 삭제배열에 추가 혹은 취소하는 기능을 하는 각 행의 삭제버튼 클릭 시 실행되는 함수
     const addDeleteMachine = (selectedId) => {
+      console.log(DeleteMachineArray.value.includes(selectedId))
       DeleteMachineArray.value = DeleteMachineArray.value.includes(selectedId)
         ? DeleteMachineArray.value.filter(id => id !== selectedId)
         : [...DeleteMachineArray.value, selectedId];
+      console.log(DeleteMachineArray.value);
     }
 
     const editEvent = () => {
       if (editCheck.value){
         console.log("axios 시작")
         axios
-          .patch(`http://192.168.0.64:3000/admin/machines`, {
+          .patch(`/admin/machines`, {
             machines: data.value.machines,
-            deleteMachines: DeleteMachineArray.value
+            deletedMachines: DeleteMachineArray.value
           },
             {
               headers: {
@@ -259,7 +260,7 @@ export default {
 
     return {
       menu, columnList, data, pages, handlePages, addDeleteMachine, checkTF, limit, editEvent,
-      handleSearch, selectedOption, searchValue, groupList, editCheck
+      handleSearch, selectedOption, searchValue, groupList, editCheck, DeleteMachineArray
     }
 
   }

@@ -50,8 +50,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios'
+import { inject, ref } from 'vue';
 import CardLineChartDetail from '@/components/Cards/CardLineChartDetail.vue';
 import CardLineChart2 from '@/components/Cards/CardLineChart2.vue';
 export default {
@@ -74,7 +73,8 @@ export default {
     const currentGraphData=ref ({data:[[100,2,3000,4],[1,2000,3,4000],[500,500,500,500]],labels:[1,2,3,4]})
 
     const audio = ref();
-    
+    const axios = inject('axios')
+
 
 
     const toggleModal = () => {
@@ -91,7 +91,7 @@ export default {
     const handleDetail = () => {
       console.log("axios 시작")
       axios
-        .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
+        .get(`/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

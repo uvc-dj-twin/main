@@ -149,38 +149,42 @@ const sendSocket = async (io, type, data, result) => {
   let socketInfo = {};
   const machine = await machineDao.selectBySerialNo({ serialNo: data.machine })
   const groups = await groupService.selectBySerialNo({ serialNo: data.machine })
-  socketInfo.equipmentId = machine.id;
-  socketInfo.equipmentName = machine.name;
-  socketInfo.equipmentSerialNo = machine.serialNo;
-  socketInfo.thresholdCount = machine.threshold;
-  socketInfo.type = type;
-  const measurement = await (type === 'currents' ? 'current_predictions' : 'vibration_predictions');
-  const count = await sensorDao.countTodayPredict({
-    serialNo: machine.serialNo,
-    measurement: measurement,
-  });
-  socketInfo.count = count;
-  const failCount = await sensorDao.countTodayFailPredict({
-    serialNo: machine.serialNo,
-    measurement: measurement,
-  });
-  socketInfo.failCount = failCount;
-  socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
-  const codeInfo = await codeDao.info({ machineId: machine.id, code: result })
-  socketInfo.result = codeInfo.name;
-  socketInfo.resultCode = codeInfo.code;
-  socketInfo.time = data.endTime;
-  socketInfo.rms = data.rms;
-  // let vibrationData = [];
-  // for (let i = 0; i < data.data.length; i += (type === 'currents' ? 100 : 200)) {
-  //   vibrationData.push(data.data[i]);
-  // }
-  // socketInfo.vibrationData = vibrationData;
-  let groupIds = [];
-  for (const group of groups) {
-    groupIds.push(group.id);
+  if (!machine) {
+    console.error(`${data.machine} : 해당 기기가 존재하지 않습니다.`);
+  } else {
+    socketInfo.equipmentId = machine.id;
+    socketInfo.equipmentName = machine.name;
+    socketInfo.equipmentSerialNo = machine.serialNo;
+    socketInfo.thresholdCount = machine.threshold;
+    socketInfo.type = type;
+    const measurement = await (type === 'currents' ? 'current_predictions' : 'vibration_predictions');
+    const count = await sensorDao.countTodayPredict({
+      serialNo: machine.serialNo,
+      measurement: measurement,
+    });
+    socketInfo.count = count;
+    const failCount = await sensorDao.countTodayFailPredict({
+      serialNo: machine.serialNo,
+      measurement: measurement,
+    });
+    socketInfo.failCount = failCount;
+    socketInfo.ratioPercent = (socketInfo.failCount / socketInfo.count) * 100;
+    const codeInfo = await codeDao.info({ machineId: machine.id, code: result })
+    socketInfo.result = codeInfo.name;
+    socketInfo.resultCode = codeInfo.code;
+    socketInfo.time = data.endTime;
+    socketInfo.rms = data.rms;
+    // let vibrationData = [];
+    // for (let i = 0; i < data.data.length; i += (type === 'currents' ? 100 : 200)) {
+    //   vibrationData.push(data.data[i]);
+    // }
+    // socketInfo.vibrationData = vibrationData;
+    let groupIds = [];
+    for (const group of groups) {
+      groupIds.push(group.id);
+    }
+    io.to(groupIds).emit(type, socketInfo)
   }
-  io.to(groupIds).emit(type, socketInfo)
 }
 
 // csv 읽고 influx에 저장

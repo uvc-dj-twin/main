@@ -63,8 +63,7 @@ import HeaderDataRead from "@/components/Headers/HeaderDataRead.vue";
 import PieChart from '@/components/Cards/PieChart.vue'
 import CardLineChart from '@/components/Cards/CardLineChart.vue'
 import data from "@/data/statistics.js";
-import {ref}  from "vue";
-import axios  from "axios";
+import {inject, ref}  from "vue";
 import { onMounted } from "vue";
 
 import '@syncfusion/ej2-base/styles/material.css';
@@ -95,10 +94,11 @@ export default {
       const startDate = ref();
       const endDate = ref();
       const showGraph= ref(false);
+      const axios = inject('axios');
 
       onMounted( //장비목록 불러오기
-        axios
-        .get(`http://192.168.0.64:3000/board/machines`, {
+      axios
+        .get(`/board/machines`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -165,7 +165,7 @@ export default {
       console.log(selectedValue.value)
 
       axios
-        .get(`http://192.168.0.64:3000/board/machines/statistics/${selectedValue.value}/?startDate=${startDate.value}&endDate=${endDate.value}`, {
+        .get(`/board/machines/statistics/${selectedValue.value}/?startDate=${startDate.value}&endDate=${endDate.value}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

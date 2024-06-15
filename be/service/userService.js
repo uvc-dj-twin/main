@@ -188,6 +188,23 @@ const service = {
     return new Promise((resolve) => {
       resolve(result);
     });
+  },
+
+  async approve(params) {
+    let result = null;
+
+    try {
+      await userDao.approve({ id: params.userId, isApproved: true });
+    } catch (err) {
+      logger.error(`(userService.approve) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
   }
 
 };
