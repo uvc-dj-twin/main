@@ -9,7 +9,7 @@
           v-for="link in links"
           :key="link.path"
           :to="link.path"
-          class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
+          class="text-2xl get-started text-white font-bold px-2 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
           :class="{
             'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
             'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
@@ -57,7 +57,7 @@ export default {
       { path: '/dashboard', name: '모니터링' },
       { path: '/dataread', name: '이력조회' },
       { path: '/admin/groupMng', name: '그룹관리' },
-      { path: '/admin/equipmentMng', name: '장비관리' },
+      { path: '/admin/equipmentMng', name: '권한관리' },
     ];
 
     const isActive = (path) => {

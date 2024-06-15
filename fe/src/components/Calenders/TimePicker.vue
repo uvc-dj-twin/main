@@ -1,22 +1,31 @@
 <template>
-  <div class="control-section range">
+  <div class="control-section range"
+    style="
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top:30px;
+  ">
     <div id="component_wrapper">
-      <div class="pane">
+      <div class="pane"
+      style="display: flex;">
         <div class="tabs-wrap">
           <div class="wrap">
-            <ejs-timepicker id='startPicker' :change='onEnableEndTime' :enabled="startEnable" :readonly="startRead" :placeholder="timeplaceholder" v-model="startVal"></ejs-timepicker>
+            <ejs-timepicker id='startPicker' :change='onEnableEndTime' :enabled="startEnable" :readonly="startRead" :placeholder="timeplaceholder" v-model="startVal" 
+            style="width:100px"></ejs-timepicker>
           </div>
         </div>
         <div class="tabs-wrap" style="clear: both">
           <div class="wrap">
-            <ejs-timepicker id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead'  :max="max" :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
+            <ejs-timepicker 
+             style="width:100px"
+            id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead'  :max="max" :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
           </div>
         </div>
-        <div class="tabs-wrap">
+        <!-- <div class="tabs-wrap">
           <div class="wrap" style="clear: both">
             <ejs-checkbox id="dayRange" label="Business Hours" @change="changeTime"></ejs-checkbox>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -25,12 +34,12 @@
 <script>
 import { ref } from 'vue';
 import { TimePickerComponent } from "@syncfusion/ej2-vue-calendars";
-import { CheckBoxComponent } from "@syncfusion/ej2-vue-buttons";
+// import { CheckBoxComponent } from "@syncfusion/ej2-vue-buttons";
 
 export default {
   components: { 
     'ejs-timepicker': TimePickerComponent,
-    'ejs-checkbox': CheckBoxComponent
+    // 'ejs-checkbox': CheckBoxComponent
   },
   setup(props,{emit}) {
     const waterMark = "Select a time";
@@ -110,10 +119,11 @@ export default {
   float: none;
   padding: 2% 0;
   max-width: 300px;
+  margin-top:4px;
 }
 
 .control-section.range {
-  margin: 30px;
+  margin: 4px;
   padding: 3%;
 }
 
@@ -122,7 +132,7 @@ export default {
 }
 
 .range .tabs-wrap {
-  padding: 12px 0px;
+  padding: 4px 0px;
 }
 </style>
 

@@ -28,21 +28,22 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
 
 <template>
   <!-- 푸터 컴포넌트 -->
-  <footer class="text-white	bg-color2 block py-4" style="bottom:0; width:100%;">
+  <footer class="text-black block py-4 flex justify-center" 
+  style="bottom: 0px;width: 100%;display: flex; justify-content: center;">
     <div class="container px-4">
       <!-- 푸터 상단의 가로줄 -->
       <hr class="mb-4 border-b-1 border-blueGray-200" />
-      <div class="flex flex-wrap items-center md:justify-between justify-center">
+      <div class="flex flex-wrap justify-center">
         <!-- 저작권 정보 섹션 -->
         <div class="w-full md:w-4/12 px-4">
-          <div class="text-sm text-white font-semibold py-1 md:text-left text-center"
+          <div class="text-sm font-semibold py-1 md:text-left text-center mx-auto"
           style="display: flex; align-items: center;">
             <p style="margin-right: 10px;">
               Copyright © {{ date }}
             </p>
             <a
               href="https://camp.flexing.ai/"
-              class="text-white hover:text-blueGray-700 text-sm font-semibold py-1 flex items-center"
+              class=" hover:text-blueGray-700 text-sm font-semibold py-1 flex items-center"
               style="display: flex; align-items: center; text-decoration: none;">
               <p style="margin-right: 10px;">
                 DJ-Twin

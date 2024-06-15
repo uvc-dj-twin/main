@@ -1,8 +1,28 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4">
+     
+      <div class="flex flex-row mt-4 w-full"
+      style="margin-right:56px;" >
+          <div> 
+            <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1"
+            style="width:300px"> 회원 테이블</h3>
+          
+          </div>
+          
+          <div class="flex items-center justify-end w-full h-full"> 
+            <HeaderForm :menu="menu" @handleSearch="handleSearch" />
+            <button
+            class="h-8 px-4 text-2xl bg-color3 get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
+            @click="editEvent">{{ editCheck ? '저장' : '수정' }}</button>
+          </div>
+          </div>
+
+
+
+
+
       <div class="w-full">
-        <HeaderForm :menu="menu" @handleSearch="handleSearch" />
         <GroupTable :people="users" :groupList="groups" @handleEdit="handleUpdate" />
       </div>
       <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">

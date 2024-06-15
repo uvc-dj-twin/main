@@ -1,5 +1,6 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+  style="height: 18vw; margin-bottom: 22px; width: 50vw;">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -9,9 +10,9 @@
       </div>
     </div>
     <div class="p-4 flex-auto">
-      <div class="relative h-350-px">
+      <div class="relative">
         <canvas ref="chart"></canvas>
-        <button @click="addData">버튼</button>
+        <!-- <button @click="addData">버튼</button> -->
       </div>
     </div>
   </div>
@@ -44,7 +45,7 @@ export default {
             {
               label: "주문",
               backgroundColor: [
-                "#FF6384", "#36A2EB", "#FFCE56", "#8A2BE2", "#FFD700", "#20B2AA", "#FFA07A",
+                "#001832", "#326B98", "#13A1F9", "#98F1F8", "#FFD700", "#20B2AA", "#FFA07A",
               ],
               data: props.data.data,
             },
