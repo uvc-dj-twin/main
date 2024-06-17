@@ -8,6 +8,22 @@ const groupService = require('../service/groupService');
 const userService = require('../service/userService');
 const CustomError = require('../error/CustomError');
 
+router.patch('/users/:id/approval', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+      userId: req.params.id,
+    };
+    logger.info(`(admin.users.approval.params) ${JSON.stringify(params)}`);
+    const result = await userService.approve(params);
+    logger.info(`(admin.users.approval.result) ${JSON.stringify(result)}`);
+
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+})
+
 router.get('/machines', isLoggedIn, async (req, res, next) => {
   try {
     const params = {
@@ -27,11 +43,30 @@ router.get('/machines', isLoggedIn, async (req, res, next) => {
   }
 })
 
+router.post('/machines', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+      serialNo: req.body.serialNo,
+      name: req.body.name,
+      threshold: req.body.threshold,
+    };
+    logger.info(`(admin.machines.create.params) ${JSON.stringify(params)}`);
+    const result = await machineService.create(params);
+    logger.info(`(admin.machines.create.result) ${JSON.stringify(result)}`);
+
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+})
+
 router.patch('/machines', isLoggedIn, async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
       machines: req.body.machines,
+      deletedMachines: req.body.deletedMachines,
     };
     logger.info(`(admin.machines.update.params) ${JSON.stringify(params)}`);
     const result = await machineService.editList(params);
@@ -80,6 +115,38 @@ router.patch('/groups/users', isLoggedIn, async (req, res, next) => {
     } else {
       next(err);
     }
+  }
+})
+
+router.post('/groups', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+      groupName: req.body.name,
+    };
+    logger.info(`admin.groups.params ${JSON.stringify(params)}`);
+    const result = await groupService.createGroup(params);
+    logger.info(`admin.groups.params ${JSON.stringify(result)}`);
+
+    res.status(201).send();
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.delete('/groups/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+      groupId: req.params.id,
+    }
+    logger.info(`admin.groups.delete.params ${JSON.stringify(params)}`);
+    const result = await groupService.deleteGroup(params);
+    logger.info(`admin.groups.delete.params ${JSON.stringify(result)}`);
+
+    res.status(200).send();
+  } catch (err) {
+    next(err);
   }
 })
 

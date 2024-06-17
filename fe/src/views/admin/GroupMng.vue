@@ -12,9 +12,6 @@
           
           <div class="flex items-center justify-end w-full h-full"> 
             <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-            <button
-            class="h-8 px-4 text-2xl bg-color3 get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-            @click="editEvent">{{ editCheck ? '저장' : '수정' }}</button>
           </div>
           </div>
 
@@ -41,8 +38,7 @@
 import GroupTable from "@/components/Cards/GroupTable.vue";
 import HeaderForm from "@/components/Headers/HeaderForm.vue";
 // import test from "@/data/userlist.js"
-import { onMounted, ref } from "vue";
-import axios from "axios";
+import { inject, onMounted, ref } from "vue";
 
 export default {
   components: {
@@ -52,6 +48,7 @@ export default {
   setup() {
 
     const menu = ['Mail', 'Group'];
+    const axios = inject('axios');
 
     const getValue = () => {
       groups.value = [];
@@ -59,7 +56,7 @@ export default {
       const selectedMap = { Mail: 'userEmail', Group: 'group' }
       const query = `${selectedMap[selectedOption.value]}=${searchValue.value}&limit=${limit.value}&page=${currentPage.value}`;
       console.log(query);
-      axios.get(`http://192.168.0.64:3000/admin/groups/users?${query}`, {
+      axios.get(`/admin/groups/users?${query}`, {
         headers: {
           authorization:
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -112,7 +109,7 @@ export default {
         })
       }
       console.log(editUsers);
-      axios.patch(`http://192.168.0.64:3000/admin/groups/users`, {
+      axios.patch(`/admin/groups/users`, {
         users: editUsers,
       }, {
         headers: {

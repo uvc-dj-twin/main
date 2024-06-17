@@ -1,12 +1,15 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-4">
+    <div class="flex flex-wrap mt-4 overflow-x-hidden">
       <div class="w-full">
 
 
 
-        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData" :machineChartData="machineChartData" />
+        <div class="flex flex-row">
+          <CardLineChart :data="testChartData" />
+        </div>
 
+        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" />
         <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
         <RealTimeCard :dataRealtimeCard="realtimeResult" />
 
@@ -26,6 +29,7 @@ import CardLineChart from "@/components/Cards/CardLineChartDashboard.vue";
 // import data from "@/data/dashboard.js";
 import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
 
+import axios from 'axios';
 import { useStore } from 'vuex';
 
 
@@ -52,23 +56,13 @@ export default {
       return { labels, data };
     });
     const realtimeTestData = ref({});
-    const realtimeFailCount = ref(0);
-    const machineChartData = computed(() => {
-      const labels = Object.keys(realtimeMachineData.value);
-      const data = Object.values(realtimeMachineData.value);
 
-      return { labels, data };
-    });
-    const realtimeMachineData = ref({});
-    const interval = ref(null);
-    const axios = inject('axios');
-    
-    
+
     //socket//
     onMounted(() => {
       const socket = inject('socket')
       axios
-        .get(`/board/monitoring-data`, {
+        .get('http://192.168.0.64:3000/board/monitoring-data', {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -87,23 +81,6 @@ export default {
           socket.on('vibrations', (data) => {
             changeData(data)
           })
-          interval.value = setInterval(() => {
-            const labelTime = new Date(Date.now()).toLocaleTimeString([], { hour12: false, minute: '2-digit', second: '2-digit' });
-            realtimeTestData.value[labelTime] = realtimeFailCount.value;
-            realtimeFailCount.value = 0;
-            const keys = Object.keys(realtimeTestData.value)
-            if (keys.length > 20) {
-              const recentKeys = keys.slice(-20);
-              const newObject = {};
-
-              recentKeys.forEach(key => {
-                newObject[key] = realtimeTestData.value[key];
-              });
-              realtimeTestData.value = newObject;
-            }
-
-            realtimeMachineData.value[labelTime] = dailyState.value.failCount;
-          }, 3000);
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
@@ -117,9 +94,6 @@ export default {
       if (socket) {
         socket.off('currents');
         socket.off('vibrations');
-      }
-      if (interval) {
-        clearInterval(interval.value);
       }
     });
 
@@ -149,9 +123,11 @@ export default {
         failCount: equipmentsWithFailures
       }
       store.state.failCount = dailyState.value.failCount
+
+
     }
 
-    const changeData = async (data) => {
+    const changeData = (data) => {
       const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
       // 해당 객체가 존재하는 경우 업데이트
       if (index !== -1) {
@@ -171,10 +147,19 @@ export default {
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
         realtimeResult.value[index] = newData
-        if (data.resultCode !== 0) {
-          realtimeFailCount.value += 1
-        }
         setDailyInfo()
+        realtimeTestData.value[new Date(data.time / 1000).toLocaleTimeString()] = dailyCount.value.failCount;
+        const keys = Object.keys(realtimeTestData.value)
+        if (keys.length > 10) {
+          const recentKeys = keys.slice(-10);
+          const newObject = {};
+
+          recentKeys.forEach(key => {
+            newObject[key] = realtimeTestData.value[key];
+          });
+          realtimeTestData.value = newObject;
+        }
+        console.log('test:', realtimeTestData.value);
         console.log('Updated realtimeResult:', realtimeResult.value[index])
       } else {
         console.log(`Equipment with ID ${data.equipmentId} not found.`)
@@ -182,11 +167,35 @@ export default {
     }
 
 
+
+    // API 토큰
+
+    // const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+
+
+    // API요청 
+    // axios.get('http://192.168.0.64:3000/board/monitoring-data',{
+    //   headers: {
+    //     authorization: token
+    //   }
+    // }
+
+    // )
+    // .then((response) => {
+    //   console.log(response.data);
+    //   realtimeResult.value= response.data
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+    // });
+
+
+
     return {
       dailyCount,
       dailyState,
       realtimeResult,
-      CardLineChart, testChartData, realtimeTestData, realtimeMachineData, machineChartData
+      CardLineChart, testChartData, realtimeTestData
 
 
 

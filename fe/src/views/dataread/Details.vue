@@ -14,7 +14,8 @@
               <EquipmentDropdown 
                 :equipmentList="equipmentList" 
                 :value="selectedValue" 
-                @update:value="handleUpdate">
+                @update:value="handleUpdateEquipment"
+                @click="handleId">
               </EquipmentDropdown>
               <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
           
@@ -103,10 +104,8 @@
 import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
 import HeaderDataRead from "@/components/Headers/HeaderDataRead.vue";
 
-import { ref } from "vue";
-import axios from "axios";
+import { inject, ref } from "vue";
 import {onMounted} from "vue";
-// import axios from "axios";
 
 //장비선택
 import EquipmentDropdown from '@/components/Dropdowns/EquipmentDropdown.vue';
@@ -184,10 +183,11 @@ export default {
         ]
       },
     ]);
+    const axios = inject('axios');
 
     onMounted( //장비목록 불러오는 API GET 실행
-        axios
-        .get(`http://192.168.0.64:3000/board/machines`, {
+    axios
+        .get(`/board/machines`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -231,13 +231,11 @@ export default {
     //화면에 표시된 불량유형 중 선택된 유형을 자식컴포넌트에서 받아와 저장할 변수명-쿼리용
 
 const handleId = ()=>{
-  console.log()
+
 
   selectedMachine.value = equipmentList.value.find(machine => machine.id === selectedEquipmentName.value);
   console.log(selectedMachine.value )
-
   defectTypeList.value = selectedMachine.value.defectTypes
-  console.log(defectTypeList.value)
 }
  // 장비선택 @click이벤트로 막 업데이트된 selectedEquipmentName정보로 머신과 머신의 불량유형저장함수
 
@@ -365,8 +363,7 @@ const handleId = ()=>{
     
 
     axios
-    
-      .get(`http://192.168.0.64:3000/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&result=${selectedDefectType.value}&limit=${limits.value}&page=${currentPage.value}`, {
+      .get(`/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&result=${selectedDefectType.value}&limit=${limits.value}&page=${currentPage.value}`, {
         headers: {
           authorization:
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

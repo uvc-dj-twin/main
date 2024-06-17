@@ -1,12 +1,13 @@
 <template>
   <div>
-    <button class="text-xl bg-color3 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
+    <button class=" text-xl bg-color3 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
       상세보기
     </button>
-    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center" style="top: 0; left: 0; right: 0; bottom: 0;">
+    <div v-if="showModal" class=" fixed inset-0 z-50 flex items-center justify-center" style="top: 0; left: 0; right: 0; bottom: 0;">
       <div>
         <!--content 모달창의 크기조절 위치-->
-        <div style="width:1100px ; height: 500px" > 
+        <div class="bg-color4 "
+        style="width:1100px ; height: 800px" > 
           <!--header-->
           <div >
             <h3 class="text-3xl font-semibold">
@@ -50,8 +51,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios'
+import { inject, ref } from 'vue';
 import CardLineChartDetail from '@/components/Cards/CardLineChartDetail.vue';
 import CardLineChart2 from '@/components/Cards/CardLineChart2.vue';
 export default {
@@ -74,7 +74,8 @@ export default {
     const currentGraphData=ref ({data:[[100,2,3000,4],[1,2000,3,4000],[500,500,500,500]],labels:[1,2,3,4]})
 
     const audio = ref();
-    
+    const axios = inject('axios')
+
 
 
     const toggleModal = () => {
@@ -91,7 +92,7 @@ export default {
     const handleDetail = () => {
       console.log("axios 시작")
       axios
-        .get(`http://192.168.0.64:3000/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
+        .get(`/board/machines/details/${props.data.id}/data?time=${props.data.date}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'

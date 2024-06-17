@@ -27,6 +27,8 @@ import Auth from "@/layouts/Auth.vue";
 // views for Admin layout
 
 import Dashboard from "@/views/admin/Dashboard.vue";
+import DashboardSingle from "@/views/admin/DashboardSingle.vue";
+
 
 
 
@@ -55,13 +57,16 @@ import GroupMng from "@/views/admin/GroupMng.vue";
 
 // routes
 
-///////socket test//
+///////socket//
 import socketPlugin from './plugins/socketPlug';
 import {host} from './config';
 
 
 //store
 import store from "./stores/store";
+
+// axios
+import axiosPlugin from './plugins/axios';
 
 
 const routes = [
@@ -75,6 +80,10 @@ const routes = [
       {
         path: "/dashboard",
         component: Dashboard,
+      },
+      {
+        path: "/dashboard/1",
+        component: DashboardSingle,
       },
       {
         path: "/mypage",
@@ -164,6 +173,7 @@ const app = createApp(App)
 //socket 사용추가 
 app.use(router);
 app.use(socketPlugin, {host})
+app.use(axiosPlugin);
 app.use(store);
 
 

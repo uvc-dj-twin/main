@@ -130,8 +130,7 @@
   </div>
 </template>
 <script>
-import { onMounted, ref } from "vue";
-import axios from 'axios'
+import { inject, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 
@@ -147,11 +146,13 @@ export default {
     const groupName = ref('그룹명')
     const userRoll=ref('역할');
     // const id = ref(1)
+    const axios = inject('axios')
+
 
     onMounted( //장비목록 불러오는 API GET 실행
    
-        axios
-        .get(`http://192.168.0.64:3000/users/${userId}`, {
+    axios
+        .get(`/users/${userId}`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -183,7 +184,7 @@ export default {
 
       const editEvent = ()=>{
         axios
-        .patch(`http://192.168.0.64:3000/users/${userId}`,
+        .patch(`/users/${userId}`,
         {
           password:'qwer12345',
           phone:'010-1111-1111',

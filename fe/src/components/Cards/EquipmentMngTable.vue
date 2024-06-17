@@ -28,7 +28,7 @@
 
            
             >
-              {{ column }}   {{ column }}
+              {{ column }}
             </th>
           
           </tr>

@@ -70,7 +70,7 @@ const useStore = createStore({
     async login({ commit }, { email, password }) { //객체를 받아와 개별 변수로 저장
       try {
         // 서버 주소 설정
-        const response = await fetch('http://192.168.0.64:3000/auth/sign-in', {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/auth/sign-in`, {
           method: 'POST', // HTTP 메소드 설정
           headers: {
             'Content-Type': 'application/json' // 컨텐츠 타입 설정
@@ -95,7 +95,7 @@ const useStore = createStore({
     async register({ commit }, { email, password, name,phone}) { //객체를 받아와 개별 변수로 저장
       try {
         // 서버 주소 설정
-        const response = await fetch('http://192.168.0.64:3000/users', {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/users`, {
           method: 'POST', // HTTP 메소드 설정
           headers: {
             'Content-Type': 'application/json' // 컨텐츠 타입 설정
@@ -122,10 +122,10 @@ const useStore = createStore({
     logout({ commit }) {
       commit('logout');
     },
-    async userEdit({ commit }, {  password,phone }) { //객체를 받아와 개별 변수로 저장
+    async userEdit({ commit, state }, {  password,phone }) { //객체를 받아와 개별 변수로 저장
       try {
         // 서버 주소 설정
-        const response = await fetch('http://192.168.0.64:3000/auth/users/${state.user.id}', {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/auth/users/${state.user.id}`, {
           method: 'POST', // HTTP 메소드 설정
           headers: {
             'Content-Type': 'application/json' // 컨텐츠 타입 설정

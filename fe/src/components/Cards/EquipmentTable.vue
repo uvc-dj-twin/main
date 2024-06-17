@@ -89,7 +89,6 @@
 <script>
 import { ref } from "vue";
 import ModalGraph from "@/components/modals/ModalGraph.vue"
-// import axios from "axios";
 // import TableDropdown from "@/components/Dropdowns/TableDropdown.vue";
 const columns=ref([]);
 const targetGraph =ref();

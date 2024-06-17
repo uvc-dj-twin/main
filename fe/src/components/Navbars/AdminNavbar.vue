@@ -28,6 +28,12 @@
         
      
         <router-link
+          to="/dashboard/1"
+          class="text-2xl bg-color1 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
+        @click="handleLogout">
+       대시2
+        </router-link>
+        <router-link
           to="/auth/login"
           class="text-2xl bg-color1 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
         @click="handleLogout">

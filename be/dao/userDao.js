@@ -33,7 +33,7 @@ const dao = {
         ]
       })
         .then((selectedInfo) => {
-          resolve(selectedInfo.toJSON());
+          resolve(selectedInfo?.toJSON());
         })
         .catch((err) => {
           reject(err);
@@ -126,7 +126,7 @@ const dao = {
         .then((selected) => {
           const result = {
             totalRow: selected.count,
-            users: selected.rows.map(user => user.toJSON()),
+            users: selected.rows.map(user => user?.toJSON()),
           }
           resolve(result);
         })
@@ -134,6 +134,20 @@ const dao = {
           reject(err);
         });
     })
+  },
+
+  approve(params) {
+    return new Promise((resolve, reject) => {
+      User.update(params, {
+        where: { id: params.id },
+      })
+        .then(([updated]) => {
+          resolve({ updatedCount: updated });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
 };

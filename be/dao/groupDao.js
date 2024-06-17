@@ -29,9 +29,37 @@ const dao = {
     return new Promise((resolve, reject) => {
       Group.findAll()
         .then((selected) => {
-          resolve(selected.map(group => group.toJSON()));
+          resolve(selected.map(group => group?.toJSON()));
         })
         .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  createGroup(params) {
+    return new Promise((resolve, reject) => {
+      Group.create(params)
+        .then((selected) => {
+          resolve(selected?.toJSON());
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    })
+  },
+
+  deleteGroup(params) {
+    return new Promise((resolve, reject) => {
+      Group.destroy({
+        where: {
+          id: params.id,
+        },
+      })
+       .then((selected) => {
+          resolve(selected);
+        })
+       .catch((err) => {
           reject(err);
         });
     });
