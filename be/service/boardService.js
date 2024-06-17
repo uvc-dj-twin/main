@@ -194,40 +194,51 @@ const service = {
 
       // totalCount
       let totalCount = {
-        data: [],
-        labels: ['정상', '불량'],
+        data: [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]],
       }
+      
+      for (let currentDate = new Date(startDate); currentDate < endDate ;currentDate.setDate(currentDate.getDate() + 1)){
+        let currentEndDate = new Date(currentDate);
+        currentEndDate.setDate(currentEndDate.getDate() + 1);
+        console.log('####', currentDate.getUTCDay(), ' ~ ', currentEndDate.getUTCDay())
 
-      const currentTotal = await sensorDao.countPredict({
-        serialNo: machineInfo.serialNo,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        measurement: 'current_predictions',
-        code: 0,
-      })
-      const vibrationTotal = await sensorDao.countPredict({
-        serialNo: machineInfo.serialNo,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        measurement: 'vibration_predictions',
-        code: 0,
-      })
+        const currentTotal = await sensorDao.countPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: currentDate.toISOString(),
+          endDate: currentEndDate.toISOString(),
+          measurement: 'current_predictions',
+          code: 0,
+        })
+        const vibrationTotal = await sensorDao.countPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: currentDate.toISOString(),
+          endDate: currentEndDate.toISOString(),
+          measurement: 'vibration_predictions',
+          code: 0,
+        })
 
-      const currentFailTotal = await sensorDao.countFailPredict({
-        serialNo: machineInfo.serialNo,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        measurement: 'current_predictions',
-      })
-      const vibrationFailTotal = await sensorDao.countFailPredict({
-        serialNo: machineInfo.serialNo,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        measurement: 'vibration_predictions',
-      })
+        const currentFailTotal = await sensorDao.countFailPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: currentDate.toISOString(),
+          endDate: currentEndDate.toISOString(),
+          measurement: 'current_predictions',
+        })
+        const vibrationFailTotal = await sensorDao.countFailPredict({
+          serialNo: machineInfo.serialNo,
+          startDate: currentDate.toISOString(),
+          endDate: currentEndDate.toISOString(),
+          measurement: 'vibration_predictions',
+        })
 
-      totalCount.data.push(currentTotal + vibrationTotal);
-      totalCount.data.push(currentFailTotal + vibrationFailTotal);
+        // 한국시간 기준 요일이므로 +1일 된 요일
+        let index = currentEndDate.getUTCDay() - 1;
+        if (index < 0) {
+          index = 6;
+        }
+
+        totalCount.data[0][index] += currentTotal + vibrationTotal;
+        totalCount.data[1][index] += currentFailTotal + vibrationFailTotal;
+      }
 
       // defectCount
       let defectCount = {

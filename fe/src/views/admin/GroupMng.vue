@@ -1,28 +1,26 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4">
-     
-      <div class="flex flex-row mt-4 w-full"
-      style="margin-right:56px;" >
-          <div> 
-            <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1"
-            style="width:300px"> 회원 테이블</h3>
-          
-          </div>
-          
-          <div class="flex items-center justify-end w-full h-full"> 
-            <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-          </div>
-          </div>
+
+      <div class="flex flex-row mt-4 w-full" style="margin-right:56px;">
+        <div>
+          <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px"> 회원 테이블</h3>
+
+        </div>
+
+        <div class="flex items-center justify-end w-full h-full">
+          <HeaderForm :menu="menu" @handleSearch="handleSearch" />
+        </div>
+      </div>
 
 
 
 
 
       <div class="w-full">
-        <GroupTable :people="users" :groupList="groups" @handleEdit="handleUpdate" />
+        <GroupTable :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
       </div>
-      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-center">
         <button
           class="bg-color3 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
           type="button" style="transition:all .15s ease" v-for="(page, index) in pages" :key="index" :value="page"
@@ -125,6 +123,37 @@ export default {
         })
     };
 
+    const handleAdd = (groupName) => {
+      console.log(groupName)
+      axios.post(`/admin/groups`, {
+        name: groupName,
+      }, {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+        }
+      }).then(() => {
+        getValue();
+      }).catch((error) => {
+        // 요청이 실패하면 실행되는 코드
+        console.error('Error:', error)
+      })
+    }
+
+    const handleDelete = (groupId) => {
+      axios.delete(`/admin/groups/${groupId}`, {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+        }
+      }).then(() => {
+        getValue();
+      }).catch((error) => {
+        // 요청이 실패하면 실행되는 코드
+        console.error('Error:', error)
+      })
+    }
+
 
     const handlePage = (event) => {
       currentPage.value = event.target.value
@@ -133,9 +162,9 @@ export default {
 
     return {
       menu, groups, users, pages, limit,
-      handleUpdate, getValue, handlePage,
+      handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
-      handleSearch
+      handleSearch, handleDelete,
     }
   }
 };
