@@ -20,15 +20,28 @@
       <div class="w-full">
         <GroupTable :isLoading="isLoading" :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
       </div>
-      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-center">
+      <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <button @click="handleMinPages">이전</button>
+      <div class="mt-2">
         <button
-          class="bg-color3 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-          type="button" style="transition:all .15s ease" v-for="(page, index) in pages" :key="index" :value="page"
-          @click="handlePage">
+          class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+          type="button"
+          style="transition: all .15s ease"
+          v-for="(page) in pages"
+          :key="page"
+          :value="page"
+          :class="{
+            'hidden': !(Math.floor(page / 10) === Math.floor(currentPage / 10)) &&
+              page !== 1 &&
+              page !== pages
+          }"
+          @click="handlePages"
+        >
           {{ page }}
         </button>
-
       </div>
+      <button @click="handleMaxPages">다음</button>
+    </div>
     </div>
   </div>
 </template>
@@ -44,6 +57,18 @@ export default {
     HeaderForm,
   },
   setup() {
+
+    const handleMaxPages=()=>{
+      if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
+        currentPage.value=currentPage.value+10}
+    }    
+    const handleMinPages=()=>{
+      if(Math.floor(currentPage.value/10)>=1) {
+        currentPage.value=currentPage.value-10
+      }
+    }    
+    const totalRow =ref();
+
 
     const menu = ['Mail', 'Group'];
     const axios = inject('axios');
@@ -67,7 +92,9 @@ export default {
           groups.value = response.data.groups
           users.value = response.data.users
           pages.value = response.data.totalRow % limit.value === 0 ? response.data.totalRow / limit.value : Math.floor(response.data.totalRow / limit.value) + 1;
+          totalRow.value = response.data.totalRow
           isLoading.value = false;
+          console.log(pages.value);
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
@@ -168,7 +195,7 @@ export default {
       menu, groups, users, pages, limit,
       handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
-      handleSearch, handleDelete, isLoading
+      handleSearch, handleDelete,
     }
   }
 };

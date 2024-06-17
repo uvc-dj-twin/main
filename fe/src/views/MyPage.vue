@@ -91,7 +91,9 @@
                   Password
                 </label>
                 <input
+                @change=handlePasswordCheck
                   type="password"
+                  v-model="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
                 />
@@ -104,7 +106,9 @@
                   Confirm Password
                 </label>
                 <input
+                  @change="handlePasswordCheck"
                   type="password"
+                  v-model="confirmPassword"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
                 />
@@ -120,6 +124,8 @@
                   type="button"
                 >
                   비밀번호 변경하기
+                  {{ message }}
+                  확인
                 </button>
               </div>
             </form>
@@ -145,6 +151,10 @@ export default {
     const phone = ref("부서")
     const groupName = ref('그룹명')
     const userRoll=ref('역할');
+    const password =ref('');
+    const confirmPassword = ref('');
+    const message=ref('')
+    const changeCheck=ref('false')
     // const id = ref(1)
     const axios = inject('axios')
 
@@ -183,11 +193,13 @@ export default {
 
 
       const editEvent = ()=>{
+
+        if(!changeCheck.value){
+          return null}
         axios
         .patch(`/users/${userId}`,
         {
-          password:'qwer12345',
-          phone:'010-1111-1111',
+          password:password.value,
         },
          {
           headers: {
@@ -212,11 +224,26 @@ export default {
         
         
       }
+
+
+  const handlePasswordCheck = () => {
+    if(password.value !== confirmPassword.value) {
+      message.value="비밀번호가 다릅니다."
+      changeCheck.value = false;
+    }
+    if(password.value === confirmPassword.value) {
+       message.value="변경 비밀번호가 확인되었습니다."
+       changeCheck.value = true;
+     }
+}
     return {
       name,phone,groupName,email,userId,userRoll,editEvent,
+      password,confirmPassword,handlePasswordCheck,message
       }
   } 
 }
+
+
 </script>
 
 <style scoped>
