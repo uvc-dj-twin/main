@@ -7,18 +7,21 @@
         >
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
-              <h6 class="text-blueGray-500 text-sm font-bold">
-                LOGIN
+              <h6 class="text-blueGray-500 text-5xl font-bold">
+                기계시설물 <br>
+                모니터링 
+                <br>
+                시스템
               </h6>
             </div>
             <div class="btn-wrapper text-center">
-                    <img alt="..." class="w-120 h-120" :src="sensor" />
+                    <img alt="..." class="w-120 h-120" :src="logo" />
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <div class="text-blueGray-400 text-center mb-3 font-bold">
-              <small>환영합니다</small>
+              <small>LOGIN</small>
             </div>
             <form @submit.prevent="handleSubmit">
               <div class="relative w-full mb-3">
@@ -53,6 +56,7 @@
                   <input
                     id="customCheckLogin"
                     type="checkbox"
+                    v-model="rememberMe"
                     class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
                   />
                   <span class="ml-2 text-sm font-semibold text-blueGray-600">
@@ -73,11 +77,6 @@
           </div>
         </div>
         <div class="flex flex-wrap mt-6 relative">
-          <div class="w-1/2">
-            <a href="javascript:void(0)" class="text-blueGray-200">
-              <small>Forgot password?</small>
-            </a>
-          </div>
           <div class="w-1/2 text-right">
             <router-link to="/auth/register" class="text-blueGray-200">
               <small>Create new account</small>
@@ -91,7 +90,7 @@
 <script>
     
 
-import sensor from "@/assets/img/sensor.svg";
+import logo from "@/assets/img/logo.jpg";
 
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -105,6 +104,8 @@ export default {
     const password = ref('');
     const store = useStore();
 
+    const rememberMe = ref(false); // Initialize rememberMe to false
+
 
     const handleSubmit = async () => {
       try {
@@ -115,6 +116,13 @@ export default {
         console.log("유저id:",store.state.userId)
         console.log("유저이름:",store.state.name)
         console.log("유저 토큰:",store.state.token)
+
+        if (rememberMe.value) {
+        localStorage.setItem('rememberedEmail', email.value);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+    
 
         // const redirectPath = '/dashboard'; 
 
@@ -132,7 +140,12 @@ export default {
       }
     };
 
-    return { email, password, handleSubmit,sensor };
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      email.value = rememberedEmail;
+    }
+
+    return { email, password, handleSubmit,logo,rememberMe };
   }
 };
 </script>

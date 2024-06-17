@@ -45,6 +45,7 @@ export default {
               fill: false,
               barThickness: 8,
             },
+            
             {
               label: '이상',
               fill: false,
