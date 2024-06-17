@@ -115,6 +115,11 @@ export default {
       getValue();
     }
 
+    const handlePages = (event) => {
+      currentPage.value = event.target.value
+      getValue()
+    }
+
     const isLoading = ref(true);
 
     // 테스트 데이터
@@ -125,7 +130,7 @@ export default {
     //검색 변수//
     const selectedOption = ref(menu[0])
     const searchValue = ref('')
-    const limit = ref(15)
+    const limit = ref(10)
     const pages = ref(0)
     const currentPage = ref(1)
 
@@ -196,7 +201,7 @@ export default {
       handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
       handleSearch, handleDelete,
-      handleMaxPages,handleMinPages,
+      handleMaxPages,handleMinPages,handlePages,
     }
   }
 };

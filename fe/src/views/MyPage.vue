@@ -146,7 +146,7 @@ export default {
   setup() {
     const store = useStore(); //stor 불러오기 
     const userId =store.state.userId; // store 유저명 불러오기    
-    const name = ref('홍길동')
+    const name = ref('사원명')
     const email = ref('이메일')
     const phone = ref("부서")
     const groupName = ref('그룹명')
@@ -165,7 +165,7 @@ export default {
         .get(`/users/${userId}`, {
           headers: {
             authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6Iu2FjOyKpO2KuCIsInJvbGUiOm51bGwsImlhdCI6MTcxODYxMjQxMywiZXhwIjoxNzQ3NDEyNDEzfQ.9W_wzUOd5oGkXNKghkTo6bPj-yXkhZLy6IzlQ4fUZzc'
           }
         })
         .then((response) => {

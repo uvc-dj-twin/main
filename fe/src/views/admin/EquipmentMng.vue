@@ -206,7 +206,7 @@ export default {
     const pages = ref(0);
     const currentPage = ref(1);
     const totalRow=ref(0);
-    const limit = ref(30);
+    const limit = ref(10);
     const selectedOption = ref(menu[0])
     const searchValue = ref('')
     const groupList = ref([])
