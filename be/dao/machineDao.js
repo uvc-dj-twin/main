@@ -10,7 +10,7 @@ const dao = {
         },
       })
         .then((selected) => {
-          const result = selected.toJSON();
+          const result = selected?.toJSON();
           resolve(result);
         })
         .catch((err) => {
@@ -34,7 +34,7 @@ const dao = {
         }]
       })
         .then((selected) => {
-          const result = selected.map(machine => machine.toJSON());
+          const result = selected.map(machine => machine?.toJSON());
           resolve(result);
         })
         .catch((err) => {
@@ -51,7 +51,7 @@ const dao = {
         },
       })
         .then((selected) => {
-          const result = selected.toJSON();
+          const result = selected?.toJSON();
           resolve(result);
         })
         .catch((err) => {
@@ -92,16 +92,28 @@ const dao = {
         limit: params.limit,
         offset: offset,
       })
-      .then((selected) => {
-        const result = {
-          totalRow: selected.count,
-          machines: selected.rows.map(machine => machine.toJSON()),
-        }
-        resolve(result);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+        .then((selected) => {
+          const result = {
+            totalRow: selected.count,
+            machines: selected.rows.map(machine => machine?.toJSON()),
+          }
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    })
+  },
+
+  create(params) {
+    return new Promise((resolve, reject) => {
+      Machine.create(params)
+        .then((selected) => {
+          resolve(selected?.toJSON());
+        })
+        .catch((err) => {
+          reject(err);
+        });
     })
   },
 
@@ -114,6 +126,22 @@ const dao = {
           resolve({ updatedCount: updated });
         })
         .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  delete(params) {
+    return new Promise((resolve, reject) => {
+      Machine.destroy({
+        where: {
+          id: params.id,
+        },
+      })
+       .then((selected) => {
+          resolve(selected);
+        })
+       .catch((err) => {
           reject(err);
         });
     });

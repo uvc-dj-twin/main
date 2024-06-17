@@ -13,7 +13,7 @@ const dao = {
         }
       )
         .then((selected) => {
-          resolve(selected.toJSON());
+          resolve(selected?.toJSON());
         })
         .catch((err) => {
           reject(err);
@@ -31,7 +31,7 @@ const dao = {
         }
       )
         .then((selected) => {
-          const result = selected.map(code => code.toJSON());
+          const result = selected.map(code => code?.toJSON());
           resolve(result);
         })
         .catch((err) => {

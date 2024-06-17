@@ -60,18 +60,31 @@ const service = {
             measurement: 'current_predictions',
           })
           const currentResultInfo = await codeDao.info({ machineId: machine.id, code: currentLastPredict.code })
-          machineInfo.currentResult = currentResultInfo.name;
-          machineInfo.currentTime = currentLastPredict.time;
-          machineInfo.currentRms = currentLastPredict.rms;
+          console.log(`${machine.id}: `, currentResultInfo);
+          if (currentResultInfo) {
+            machineInfo.currentResult = currentResultInfo.name;
+            machineInfo.currentTime = currentLastPredict.time;
+            machineInfo.currentRms = currentLastPredict.rms;
+          } else {
+            machineInfo.currentResult = null;
+            machineInfo.currentTime = null;
+            machineInfo.currentRms = null;
+          }
 
           const vibrationLastPredict = await sensorDao.lastPredict({
             serialNo: machine.serialNo,
             measurement: 'vibration_predictions',
           })
           const vibrationResultInfo = await codeDao.info({ machineId: machine.id, code: vibrationLastPredict.code })
-          machineInfo.vibrationResult = vibrationResultInfo.name;
-          machineInfo.vibrationTime = vibrationLastPredict.time;
-          machineInfo.vibrationRms = vibrationLastPredict.rms;
+          if (vibrationResultInfo) {
+            machineInfo.vibrationResult = vibrationResultInfo.name;
+            machineInfo.vibrationTime = vibrationLastPredict.time;
+            machineInfo.vibrationRms = vibrationLastPredict.rms;
+          } else {
+            machineInfo.vibrationResult = null;
+            machineInfo.vibrationTime = null;
+            machineInfo.vibrationRms = null;
+          }
 
           machineInfo.thresholdPercent = (Math.max(currentFailCount, vibrationFailCount) / machine.threshold) * 100;
 

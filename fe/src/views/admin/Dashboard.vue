@@ -26,7 +26,6 @@ import CardLineChart from "@/components/Cards/CardLineChartDashboard.vue";
 // import data from "@/data/dashboard.js";
 import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
 
-import axios from 'axios';
 import { useStore } from 'vuex';
 
 
@@ -62,13 +61,14 @@ export default {
     });
     const realtimeMachineData = ref({});
     const interval = ref(null);
-
-
+    const axios = inject('axios');
+    
+    
     //socket//
     onMounted(() => {
       const socket = inject('socket')
       axios
-        .get('http://192.168.0.64:3000/board/monitoring-data', {
+        .get(`/board/monitoring-data`, {
           headers: {
             authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
@@ -180,30 +180,6 @@ export default {
         console.log(`Equipment with ID ${data.equipmentId} not found.`)
       }
     }
-
-
-
-    // API 토큰
-
-    // const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-
-
-    // API요청 
-    // axios.get('http://192.168.0.64:3000/board/monitoring-data',{
-    //   headers: {
-    //     authorization: token
-    //   }
-    // }
-
-    // )
-    // .then((response) => {
-    //   console.log(response.data);
-    //   realtimeResult.value= response.data
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
-
 
 
     return {
