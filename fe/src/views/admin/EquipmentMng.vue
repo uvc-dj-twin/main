@@ -120,17 +120,27 @@
         </div>
       </div>
     </div>
-    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-      <button
-        class="bg-color3 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-        type="button"
-        style="transition: all .15s ease"
-        v-for="(page, pageIndex) in pages"
-        :key="pageIndex"
-        @click="handlePages"
-      >
-        {{ page }}
-      </button>
+    <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <button @click="handleMinPages">이전</button>
+      <div class="mt-2">
+        <button
+          class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+          type="button"
+          style="transition: all .15s ease"
+          v-for="(page) in pages"
+          :key="page"
+          :value="page"
+          :class="{
+            'hidden': !(Math.floor(page / 10) === Math.floor(currentPage / 10)) &&
+              page !== 1 &&
+              page !== pages
+          }"
+          @click="handlePages"
+        >
+          {{ page }}
+        </button>
+      </div>
+      <button @click="handleMaxPages">다음</button>
     </div>
   </div>
 </template>
@@ -188,12 +198,14 @@ export default {
 
   },
   setup() {
+    
     const menu = ['장비명', '그룹명'];
     const DeleteMachineArray = ref([]);
 
     const columnList = ['장비명', 'Threshold', '그룹A', '그룹B', '그룹C', '삭제요청']
     const pages = ref(0);
     const currentPage = ref(1);
+    const totalRow=ref(0);
     const limit = ref(30);
     const selectedOption = ref(menu[0])
     const searchValue = ref('')
@@ -300,10 +312,22 @@ export default {
       }
     }
 
+    const handleMaxPages=()=>{
+      if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
+        currentPage.value=currentPage.value+10}
+    }    
+    const handleMinPages=()=>{
+      if(Math.floor(currentPage.value/10)>=1) {
+        currentPage.value=currentPage.value-10
+      }
+    }    
+    
+
 
     return {
       menu, columnList, data, pages, handlePages, addDeleteMachine, checkTF, limit, editEvent,
-      handleSearch, selectedOption, searchValue, groupList, editCheck, DeleteMachineArray
+      handleSearch, selectedOption, searchValue, groupList, editCheck, DeleteMachineArray,
+      handleMinPages,handleMaxPages,totalRow,currentPage
     }
 
   }

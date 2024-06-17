@@ -51,25 +51,36 @@
          
       
 
-<!-- ////////////////////// -->
+<!-- //////// v-show="Math.floor(currentPage/10) === Math.floor(page / 10)"////////////// -->
       </div>
     </div>
+ 
       <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
 
-    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-          <button
-            class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-            type="button"
-            style="transition:all .15s ease"
-            v-for="(page, index) in pages"
-            :key="index"
-            :value="page"
-            @click="handlePages"
-          >
-            {{ page }}
-            
-          </button>
-        </div>
+    <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+      <button @click="handleMinPages">이전</button>
+
+      <div class="mt-2">
+        <button
+          class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+          type="button"
+          style="transition: all .15s ease"
+          v-for="(page) in pages"
+          :key="page"
+          :value="page"
+          :class="{
+            'hidden': !(Math.floor(page / 10) === Math.floor(currentPage / 10)) &&
+              page !== 1 &&
+              page !== pages
+          }"
+          @click="handlePages"
+        >
+          {{ page }}
+        </button>
+      </div>
+
+      <button @click="handleMaxPages">다음</button>
+    </div>
   </div>
 
 
@@ -255,10 +266,18 @@ const handleId = ()=>{
     // 한 페이지 표시 행 수 
     const limits=ref(30);
 
-    // 상세정보 전달 id
+    const handleMaxPages=()=>{
+      if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
+        currentPage.value=currentPage.value+10}
+    }    
+    const handleMinPages=()=>{
+      if(Math.floor(currentPage.value/10)>=1) {
+        currentPage.value=currentPage.value-10
+      }
+    }    
+
     
 
-    const response = { data: testResultArray ,totalRow:100}; 
 
   // 업데이트 함수들 
     const handleUpdateEquipment = (value) => {
@@ -556,8 +575,10 @@ const handleId = ()=>{
       defectTypeList,
       handleId,
       handleUpdateDate,
-      
-      response
+      currentPage,
+      handleMaxPages,
+      handleMinPages,
+    
       
     };
 
