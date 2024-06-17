@@ -75,7 +75,7 @@ const routes = [
     redirect: "/dashboard",
     component: DashboardLayout,
     name:"Dashboard",
-    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dashboard",
@@ -96,7 +96,7 @@ const routes = [
     path: "/dataread", // layouts/dataread
     redirect:"/dataread/statistics",
     component: DataRead,
-    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dataread/statistics", //views/
@@ -129,7 +129,7 @@ const routes = [
     path: "/admin",
     redirect: "/admin/groupMng",
     component: Admin,
-    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/admin/groupMng",
@@ -155,17 +155,34 @@ const router = createRouter({
 });
 //생성된 라우터에 추가 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!store.state.token;
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isAuthenticated) {
-      next({ name: 'Login' });
-    } else {
-      next();
-    }
+  // 새로고침 시 로컬 스토리지에서 토큰을 읽어와 Vuex 스토어의 상태를 설정
+  const token = localStorage.getItem('token');
+  if (token) {
+    store.commit('login', { token }); // Vuex 스토어의 login mutation을 통해 상태를 설정
+  }
+
+  // to.meta.requiresAuth가 true이고 로그인 상태가 아니면 로그인 페이지로 리디렉션
+  if (to.meta.requiresAuth && !store.state.isLoggedIn) {
+    next({ name: 'Login' }); // 로그인 페이지로 이동
   } else {
-    next();
+    next(); // 그 외의 경우는 그냥 진행
   }
 });
+
+
+
+// router.beforeEach((to, from, next) => {
+//   const isAuthenticated = !!store.state.token;
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!isAuthenticated) {
+//       next({ name: 'Login' });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 const app = createApp(App)
 

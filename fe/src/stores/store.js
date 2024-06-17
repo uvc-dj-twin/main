@@ -9,17 +9,96 @@ const useStore = createStore({
     name: '고길동',
     groupName: 'OPC',
     dummy:false,
+    role:'사용자',
+    token:'null',
+
     equipmentlist: ['L-SF-04'],
     failCount:0,
 
   },
   mutations: {
     login(state, user) {
+
+      console.log(user)
+
+      console.log(user.token)
+
+     
+
+
+
+  
+      if (user.token) {
+        // Step 2: Split the token to get the payload part
+        const payloadBase64Url = user.token.split('.')[1];
+        
+        if (payloadBase64Url) {
+        // Step 3: Decode the Base64Url-encoded payload
+        const base64 = payloadBase64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const decodedJWT = JSON.parse(
+          decodeURIComponent(
+          window
+          .atob(base64)
+          .split('')
+          .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join('')
+          )
+          );
+
+    
+      console.log(decodedJWT)
+
+
+
       state.isLoggedIn = true;
-      state.userId = user.id;
-      state.name=user.name;
+      state.userId=decodedJWT.id;
+      state.role = decodedJWT.role;
+      state.name=decodedJWT.name;
       state.token=user.token;
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
+      console.log(state.name)
       localStorage.setItem('token', user.token);
+      localStorage.setItem('name',decodedJWT.name );
+     
+
+
+
+
+    } else {
+      console.error('Invalid token: missing payload');
+    }
+  } else {
+    console.error('No token found in localStorage');
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     },
     logout(state) {
       state.isLoggedIn = false;
@@ -27,6 +106,8 @@ const useStore = createStore({
       state.name=null;
       state.token=null;
       localStorage.removeItem('token');
+      localStorage.setItem('userName');
+
     },
     nochange(state) {
       state.dummy=false;

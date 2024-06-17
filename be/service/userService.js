@@ -149,7 +149,12 @@ const service = {
         name: selected.name,
         role: selected.role,
       });
-      if (!token) {
+      refreshToken = await tokenUtil.makeRefreshToken({
+        id: selected.id,
+        name: selected.name,
+        role: selected.role,
+      });
+      if (!token || !refreshToken) {
         const err = new Error('userService.login, 토큰 발급 실패.');
         throw err;
       }
@@ -164,6 +169,7 @@ const service = {
     return new Promise((resolve) => {
       resolve({
         token: token,
+        refreshToken: refreshToken,
         id: selected.id,
         name: selected.name,
       });

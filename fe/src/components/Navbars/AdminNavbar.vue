@@ -17,6 +17,22 @@
         >
           {{ link.name }}
         </router-link>
+
+        <div v-if="userRole === 'admin'"> 
+        <router-link
+        
+          v-for="link in linksAdmin"
+          :key="link.path"
+          :to="link.path"
+          class="text-2xl get-started text-white font-bold px-2 py-4 rounded outline-none focus:outline-none mr-1 mb-1"
+          :class="{
+            'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
+            'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
+          }"
+        >
+          {{ link.name }}
+        </router-link>
+      </div>
       </div>
       <div>
         <router-link
@@ -52,8 +68,38 @@ import { ref } from 'vue';
 export default {
 
   setup() {
+
+    const token = localStorage.getItem('token');
+    const userRole =ref('');
+
+if (token) {
+  // Step 2: Split the token to get the payload part
+  const payloadBase64Url = token.split('.')[1];
+
+  if (payloadBase64Url) {
+    // Step 3: Decode the Base64Url-encoded payload
+    const payloadBase64 = payloadBase64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payloadJson = atob(payloadBase64);
+    
+    // Step 4: Parse the JSON to extract the role value
+    const payload = JSON.parse(payloadJson);
+    
+     userRole.value = payload.role;
+    console.log('User role:', userRole.value);
+  } else {
+    console.error('Invalid token: missing payload');
+  }
+} else {
+  console.error('No token found in localStorage');
+}
+
+
+
+
     const store = useStore(); //stor 불러오기 
     const userName = computed(() => store.state.name); // store 유저명 불러오기
+
+  
     
     // const userName = ref();
 
@@ -62,6 +108,11 @@ export default {
     const links = [
       { path: '/dashboard', name: '모니터링' },
       { path: '/dataread', name: '이력조회' },
+     
+    ];
+        
+    const linksAdmin = [
+   
       { path: '/admin/groupMng', name: '그룹관리' },
       { path: '/admin/equipmentMng', name: '권한관리' },
     ];
@@ -84,9 +135,11 @@ const handleLogout = () => {
     return {
       userName,
       links,
+      linksAdmin,
       newDate,
       isActive,
       handleLogout,
+      userRole,
     };
   },
 };

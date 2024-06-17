@@ -201,7 +201,7 @@ export default {
       handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
       handleSearch, handleDelete,
-      handleMaxPages,handleMinPages,handlePages,
+      handleMaxPages,handleMinPages,handlePages,isLoading
     }
   }
 };
