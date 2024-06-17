@@ -41,9 +41,10 @@
                 <div v-for="option in props.groupList" :key="option.id" @click="selectOption(option)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">
                   {{ option.name }}
                 </div>
-                <div v-show="false" @click="handleAddOption" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-center">
+                <div v-if="!addGroup" @click="handleAddOption" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-center">
                   +
                 </div>
+                <div v-else class="px-6 py-3 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-center"><input /></div>
               </div>
             </div>
   
@@ -190,6 +191,7 @@ export default {
     const selectedGroupArray = ref([]);
     const checkedArray = ref([]);
     const selectAll = ref('');
+    const addGroup = ref(false);
 
 
     // 커스텀 드롭다운
@@ -210,6 +212,7 @@ export default {
 
     const handleAddOption = () => {
       console.log('add event');
+      addGroup.value = true;
     }
 
     const editCheck=ref(false);
@@ -267,7 +270,7 @@ export default {
       checkGroupE,checkGroupAll,selectAll,
       selectedGroupArray,
       handleEdit,editCheck,
-      selectedText, dropdownOpen, toggleDropdown, selectOption, handleAddOption,
+      selectedText, dropdownOpen, toggleDropdown, selectOption, handleAddOption, addGroup
     };
   },
   

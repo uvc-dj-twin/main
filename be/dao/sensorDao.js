@@ -8,16 +8,16 @@ const dao = {
     const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
     return new Promise((resolve, reject) => {
       // 조회 시간 설정
-      const now = new Date();
+      const now = new Date(Date.now());
       const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
 
       // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now);
+      const startKST = new Date(now.getTime() + kstOffset);
       startKST.setUTCHours(0, 0, 0, 0);
       const startUTC = new Date(startKST.getTime() - kstOffset);
 
       // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now);
+      const endKST = new Date(now.getTime() + kstOffset);
       endKST.setUTCHours(23, 59, 59, 999);
       const endUTC = new Date(endKST.getTime() - kstOffset);
 
@@ -57,16 +57,16 @@ const dao = {
     return new Promise((resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
       // 조회 시간 설정
-      const now = new Date();
+      const now = new Date(Date.now());
       const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
 
       // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now);
+      const startKST = new Date(now.getTime() + kstOffset);
       startKST.setUTCHours(0, 0, 0, 0);
       const startUTC = new Date(startKST.getTime() - kstOffset);
 
       // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now);
+      const endKST = new Date(now.getTime() + kstOffset);
       endKST.setUTCHours(23, 59, 59, 999);
       const endUTC = new Date(endKST.getTime() - kstOffset);
 
@@ -108,16 +108,16 @@ const dao = {
     return new Promise((resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
       // 조회 시간 설정
-      const now = new Date();
+      const now = new Date(Date.now());
       const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
 
       // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now);
+      const startKST = new Date(now.getTime() + kstOffset);
       startKST.setUTCHours(0, 0, 0, 0);
       const startUTC = new Date(startKST.getTime() - kstOffset);
 
       // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now);
+      const endKST = new Date(now.getTime() + kstOffset);
       endKST.setUTCHours(23, 59, 59, 999);
       const endUTC = new Date(endKST.getTime() - kstOffset);
 
