@@ -1,16 +1,18 @@
 <template>
-  <div v-if="people.length == 0"
+  <div v-if="isLoading"
     class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
-    조회를 진행해주세요</div>
+    <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
+  </div>
+  <div v-else-if="people.length == 0"
+    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    조회 결과가 없습니다.
+  </div>
   <div v-else class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-          <h3
-            class="font-semibold text-lg"
-
-          >            
-            {{editCheck ? '회원 관리 수정' : '회원 관리 조회'}}
+          <h3 class="font-semibold text-lg">
+            {{ editCheck ? '회원 관리 수정' : '회원 관리 조회' }}
 
           </h3>
         </div>
@@ -66,8 +68,7 @@
           <button
             class="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-red-600"
             :class="[editCheck ? 'bg-color3 active:bg-emerald-600' : 'bg-red-500 active:bg-red-600']"
-            style="min-width: 100px; max-width: 200px"
-            @click="checkGroupAll">일괄 변경</button>
+            style="min-width: 100px; max-width: 200px" @click="checkGroupAll">일괄 변경</button>
         </div>
         <button
           class="get-started bg-color3 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
@@ -162,7 +163,7 @@
 
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 // import GroupDropdown from '@/components/Dropdowns/GroupDropdown.vue';
 
@@ -181,6 +182,7 @@ export default {
     onMounted(() => {
       checkedArray.value = (new Array(props.people.length).fill(false));
       selectedGroupArray.value = (new Array(props.people.length).fill(0));
+      startRotation();
     });
     const selectedGroupArray = ref([]);
     const checkedArray = ref([]);
@@ -282,13 +284,37 @@ export default {
     }
 
 
+    let rotationDegree = ref(0);
+    let rotateInterval;
+
+    const startRotation = () => {
+      // 회전 각도 초기화
+      rotationDegree.value = 0;
+      // 회전 각도를 10도씩 증가시키는 인터벌 설정
+      rotateInterval = setInterval(() => {
+        rotationDegree.value += 10; // 회전 속도 조절 가능
+      }, 100); // 회전 속도 조절 가능
+    };
+
+    const stopRotation = () => {
+      clearInterval(rotateInterval); // 회전 인터벌 종료
+    };
+    
+    watch(() => props.isLoading, (newValue) => {
+      if (newValue) {
+        startRotation(); // 회전 시작
+      } else {
+        stopRotation(); // 회전 종료
+      }
+    });
+
     return {
       checkedArray, checkE, props, selectedValue,
       checkGroupE, checkGroupAll, selectAll,
       selectedGroupArray,
       handleEdit, editCheck,
       selectedText, dropdownOpen, toggleDropdown, selectOption, handleAddOption, addGroup, addGroupName, handleAddGroup,
-      showModal, cancelDelete, deleteOption, deleteOptionId,
+      showModal, cancelDelete, deleteOption, deleteOptionId, rotationDegree,
     };
   },
 
@@ -302,6 +328,16 @@ export default {
         return ["light", "dark"].indexOf(value) !== -1;
       },
     },
+    isLoading: Boolean,
   },
 };
 </script>
+<style scoped>
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7986cb;
+  border-radius: 50%;
+}
+</style>
