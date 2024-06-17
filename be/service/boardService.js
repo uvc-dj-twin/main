@@ -383,7 +383,8 @@ const service = {
       });
 
       const start = (params.page - 1) * params.limit;
-      const end = start + params.limit;
+      console.log(params.limit);
+      const end = Number(start) + Number(params.limit);
       const paginatedResults = mergedResults.slice(start, end);
 
       result.data = paginatedResults;

@@ -18,7 +18,7 @@
 
 
       <div class="w-full">
-        <GroupTable :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
+        <GroupTable :isLoading="isLoading" :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
       </div>
       <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button @click="handleMinPages">이전</button>
@@ -74,6 +74,7 @@ export default {
     const axios = inject('axios');
 
     const getValue = () => {
+      isLoading.value = true;
       groups.value = [];
       users.value = [];
       const selectedMap = { Mail: 'userEmail', Group: 'group' }
@@ -92,11 +93,13 @@ export default {
           users.value = response.data.users
           pages.value = response.data.totalRow % limit.value === 0 ? response.data.totalRow / limit.value : Math.floor(response.data.totalRow / limit.value) + 1;
           totalRow.value = response.data.totalRow
+          isLoading.value = false;
           console.log(pages.value);
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
           console.error('Error:', error)
+          isLoading.value = false;
           // showGraph.value=true
         })
     }
@@ -111,6 +114,8 @@ export default {
       currentPage.value = 1;
       getValue();
     }
+
+    const isLoading = ref(true);
 
     // 테스트 데이터
     const groups = ref([])
@@ -191,7 +196,6 @@ export default {
       handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
       handleSearch, handleDelete,
-      handleMaxPages,handleMinPages,
     }
   }
 };
