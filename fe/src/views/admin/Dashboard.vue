@@ -68,12 +68,7 @@ export default {
     onMounted(() => {
       const socket = inject('socket')
       axios
-        .get(`/board/monitoring-data`, {
-          headers: {
-            authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ'
-          }
-        })
+        .get(`/board/monitoring-data`)
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
