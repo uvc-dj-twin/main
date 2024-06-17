@@ -19,23 +19,17 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <template>
   <!-- Header -->
-  <div class="">
-    <div class="px-4 md:px-10 mx-auto w-full">
-      <div>
-        <!-- Card stats -->
-        <div class="flex flex-wrap">
-        
-          <!-- New Users Card -->
-          <div class="flex">
-
+  
+    <div class="flex"
+    style="align-items: center; width:300px;">
+          <div class="flex space-x-0 justify-center justify-items-center">
             <router-link
-      v-for="link in links"
-      :key="link.path"
-      :to="link.path"
- class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"      :class="{
-            'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
-            'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
-
+              v-for="link in links"
+              :key="link.path"
+              :to="link.path"
+              class="text-2xl get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"      :class="{
+              'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
+              'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
       }"
     >
       {{ link.name }}
@@ -43,10 +37,9 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
           </div>
       
     
-        </div>
-      </div>
+      
     </div>
-  </div>
+  
 </template>
 
 <script>

@@ -1,89 +1,101 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-4">
-      <div class="w-full mt-8"> 
-
-
-    <div class="w-full" style="justify-content: space-between;">   
-
-         <div class="w-full" style="display:flex">
-          <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1">
-                  장비 테이블
-          </h3>
-
-          <div class="flex flex-wrap"> 
-        <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-        <button
-          class="bg-color3 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-          @click="editEvent">{{ editCheck ? '저장' : '수정' }}</button>
-      </div>
-
-
-      </div>
-
+    <div class="flex flex-wrap mt-4" style="margin-right: 56px;">
+      <div class="w-full">
+        <div class="flex flex-row mt-4">
+          <div>
+            <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px">
+              장비 테이블
+            </h3>
+          </div>
+          <div class="flex items-center justify-end w-full h-full">
+            <HeaderForm :menu="menu" @handleSearch="handleSearch" />
+            <button
+              class="h-8 px-4 bg-color3 text-2xl get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
+              @click="editEvent"
+            >
+              {{ editCheck ? '저장' : '수정' }}
+            </button>
+          </div>
         </div>
-    
-
-        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-          >
+        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
-              <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-               
-              </div>
+              <div class="relative w-full px-4 max-w-full flex-grow flex-1"></div>
             </div>
           </div>
           <div v-if="true" class="text-left block w-full overflow-x-auto">
             <table class="items-center w-full bg-transparent border-collapse">
               <thead>
                 <tr>
-                  <th 
+                  <th
                     class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                    >
-                    장비명 </th>
-                    <th 
+                  >
+                    장비명
+                  </th>
+                  <th
                     class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                    >Threshold</th>
-                  <th v-for="(group, index) in groupList" :key="index"
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                    >그룹 {{ group.name }}</th>
-                    <th 
+                  >
+                    Threshold
+                  </th>
+                  <th
+                    v-for="(group, index) in groupList"
+                    :key="index"
                     class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                    >삭제</th>
+                  >
+                    그룹 {{ group.name }}
+                  </th>
+                  <th
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                  >
+                    삭제
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <!-- // v-for 시작 한 행에 대한 정보 -->
                 <tr v-for="(machine, index) in data.machines" :key="index">
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     {{ machine.name }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
-                    <input v-if="editCheck" type="text" v-model="machine.threshold" placeholder="Search here..."
-                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
+                    <input
+                      v-if="editCheck"
+                      type="text"
+                      v-model="machine.threshold"
+                      placeholder="Search here..."
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
+                    />
                     <div v-else>{{ machine.threshold }}</div>
                   </td>
-                  <td v-for="(group, groupIndex) in machine.groups" :key="groupIndex"
-                    class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
+                  <td
+                    v-for="(group, groupIndex) in machine.groups"
+                    :key="groupIndex"
+                    class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+                  >
                     <div class="col-lg-12 control-section">
                       <div class="content-wrapper">
                         <div class="container switch-control">
                           <div>
                             <label for="groupA" style="padding: 10px 10px 10px 0"> 권한부여 </label>
-                            <input type="checkbox" v-model="group.access" @click="checkTF(index, groupIndex)"
-                              placeholder="Search here..." :disabled="!editCheck" />
+                            <input
+                              type="checkbox"
+                              v-model="group.access"
+                              @click="checkTF(index, groupIndex)"
+                              :disabled="!editCheck"
+                            />
                           </div>
                         </div>
                       </div>
                     </div>
                   </td>
-                 
-                
                   <td>
-                    <button @click="addDeleteMachine(machine.id)"
-                   
-          class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-                    style="text-align: right;" :disabled="!editCheck">{{ DeleteMachineArray.includes(machine.id) ? '취소' : '삭제' }}</button>
+                    <button
+                      @click="addDeleteMachine(machine.id)"
+                      class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
+                      style="text-align: right;"
+                    >
+                      삭제
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -98,8 +110,12 @@
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button
         class="bg-color3 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-        type="button" style="transition: all .15s ease" v-for="(page) in pages" :key="page" value="page"
-        @click="handlePages">
+        type="button"
+        style="transition: all .15s ease"
+        v-for="(page, pageIndex) in pages"
+        :key="pageIndex"
+        @click="handlePages"
+      >
         {{ page }}
       </button>
     </div>

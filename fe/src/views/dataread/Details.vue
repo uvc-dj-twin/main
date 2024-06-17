@@ -1,39 +1,61 @@
 <template>
-  <div class="p-8">
-    <div class="flex flex-wrap mt-4">
+  <div class="p-8 flex flex-wrap">
       <div class="w-full ">
-       
-
-        <div class=" flex flex-wrap"
-        style="justify-content: space-between">
-
-          <div class="button-container">
-            <HeaderDataRead></HeaderDataRead>
-</div>
-          <div>
-            
-            <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
-            <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
-          </div>
-
-          <DatePicker  @update:value="handleUpdateDate"></DatePicker>
-          <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
-      
-          <div
-          style="display:flex;">
-            <button @click="getValue"
-              class="text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-emerald-600"
-              style="height:64px"
-          >검색</button>
-          </div>
-          
+        <div class="flex">
+          <p class="text-5xl font-bold"
+              style="width: 300px">이력조회</p>
         </div>
+        <div style="display:flex">
+        <HeaderDataRead/>
+        <div class="w-full">
+              <div class="flex items-center justify-end w-full h-full"
+            style="gap: 8px;height: 65px;"> 
+             
+              <EquipmentDropdown 
+                :equipmentList="equipmentList" 
+                :value="selectedValue" 
+                @update:value="handleUpdateEquipment"
+                @click="handleId">
+              </EquipmentDropdown>
+              <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
+          
+
+
+
+              <div class="wrapper text-2xl font-bold " 
+                 style="width: 200px;display: flex; align-content: space-around;flex-direction: row;flex-wrap: wrap;">
+              <ejs-daterangepicker ref="dateRangePicker" 
+                                  style="width: 200px;"
+                                  :startDate="startVal"
+                                  :endDate="endVal"
+                                  :placeholder="waterMark">
+              </ejs-daterangepicker>
+              </div>
+
+
+
+          <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
+
+
+            <button @click="getValue"
+                      class="text-2xl px-4 get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-emerald-600"
+                      style="height:32px"
+                      type="button"     
+                      click=""       
+              >
+                조회
+              </button>
+              
+            </div>
+
+         
       
 
-
-        <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
+<!-- ////////////////////// -->
       </div>
     </div>
+      <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
+
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
           <button
             class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
@@ -49,6 +71,34 @@
           </button>
         </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- <div class="button-container">
+            <HeaderDataRead></HeaderDataRead>
+</div> -->
+          <!-- <div>
+            
+            <EquipmentDropdown :equipmentList="equipmentList ? equipmentList : [] "  :value="selectedEquipmentName" @update:value="handleUpdateEquipment" @click="handleId"></EquipmentDropdown>
+            <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
+          </div> -->
+
+          <!-- <DatePicker  @update:value="handleUpdateDate"></DatePicker>
+          <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
+      
+          <div
+          style="display:flex;">
+        
+          </div>
+           -->
+        </div>
 </template>
 <script>
 import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
@@ -62,7 +112,12 @@ import EquipmentDropdown from '@/components/Dropdowns/EquipmentDropdown.vue';
 import DefectTypeDropdown from '@/components/Dropdowns/DefectTypeDropdown.vue';
 
 //날짜 선택
-import  DatePicker from "@/components/Calenders/DatePicker.vue";
+import { DateRangePickerComponent as EjsDaterangepicker } from "@syncfusion/ej2-vue-calendars";
+
+
+import '@syncfusion/ej2-base/styles/material.css';
+import '@syncfusion/ej2-buttons/styles/material.css';
+import '@syncfusion/ej2-calendars/styles/material.css';
 //시간 선택
 import  TimePicker from "@/components/Calenders/TimePicker.vue";
 
@@ -73,10 +128,10 @@ export default {
   components: {
     HeaderDataRead,
     EquipmentTable,
-    DatePicker,
     TimePicker,
     EquipmentDropdown,
     DefectTypeDropdown,
+    EjsDaterangepicker,
     
 
 
@@ -89,6 +144,14 @@ export default {
   },
   setup() {
     //초기화 관련 - 테이블 칼럼, 장비목록, 고장목록
+    const startVal = ref(new Date("06/06/2024 12:00 PM"));
+    const endVal = ref(new Date("06/20/2024 5:00 PM"));
+        // 값을 저장할 변수
+        const inputValue = ref('');
+      const startDate = ref();
+      const endDate = ref();
+
+
     const columnList=['검사 결과','전류 검사 시간','검사 결과','진동 검사 시간','상세보기']
     const equipmentList = ref(
       [{
@@ -168,13 +231,11 @@ export default {
     //화면에 표시된 불량유형 중 선택된 유형을 자식컴포넌트에서 받아와 저장할 변수명-쿼리용
 
 const handleId = ()=>{
-  console.log()
+
 
   selectedMachine.value = equipmentList.value.find(machine => machine.id === selectedEquipmentName.value);
   console.log(selectedMachine.value )
-
   defectTypeList.value = selectedMachine.value.defectTypes
-  console.log(defectTypeList.value)
 }
  // 장비선택 @click이벤트로 막 업데이트된 selectedEquipmentName정보로 머신과 머신의 불량유형저장함수
 
@@ -244,15 +305,25 @@ const handleId = ()=>{
 
     
     const getValue = () => {
+
+
+      const inputElement = document.querySelector('.wrapper .e-control.e-daterangepicker.e-lib.e-input.e-keyboard');
+      
+      if (inputElement) {
+        inputValue.value = inputElement.value;
+        console.log(inputValue.value);
+         startDate.value = inputElement.value.split(' - ')[0].split('/');
+        //  startDate.value =  startDate.value.split('/')
+          endDate.value = inputElement.value.split(' - ')[1].split('/');
+      }
+      console.log(startDate.value)
+      console.log(endDate.value)
+
   
-      const splitDate = selectedDate.value.split('.')
-      console.log(splitDate)
-      startTime.value.setFullYear(parseInt(splitDate[0].trim()), parseInt(splitDate[1].trim())-1, parseInt(splitDate[2].trim()))
-      endTime.value.setFullYear(parseInt(splitDate[0].trim()), parseInt(splitDate[1].trim())-1, parseInt(splitDate[2].trim()))
-      // selectedDate.value.setFullYear(2024, selectedDate.value.getMonth()-1, selectedDate.value.getDay()+1)
-      console.log(startTime.value)
-      // selectedDate.value.setFullYear(2024, selectedDate.value.getMonth()-1, selectedDate.value.getDay()+1)
-      console.log(endTime.value)
+      startTime.value.setFullYear(parseInt(startDate.value[2]),parseInt(startDate.value[0]-1),parseInt(startDate.value[1]))
+      endTime.value.setFullYear(parseInt(endDate.value[2]),parseInt(endDate.value[0]-1),parseInt(endDate.value[1]))
+      
+     
 
 
 
@@ -461,6 +532,8 @@ const handleId = ()=>{
   
 
     return {
+      endVal,
+      startVal,
       columnList, //초기화 칼럼
       equipmentList, // 초기화장비목록
 
