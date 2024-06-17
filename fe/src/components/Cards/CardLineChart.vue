@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded "
+  <div class="bg-whiterelative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded "
   >
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">

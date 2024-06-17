@@ -7,23 +7,35 @@
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
           <h2 class="text-blueGray-700 text-xl font-semibold">
-           요일 별 추이
+            요일 별 추이
           </h2>
         </div>
       </div>
     </div>
     <div class="p-4 flex-auto">
       <div class="relative ">
-        <canvas id="bar-chart"></canvas>
+        <canvas ref="chart"></canvas>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import { ref, onMounted,watch } from "vue";
 import Chart from "chart.js";
+
 export default {
-  mounted: function () {
-    this.$nextTick(function () {
+
+  props: {
+    data: {
+      type: Object,
+    },
+  },  setup(props) {
+    const chart = ref(null);
+    let myChart = null;
+
+    console.log()
+    onMounted(() => {
       let config = {
         type: "bar",
         data: {
@@ -41,7 +53,7 @@ export default {
               label: '정상',
               backgroundColor: "#13A1F9",
               borderColor: "#ed64a6",
-              data: [30, 78, 56, 34, 100, 45, 13],
+              data: props.data.data[0],
               fill: false,
               barThickness: 8,
             },
@@ -50,7 +62,7 @@ export default {
               fill: false,
               backgroundColor: "#001832",
               borderColor: "#4c51bf",
-              data: [27, 68, 86, 74, 10, 4, 87],
+              data: props.data.data[1],
               barThickness: 8,
             },
           ],
@@ -116,9 +128,37 @@ export default {
           },
         },
       };
-      let ctx = document.getElementById("bar-chart").getContext("2d");
-      window.myBar = new Chart(ctx, config);
+      let ctx = chart.value.getContext("2d");
+      myChart = new Chart(ctx, config);
     });
+
+    const updateChart = () => {
+      if (myChart) {
+       
+        console.log(props.data.data[0])
+        console.log(props.data.data[0])
+        console.log(props.data.data[0])
+
+        
+        myChart.data.datasets[0].data = props.data.data[0];
+        myChart.data.datasets[1].data = props.data.data[1];
+
+        myChart.update();
+      }
+    };
+
+  
+    watch(() => props.data, () => {
+      console.log('bar chart watch 작동')
+      
+      updateChart();
+    }, { deep: true });
+    // watch로 처리하는 방법: watch(()=>변수명, 실행할 콜백함수, {설정});
+
+    return {
+      chart
+    };
   },
 };
 </script>
+
