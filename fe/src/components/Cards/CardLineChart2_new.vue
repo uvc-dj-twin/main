@@ -66,8 +66,8 @@ export default {
           datasets: [
             {
               label: 'X',
-              backgroundColor: "white",
-              borderColor: "white",
+              backgroundColor: "black",
+              borderColor: "black",
               data: data.value.data[0],
               // data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               

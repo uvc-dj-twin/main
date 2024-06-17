@@ -1,12 +1,12 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-blueGray-700">
+  <div class="bg-white relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-opacity-50">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-white text-xl font-semibold">
+          <h2 class="text-black text-xl font-semibold">
             <!-- {{ data.title }} -->
             <button @click="addData">진동검사 </button>
 
@@ -59,7 +59,7 @@ export default {
           labels: Array.from({length: 101}, (_, i) => i),
           datasets: [
             {
-              label: "vertical",
+              label: "X",
               backgroundColor: "#4c51bf",
               borderColor: "#4c51bf",
               data: [10,0, 100, 10000],
@@ -73,11 +73,11 @@ export default {
           title: {
             display: false,
             text: "Sales Charts",
-            fontColor: "white",
+            fontColor: "black",
           },
           legend: {
             labels: {
-              fontColor: "white",
+              fontColor: "black",
             },
             align: "end",
             position: "bottom",
@@ -99,7 +99,7 @@ export default {
               scaleLabel: {
                 display: false,
                 labelString: "Month",
-                fontColor: "white",
+                fontColor: "black",
               },
               grid: {
                 display: false,
@@ -117,9 +117,9 @@ export default {
               },
               display: true,
               scaleLabel: {
-                display: false,
+                display: true,
                 labelString: "Value",
-                fontColor: "white",
+                fontColor: "black",
               },
               grid: {
                 borderDash: [3],

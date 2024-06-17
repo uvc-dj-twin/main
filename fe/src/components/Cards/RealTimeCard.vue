@@ -21,7 +21,7 @@
         <thead>
           <tr >
             <th v-for="column in columnList" :key="column"
-              class="text-3xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
+              class="text-4xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -35,18 +35,36 @@
         <tbody>
           <tr v-for="(result,index) in props.dataRealtimeCard" :key="index">
             <th
-              class="text-3xl border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 text-left flex items-center"
+            class="text-4xl border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"  
             >
               <span 
                 class="ml-3 font-bold"
                 :class="[
                   color === 'light' ? 'text-blueGray-600' : 'text-white',
                 ]"
-              >{{ result.equipmentSerialNo }}
-             <br>
-            {{ result.equipmentName }}
+              >{{ result.equipmentName }}
               </span>
             </th>
+
+            <td
+              class="text-4xl border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+            >
+            <span 
+                class="ml-3 font-bold"
+                :class="[
+                  color === 'light' ? 'text-blueGray-600' : 'text-white',
+                ]"
+              >
+            {{ result.equipmentSerialNo }}
+              </span>
+         
+            </td>
+
+
+            
+            
+
+            
             <td
               class="text-xl border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
@@ -57,12 +75,12 @@
                     
                   >
                     <div 
-                    style="width: 100%;"
-                      class="big-circle"
+                    class="text-center text-4xl"
+                   
                       :class="[
-                       result.thresholdPercent >70 ? 'bg-red-500' : 
-                       result.thresholdPercent >50 ? 'bg-yellow-500' : 
-                       'bg-emerald-500'
+                       result.thresholdPercent >70 ? 'text-red-500' : 
+                       result.thresholdPercent >50 ? 'text-yellow-500' : 
+                       'text-emerald-500'
                       ]"
                     >
                     
@@ -75,10 +93,11 @@
               class="text-center  border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
             >
             <div class=" items-center">
-                <span class="mr-2 ">{{  result.currentFailCount }}/<br>{{ result.currentCount }}</span>
+                <span class="mr-2 ">{{  result.currentFailCount }} / {{ result.currentCount }}</span>
                 <div class="relative w-full">
-                  <div
-                    class=" h-12 flex rounded bg-red-200"
+                  <div 
+                    class=" h-12 flex rounded bg-gray-100" 
+                    
                     
                   >
                     <div
@@ -92,31 +111,29 @@
                     
                       > {{    `${Math.round(result.currentRatioPercent,1)}%` }}</div>
                   </div>
+                  <i class="ellipse w-full text-5xl fas mr-2"
+              :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
+              
+              >
+              <p class="text-white text-xl text-center">
+                {{ result. vibrationResult }}
+              </p>
+            </i> 
                 </div>
               </div>
             </td>
             
-            <td
-              class="text-left border-t-0  align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
-            >
-              <i class="text-5xl fas fa-circle mr-2"
-              :class="[result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
-              
-              ></i> 
-             
-                {{  result.currentResult}}
-             
-            </td>
+      
           
           
         <td
               class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
             <div class=" items-center">
-              <span class="mr-2">{{  result.vibrationFailCount }}/<br>{{ result.vibrationCount }}</span>
+              <span class="mr-2">{{  result.vibrationFailCount }} / {{ result.vibrationCount }}</span>
                 <div class="relative w-full">
                   <div
-                    class=" h-12 flex rounded bg-red-200"
+                    class=" h-12 flex rounded bg-gray-100"
                   >
                     <div
                     :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
@@ -127,25 +144,23 @@
                        'bg-emerald-500'
                       ]"
                       > {{    `${Math.round(result.vibrationRatioPercent,1)}%` }}</div>
+                      
                   </div>
+                  <i class="ellipse text-5xl fas mr-2"
+              :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
+              
+              >
+              <p class="text-white text-xl text-center">
+                {{ result. vibrationResult }}
+              </p>
+            </i> 
                 </div>
               </div>
             </td>
-            <td
-              class="text-left border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
-            >
-              <i class="text-5xl fas fa-circle mr-2"
-              :class="[result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" 
-              
-              ></i> 
-              
-                {{ result. vibrationResult }}
-
-              
-            </td>
+         
           
             <td
-              class="text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-4xl text-center border-t-0  align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
             >
             <!-- {{`${result.vibrationTime.toLocaleDateString()} ${result.vibrationTime.getHours()}:${result.vibrationTime.getMinutes()}:${result.currentTime.getSeconds()}`}} -->
           <!-- {{  result.vibrationTime?.split('.')[0].split('T')[1] }}    -->
@@ -207,7 +222,7 @@ export default {
     },
   },
   setup(props) {
-    const columnList= ['장비명','Threshold','전류검사','전류판정','전동검사','전동판정','검사시간','상세보기']
+    const columnList= ['설비명','장비코드','Threshold','전류검사','진동검사','검사시간','상세보기']
 
 
     onMounted(() =>{
@@ -245,6 +260,16 @@ export default {
     font-weight: bold; /* 글자 굵기를 두껍게 설정한다. */
     text-align: center; /* 글자를 가운데로 정렬한다. */
 }
+
+
+.ellipse {
+        width: 100%; /* 가로 길이 */
+        background-color: currentColor; /* 아이콘의 색상을 상속 */
+        border-radius: 20%; /* 타원형 모양을 위한 둥근 모서리 */
+        display: inline-block; /* 인라인 블록 요소로 설정 */
+        text-align: center; /* 텍스트를 중앙으로 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+    }
 
 
 </style>

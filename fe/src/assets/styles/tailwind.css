@@ -1225,18 +1225,22 @@ select {
           appearance: none;
 }
 
+/* 001832 */
 .bg-color1 {
   --tw-bg-opacity: 1;
   background-color: rgba(0, 25, 50, var(--tw-bg-opacity));
 }
+/* 326B98 */
 .bg-color2 {
   --tw-bg-opacity: 1;
   background-color: rgba(50,107,152, var(--tw-bg-opacity));
 }
+/* 13A1F9 */
 .bg-color3 {
   --tw-bg-opacity: 1;
   background-color: rgba(19,161,249, var(--tw-bg-opacity));
 }
+/* 98F1F8 */
 .bg-color4 {
   --tw-bg-opacity: 1;
   background-color: rgba(152,241,248, var(--tw-bg-opacity));

@@ -10,14 +10,27 @@
           </div>
           <div class="flex items-center justify-end w-full h-full">
             <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-            <button
-              class="h-8 px-4 bg-color3 text-2xl get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-              @click="editEvent"
-            >
-              {{ editCheck ? '저장' : '수정' }}
-            </button>
+           
           </div>
+          
         </div>
+        <div class="flex relative w-full px-6 py-4 max-w-full flex-grow flex-1"
+          style="align-items: center; gap:10px;">
+          <h3
+            class="font-semibold text-lg">
+            {{editCheck ? '접근 권한 수정' : '접근 권한 조회'}}
+          
+          </h3>
+
+        <button
+              class="get-started bg-color3 text-white font-bold py-4 px-12 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
+              @click="editEvent"
+              style="min-width: 200px; max-width: 400px"
+            >
+              {{ editCheck ? '권한 저장' : '권한 수정' }}
+            </button>
+        </div>
+
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
