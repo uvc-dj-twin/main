@@ -1,12 +1,12 @@
 <template>
-<div class="modal relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">    
+<div class="bg-white relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">    
   <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-white text-xl font-semibold">
+          <h2 class="text-black text-xl font-semibold">
             <!-- {{ data.title }} -->
             <button @click="addData">전류검사 </button>
 
@@ -63,16 +63,16 @@ export default {
           datasets: [
             {
               label: 'X',
-              backgroundColor: "white",
-              borderColor: "white",
+              backgroundColor: "#4c51bf",
+              borderColor: "#4c51bf",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
             },
             {
               label: 'Y',
-              backgroundColor: "red",
-              borderColor: "red",
+              backgroundColor: "#13A1F9",
+              borderColor: "#13A1F9",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
@@ -80,8 +80,8 @@ export default {
             },
             {
               label: 'Z',
-              backgroundColor: "green",
-              borderColor: "green",
+              backgroundColor: "#98F1F8",
+              borderColor: "#98F1F8",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
@@ -95,11 +95,11 @@ export default {
           title: {
             display: false,
             text: "Sales Charts",
-            fontColor: "white",
+            fontColor: "black",
           },
-          legend: {
+          legend: {  //라벨색상 결정
             labels: {
-              fontColor: "white",
+              fontColor: "black",
             },
             align: "end",
             position: "bottom",
@@ -121,7 +121,7 @@ export default {
               scaleLabel: {
                 display: false,
                 labelString: "Month",
-                fontColor: "white",
+                fontColor: "black",
               },
               grid: {
                 display: false,
@@ -141,7 +141,7 @@ export default {
               scaleLabel: {
                 display: false,
                 labelString: "Value",
-                fontColor: "white",
+                fontColor: "black",
               },
               grid: {
                 borderDash: [3],

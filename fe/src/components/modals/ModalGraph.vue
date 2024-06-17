@@ -6,15 +6,15 @@
     <div v-if="showModal" class=" fixed inset-0 z-50 flex items-center justify-center" style="top: 0; left: 0; right: 0; bottom: 0;">
       <div>
         <!--content 모달창의 크기조절 위치-->
-        <div class="bg-color4 "
-        style="width:1100px ; height: 800px" > 
+        <div class="bg-white "
+        style="width:1100px ;" > 
           <!--header-->
-          <div >
+          <div class="flex items-center justify-between p-5">
             <h3 class="text-3xl font-semibold">
               전류/전동 검사 그래프
             </h3>
             <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" v-on:click="toggleModal()">
-              <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+              <span class="text-5xl bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                 ×
               </span>
             </button>
@@ -33,12 +33,13 @@
 
                 <CardLineChart2 @click="handleDetail" :data="currentGraphData"/>
                 
-                <button @click="() => {audio?.play()}">재생</button>
               </div>
             </div>
           </div>
           <!--footer-->
           <div class="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+            <button class="text-emerald-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" @click="() => {audio?.play()}">재생</button>
+
             <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
               Close
             </button>
@@ -150,12 +151,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .modal-container {
   width: 900px; /* 임시로 30% 너비로 설정 */
   max-width: 1200px; /* 뷰포트 너비의 30%를 넘지 않도록 설정 */
   height: 30%; /* 임시로 30% 높이로 설정 */
 }
-</style>
+</style> -->
 
 

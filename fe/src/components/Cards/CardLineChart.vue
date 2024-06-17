@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded bg-white"
+  <div class="bg-white relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded "
   >
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
@@ -62,7 +62,7 @@ export default {
           labels: Array.from({length: 101}, (_, i) => i),
           datasets: [
             {
-              label: 'vertical',
+              label: '일자 별 이상 수',
               backgroundColor: "white",
               borderColor: "#4c51bf",
               data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),

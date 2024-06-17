@@ -78,12 +78,12 @@ export default {
           title: {
             display: true,
             text: props.title,
-            fontColor: "white",
+            fontColor: "black",
           },
           legend: {
             display: false,
             labels: {
-              fontColor: "white",
+              fontColor: "black",
             },
             align: "end",
             position: "bottom",
@@ -107,7 +107,7 @@ export default {
               scaleLabel: {
                 display: false,
                 labelString: "Time",
-                fontColor: "white",
+                fontColor: "black",
               },
               gridLines: {
                 borderDash: [2],
@@ -128,7 +128,7 @@ export default {
               scaleLabel: {
                 display: false,
                 labelString: "Value",
-                fontColor: "white",
+                fontColor: "black",
               },
               gridLines: {
                 borderDash: [3],

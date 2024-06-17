@@ -14,7 +14,7 @@
           >            
             {{editCheck ? '회원 관리 수정' : '회원 관리 조회'}}
             <button 
-           class="get-started bg-color3 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
+           class="get-started bg-color3 text-white font-bold py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
            style="min-width: 200px; max-width: 400px"
            @click="handleEdit">{{editCheck ? '그룹 저장' : '그룹 수정'}}</button>
 
