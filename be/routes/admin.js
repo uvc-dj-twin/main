@@ -2,13 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 const logger = require('../lib/logger');
-const { isLoggedIn } = require('../lib/middleware');
+const { isLoggedIn, isRightRole } = require('../lib/middleware');
 const machineService = require('../service/machineService');
 const groupService = require('../service/groupService');
 const userService = require('../service/userService');
 const CustomError = require('../error/CustomError');
 
-router.patch('/users/:id/approval', isLoggedIn, async (req, res, next) => {
+router.patch('/users/:id/approval', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -24,7 +24,7 @@ router.patch('/users/:id/approval', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.get('/machines', isLoggedIn, async (req, res, next) => {
+router.get('/machines', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -43,7 +43,7 @@ router.get('/machines', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.post('/machines', isLoggedIn, async (req, res, next) => {
+router.post('/machines', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -61,7 +61,7 @@ router.post('/machines', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.patch('/machines', isLoggedIn, async (req, res, next) => {
+router.patch('/machines', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -78,7 +78,7 @@ router.patch('/machines', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.get('/groups/users', isLoggedIn, async (req, res, next) => {
+router.get('/groups/users', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -98,7 +98,7 @@ router.get('/groups/users', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.patch('/groups/users', isLoggedIn, async (req, res, next) => {
+router.patch('/groups/users', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -118,7 +118,7 @@ router.patch('/groups/users', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.post('/groups', isLoggedIn, async (req, res, next) => {
+router.post('/groups', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
@@ -134,7 +134,7 @@ router.post('/groups', isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.delete('/groups/:id', isLoggedIn, async (req, res, next) => {
+router.delete('/groups/:id', isLoggedIn, isRightRole(['admin']), async (req, res, next) => {
   try {
     const params = {
       id: req.user.id,
