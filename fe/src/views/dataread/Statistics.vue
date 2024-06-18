@@ -40,12 +40,11 @@
             <div>
             </div>
           </div>
-          <!-- {{ startVal }} ~ {{ endVal }} -->
         </div>
         <div v-if="showGraph"> 
           
           <div class="flex">
-            <card-machine-info></card-machine-info>
+            <card-machine-info :infoData="infoData"></card-machine-info>
             <!-- <PieChart :data="totalCount"/> -->
             <CardBarChart :data="totalCount"/>
             <PieChart :data="defectCount"/>
@@ -104,6 +103,14 @@ export default {
       const endDate = ref();
       const showGraph= ref(false);
       const axios = inject('axios');
+
+      //Info전달용 props
+      const infoData = ref({
+        name: '가짜장비1',
+        totalRatio: 10,
+        startDate:'06/06/2024 12:00 PM',
+        endDate:'06/20/2024 5:00 PM',
+      })
 
       onMounted( //장비목록 불러오기
       axios
@@ -228,6 +235,8 @@ export default {
       totalCount,
       dailyTrend,
       showGraph,
+      infoData, //infoData prop데이터
+      
     };
   },
 };

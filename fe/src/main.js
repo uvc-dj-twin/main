@@ -165,7 +165,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.state.isLoggedIn) {
     next({ name: 'Login' }); // 로그인 페이지로 이동
   } 
-  else if (to.meta.requiresAdmin && !(store.state.isAdmin==='admin')) {
+  else if (to.meta.requiresAdmin && !(store.state.role==='admin')) {
     next({ name: 'Dashboard' }); // 관리자 권한이 없으면 대시보드로 이동
   }else {
     next(); // 그 외의 경우는 그냥 진행
