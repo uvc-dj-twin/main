@@ -6,25 +6,25 @@
     >
     <div class="flex-auto">
       <div class="flex flex-wrap">
-        <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+        <div class="relative w-full pr-4 max-w-full flex-grow flex-1 flex items-start flex-col">
           <h5 class="font-semibold text-xl text-blueGray-700">
-             장비명: {{ machineName }}
+             장비명: {{ props.infoData.name }}
           </h5>
             <br>
           <span class="font-semibold text-blueGray-700">
-            serial-No: {{ serialNo }}
+            serial-No: {{props.infoData.serialNo}}
+          </span>
+          <br>
+          <span class="text-left font-semibold text-blueGray-700">
+          이상률: {{ props.infoData.totalRatio }} %
           </span>
           <br>
           <span class="font-semibold text-blueGray-700">
-          이상률: {{ totalResult }} 
+          시작일: {{ props.infoData.startDate }} 
           </span>
           <br>
           <span class="font-semibold text-blueGray-700">
-          시작일: {{ startDate }} 
-          </span>
-          <br>
-          <span class="font-semibold text-blueGray-700">
-          종료일:  {{ endDate }}
+          종료일:  {{ props.infoData.endDate }}
           </span>
         </div>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">
@@ -46,33 +46,26 @@
 export default {
   name: "machine-info",
   props: {
-   machineName : {
-      type: String,
-      default: "설비1",
+    infoData:{
+      type: Object,
+      default: () => ({
+        "name": "machineName",
+        "totalRatio": 10,
+        "serialNo": 'L-SF-04',
+        "startDate": "startDate",
+        "endDate": "endDate",
+
+      }),
     },
-    serialNo: {
-      type: String,
-      default: "L-SF-04",
-    },
-    totalResult: {
-      type: String,
-      default: "10%",
-    },
-    startDate: {
-      type: String,
-      default: "2024-06-01",
-    },
-    endDate: {
-      type: String,
-      default: "2024-06-06",
-    },
+   
 
     // can be any of the text color utilities
     // from tailwindcss
   
   
   },
-  setup() {
+  setup(props) {
+    console.log(props)
 
     // const {data} = props
     // const dailyCount =ref();
@@ -87,7 +80,7 @@ export default {
     //   percent.value = newVal;
     // });
 
-    return {  };
+    return { props };
   },
 };
 </script>
