@@ -75,8 +75,8 @@ const useStore = createStore({
           headers: {
             'Content-Type': 'application/json' // 컨텐츠 타입 설정
           },
-          body: JSON.stringify({ email, password }) // 요청 본문 설정
-          
+          body: JSON.stringify({ email, password }), // 요청 본문 설정
+          credentials: 'include' // 쿠키 설정
         });
 
         if (response.ok) {

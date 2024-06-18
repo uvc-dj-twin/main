@@ -17,13 +17,10 @@ const middleware = {
             id: decoded.id,
             role: decoded.role
           }
-          // 토큰 유효하면 새로운 토큰으로 갱신(만기시간 초기화)
-          const newToken = tokenUtil.makeToken(decoded);
-          res.set("token", newToken);
 
           next();
         } else {
-          throw new CustomError(401, 'Unauthorized')
+          throw new CustomError(403, 'Unauthorized')
         }
       } else {
         throw new CustomError(401, 'Unauthorized')
