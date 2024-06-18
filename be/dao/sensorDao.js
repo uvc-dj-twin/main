@@ -7,99 +7,107 @@ const dao = {
   countTodayPredict(params) {
     const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
     return new Promise((resolve, reject) => {
-      // 조회 시간 설정
-      const now = new Date(Date.now());
-      const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
-
-      // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now.getTime() + kstOffset);
-      startKST.setUTCHours(0, 0, 0, 0);
-      const startUTC = new Date(startKST.getTime() - kstOffset);
-
-      // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now.getTime() + kstOffset);
-      endKST.setUTCHours(23, 59, 59, 999);
-      const endUTC = new Date(endKST.getTime() - kstOffset);
-
-      const start = startUTC.toISOString();
-      const end = endUTC.toISOString();
-
-      const fluxQuery = `
-        from(bucket: "test")
-          |> range(start: ${start}, stop: ${end})
-          |> filter(fn: (r) => r._measurement == "${params.measurement}")
-          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-          |> filter(fn: (r) => r._field == "code")
-          |> count()
-      `;
-
-      let nextCalled = false;
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          nextCalled = true;
-          resolve(o._value);
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          if (!nextCalled) {
-            resolve(0);
+      try {
+        // 조회 시간 설정
+        const now = new Date(Date.now());
+        const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
+  
+        // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
+        const startKST = new Date(now.getTime() + kstOffset);
+        startKST.setUTCHours(0, 0, 0, 0);
+        const startUTC = new Date(startKST.getTime() - kstOffset);
+  
+        // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
+        const endKST = new Date(now.getTime() + kstOffset);
+        endKST.setUTCHours(23, 59, 59, 999);
+        const endUTC = new Date(endKST.getTime() - kstOffset);
+  
+        const start = startUTC.toISOString();
+        const end = endUTC.toISOString();
+  
+        const fluxQuery = `
+          from(bucket: "test")
+            |> range(start: ${start}, stop: ${end})
+            |> filter(fn: (r) => r._measurement == "${params.measurement}")
+            |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+            |> filter(fn: (r) => r._field == "code")
+            |> count()
+        `;
+  
+        let nextCalled = false;
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            nextCalled = true;
+            resolve(o._value);
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            if (!nextCalled) {
+              resolve(0);
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        reject(err);
+      }
     });
   },
 
   countTodayFailPredict(params) {
     return new Promise((resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
-      // 조회 시간 설정
-      const now = new Date(Date.now());
-      const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
-
-      // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now.getTime() + kstOffset);
-      startKST.setUTCHours(0, 0, 0, 0);
-      const startUTC = new Date(startKST.getTime() - kstOffset);
-
-      // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now.getTime() + kstOffset);
-      endKST.setUTCHours(23, 59, 59, 999);
-      const endUTC = new Date(endKST.getTime() - kstOffset);
-
-      const start = startUTC.toISOString();
-      const end = endUTC.toISOString();
-
-      const fluxQuery = `
-        from(bucket: "test")
-          |> range(start: ${start}, stop: ${end})
-          |> filter(fn: (r) => r._measurement == "${params.measurement}")
-          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-          |> filter(fn: (r) => r._field == "code")
-          |> filter(fn: (r) => r._value != 0)
-          |> count()
-      `;
-
-      let nextCalled = false;
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          nextCalled = true;
-          resolve(o._value);
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          if (!nextCalled) {
-            resolve(0);
+      try {
+        // 조회 시간 설정
+        const now = new Date(Date.now());
+        const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
+  
+        // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
+        const startKST = new Date(now.getTime() + kstOffset);
+        startKST.setUTCHours(0, 0, 0, 0);
+        const startUTC = new Date(startKST.getTime() - kstOffset);
+  
+        // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
+        const endKST = new Date(now.getTime() + kstOffset);
+        endKST.setUTCHours(23, 59, 59, 999);
+        const endUTC = new Date(endKST.getTime() - kstOffset);
+  
+        const start = startUTC.toISOString();
+        const end = endUTC.toISOString();
+  
+        const fluxQuery = `
+          from(bucket: "test")
+            |> range(start: ${start}, stop: ${end})
+            |> filter(fn: (r) => r._measurement == "${params.measurement}")
+            |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+            |> filter(fn: (r) => r._field == "code")
+            |> filter(fn: (r) => r._value != 0)
+            |> count()
+        `;
+  
+        let nextCalled = false;
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            nextCalled = true;
+            resolve(o._value);
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            if (!nextCalled) {
+              resolve(0);
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        reject(err);
+      }
 
     });
   },
@@ -107,55 +115,59 @@ const dao = {
   lastPredict(params) {
     return new Promise((resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
-      // 조회 시간 설정
-      const now = new Date(Date.now());
-      const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
-
-      // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
-      const startKST = new Date(now.getTime() + kstOffset);
-      startKST.setUTCHours(0, 0, 0, 0);
-      const startUTC = new Date(startKST.getTime() - kstOffset);
-
-      // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
-      const endKST = new Date(now.getTime() + kstOffset);
-      endKST.setUTCHours(23, 59, 59, 999);
-      const endUTC = new Date(endKST.getTime() - kstOffset);
-
-      const start = startUTC.toISOString();
-      const end = endUTC.toISOString();
-
-      const fluxQuery = `
-        from(bucket: "test")
-          |> range(start: -30d, stop: ${end})
-          |> filter(fn: (r) => r._measurement == "${params.measurement}")
-          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-          |> sort(columns: ["_time"], desc: true)
-          |> limit(n: 1)
-      `;
-
-      let result = {
-        time: null,
-        code: -1,
-        rms: 0,
-      }
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          if (o._field === 'code') {
-            result.time = o._time;
-            result.code = o._value;
-          } else if (o._field === 'rms') {
-            result.rms = o._value;
-          }
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          resolve(result);
+      try {
+        // 조회 시간 설정
+        const now = new Date(Date.now());
+        const kstOffset = 9 * 60 * 60 * 1000; // KST (UTC+9)
+  
+        // 한국 시간으로 오늘의 시작 시간 (00:00:00 KST)
+        const startKST = new Date(now.getTime() + kstOffset);
+        startKST.setUTCHours(0, 0, 0, 0);
+        const startUTC = new Date(startKST.getTime() - kstOffset);
+  
+        // 한국 시간으로 오늘의 끝 시간 (23:59:59.999 KST)
+        const endKST = new Date(now.getTime() + kstOffset);
+        endKST.setUTCHours(23, 59, 59, 999);
+        const endUTC = new Date(endKST.getTime() - kstOffset);
+  
+        const start = startUTC.toISOString();
+        const end = endUTC.toISOString();
+  
+        const fluxQuery = `
+          from(bucket: "test")
+            |> range(start: -30d, stop: ${end})
+            |> filter(fn: (r) => r._measurement == "${params.measurement}")
+            |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+            |> sort(columns: ["_time"], desc: true)
+            |> limit(n: 1)
+        `;
+  
+        let result = {
+          time: null,
+          code: -1,
+          rms: 0,
         }
-      });
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            if (o._field === 'code') {
+              result.time = o._time;
+              result.code = o._value;
+            } else if (o._field === 'rms') {
+              result.rms = o._value;
+            }
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            resolve(result);
+          }
+        });
+      } catch (err) {
+        reject(err);
+      }
 
     });
   },
@@ -164,34 +176,38 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
-      const fluxQuery = `
-        from(bucket: "test")
-        |> range(start: ${params.startDate}, stop: ${params.endDate})
-        |> filter(fn: (r) => r._measurement == "${params.measurement}")
-        |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-        |> filter(fn: (r) => r._field == "code")
-        |> filter(fn: (r) => r._value == ${params.code})
-        |> count()
-    `;
-
-
-      let nextCalled = false;
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          nextCalled = true;
-          resolve(o._value);
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          if (!nextCalled) {
-            resolve(0);
+      try {
+        const fluxQuery = `
+          from(bucket: "test")
+          |> range(start: ${params.startDate}, stop: ${params.endDate})
+          |> filter(fn: (r) => r._measurement == "${params.measurement}")
+          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+          |> filter(fn: (r) => r._field == "code")
+          |> filter(fn: (r) => r._value == ${params.code})
+          |> count()
+      `;
+  
+        let nextCalled = false;
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            nextCalled = true;
+            resolve(o._value);
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            if (!nextCalled) {
+              resolve(0);
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        reject(err);
+      }
+
     });
   },
 
@@ -199,34 +215,38 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
-      const fluxQuery = `
-        from(bucket: "test")
-        |> range(start: ${params.startDate}, stop: ${params.endDate})
-        |> filter(fn: (r) => r._measurement == "${params.measurement}")
-        |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-        |> filter(fn: (r) => r._field == "code")
-        |> filter(fn: (r) => r._value != 0)
-        |> count()
-    `;
-
-
-      let nextCalled = false;
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          nextCalled = true;
-          resolve(o._value);
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          if (!nextCalled) {
-            resolve(0);
+      try {
+        const fluxQuery = `
+          from(bucket: "test")
+          |> range(start: ${params.startDate}, stop: ${params.endDate})
+          |> filter(fn: (r) => r._measurement == "${params.measurement}")
+          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+          |> filter(fn: (r) => r._field == "code")
+          |> filter(fn: (r) => r._value != 0)
+          |> count()
+      `;
+  
+        let nextCalled = false;
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            nextCalled = true;
+            resolve(o._value);
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            if (!nextCalled) {
+              resolve(0);
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        reject(err);
+      }
+
     });
   },
 
@@ -302,43 +322,48 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
-      // 조회 오차 범위 설정
-      const offset = 10;
-
-      const startTime = new Date(params.time.getTime() - offset)
-      const endTime = new Date(params.time.getTime() + offset)
-
-      const start = startTime.toISOString();
-      const end = endTime.toISOString();
-      const time = params.time.toISOString();
-
-      let fluxQuery = `
-        from(bucket: "test")
-        |> range(start: ${start}, stop: ${end})
-        |> filter(fn: (r) => r._measurement == "${params.measurement}")
-        |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
-        |> filter(fn: (r) => r._field == "start_time")
-        |> limit(n: 1)
-      `;
-
-      let nextCalled = false;
-      queryApi.queryRows(fluxQuery, {
-        next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          console.log('nearestPredict : ', o);
-          nextCalled = true;
-          resolve(o);
-        },
-        error(err) {
-          console.error(`Error running InfluxDB query: ${err.message}`);
-          reject(err);
-        },
-        complete() {
-          if (!nextCalled) {
-            resolve(null);
+      try {
+        const offset = 10;
+  
+        const startTime = new Date(params.time.getTime() - offset)
+        const endTime = new Date(params.time.getTime() + offset)
+  
+        const start = startTime.toISOString();
+        const end = endTime.toISOString();
+        const time = params.time.toISOString();
+  
+        let fluxQuery = `
+          from(bucket: "test")
+          |> range(start: ${start}, stop: ${end})
+          |> filter(fn: (r) => r._measurement == "${params.measurement}")
+          |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
+          |> filter(fn: (r) => r._field == "start_time")
+          |> limit(n: 1)
+        `;
+  
+        let nextCalled = false;
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            console.log('nearestPredict : ', o);
+            nextCalled = true;
+            resolve(o);
+          },
+          error(err) {
+            console.error(`Error running InfluxDB query: ${err.message}`);
+            reject(err);
+          },
+          complete() {
+            if (!nextCalled) {
+              resolve(null);
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        reject(err);
+      }
+
+      // 조회 오차 범위 설정
     })
   },
 

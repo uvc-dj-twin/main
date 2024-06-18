@@ -68,8 +68,10 @@ const dao = {
         [Op.like]: `%${params.name}%`
       }
     }
+    let groupRequired = false;
     const groupWhere = {};
     if (params.groupName) {
+      groupRequired = true;
       groupWhere.name = {
         [Op.like]: `%${params.groupName}%`
       }
@@ -84,7 +86,7 @@ const dao = {
             },
             as: 'Groups',
             where: groupWhere,
-            required: false,
+            required: groupRequired,
           }
         ],
         attributes: Machine.machinesListAttributes,
