@@ -9,7 +9,7 @@ const useStore = createStore({
     name: '고길동',
     groupName: 'OPC',
     dummy:false,
-    role:'사용자',
+    role:'user',
     token:'null',
 
     equipmentlist: ['L-SF-04'],

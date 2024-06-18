@@ -129,7 +129,7 @@ const routes = [
     path: "/admin",
     redirect: "/admin/groupMng",
     component: Admin,
-    meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true,requiresAdmin: true  }, // 권리자 포함 인증이 필요한 페이지
     children: [
       {
         path: "/admin/groupMng",
@@ -164,7 +164,10 @@ router.beforeEach((to, from, next) => {
   // to.meta.requiresAuth가 true이고 로그인 상태가 아니면 로그인 페이지로 리디렉션
   if (to.meta.requiresAuth && !store.state.isLoggedIn) {
     next({ name: 'Login' }); // 로그인 페이지로 이동
-  } else {
+  } 
+  else if (to.meta.requiresAdmin && !(store.state.isAdmin==='admin')) {
+    next({ name: 'Dashboard' }); // 관리자 권한이 없으면 대시보드로 이동
+  }else {
     next(); // 그 외의 경우는 그냥 진행
   }
 });

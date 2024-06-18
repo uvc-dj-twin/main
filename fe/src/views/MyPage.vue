@@ -159,7 +159,7 @@ export default {
     const axios = inject('axios')
 
 
-    onMounted( //장비목록 불러오는 API GET 실행
+    onMounted( // 회원정보 불러오는 api
    
     axios
         .get(`/users/${userId}`, {
@@ -179,7 +179,7 @@ export default {
           phone.value = userData.phone; //확인
           userRoll.value=userData.role; 
           groupName.value = userData.Group.name;
-          console.log(userData.group.name)
+          // console.log(userData.group.name)
 
         //   equipmentList.value =response.data.map((x)=>x.name)
         //   console.log(equipmentList.value)
