@@ -107,9 +107,10 @@ export default {
       //Info전달용 props
       const infoData = ref({
         name: '가짜장비1',
-        totalRatio: 10,
-        startDate:'06/06/2024 12:00 PM',
-        endDate:'06/20/2024 5:00 PM',
+        serialNo: 'L-SF-04',
+        totalRatio: 1000,
+        startDate:'01/01/2024 12:00 PM',
+        endDate:'01/01/2024 5:00 PM',
       })
 
       onMounted( //장비목록 불러오기
@@ -161,6 +162,27 @@ export default {
 
     // 값을 가져오는 함수
 
+    const getMachineInfo = () => {
+      let sumP=0;
+      let sumF=0;
+      totalCount.value.data[0].forEach(number => {
+        sumP += number;
+      });
+      totalCount.value.data[1].forEach(number => {
+        sumF += number;
+      });
+
+
+      /////////////
+      infoData.value.name = equipmentList.value.find(option => option.id === selectedValue.value).name
+      infoData.value.serialNo = equipmentList.value.find(option => option.id === selectedValue.value).serialNo
+      infoData.value.totalRatio=Math.round(sumF*100/sumP)
+      infoData.value.startDate=dailyTrend.value.labels[0]
+      infoData.value.endDate=dailyTrend.value.labels[dailyTrend.value.labels.length-1]    
+      //설비명,장비시리얼, 이상율,날짜 확인완료//
+      //
+    }
+
     const getValue = () => {
      
         showGraph.value=true
@@ -193,7 +215,52 @@ export default {
           dailyTrend.value=response.data.dailyTrend
           totalCount.value=response.data.totalCount
           defectCount.value=response.data.defectCount
-          console.log(dailyTrend.value)
+         
+         ///////////////////////////////////////////////////////////
+
+          // console.log(equipmentList.value.find(option => option.id === selectedValue.value).name)
+      //////설비명 확인완료///
+
+      getMachineInfo();
+      // let sumP=0;
+      // let sumF=0;
+      // totalCount.value.data[0].forEach(number => {
+      //   sumP += number;
+      // });
+      // totalCount.value.data[1].forEach(number => {
+      //   sumF += number;
+      // });
+
+
+      // /////////////
+      // infoData.value.name = equipmentList.value.find(option => option.id === selectedValue.value).name
+      // infoData.value.serialNo = equipmentList.value.find(option => option.id === selectedValue.value).serialNo
+      // infoData.value.totalRatio=sumF*100/sumP
+      // infoData.value.startDate=dailyTrend.value.labels[0]
+      // infoData.value.endDate=dailyTrend.value.labels[dailyTrend.value.labels.length-1]    
+      //설비명,장비시리얼, 이상율,날짜 확인완료//
+      //
+        
+          
+          
+          
+          
+          ////
+         
+      
+      
+
+      
+     
+
+    
+      //////////
+          
+          
+          
+          
+          
+          
           showGraph.value=true
         })
         .catch((error) => {
@@ -208,9 +275,18 @@ export default {
     
 
      
-      dailyTrend.value=data.dailyTrend
-      totalCount.value=data.totalCount
-      defectCount.value=data.defectCount
+
+
+
+     
+
+
+
+
+     
+      
+
+
   
     };
 

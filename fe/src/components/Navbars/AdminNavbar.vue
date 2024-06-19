@@ -18,7 +18,8 @@
           {{ link.name }}
         </router-link>
 
-        <div v-if="userRole === 'admin'"> 
+        <!-- <div v-if="userRole === 'admin'">  -->
+        <div> 
         <router-link
         
           v-for="link in linksAdmin"
@@ -43,12 +44,7 @@
         </router-link>
         
      
-        <router-link
-          to="/dashboard/1"
-          class="text-2xl bg-color1 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
-        @click="handleLogout">
-       대시2
-        </router-link>
+       
         <router-link
           to="/auth/login"
           class="text-2xl bg-color1 get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
@@ -99,6 +95,7 @@ if (token) {
     const store = useStore(); //stor 불러오기 
     const userName = computed(() => store.state.name); // store 유저명 불러오기
 
+    console.log(store.state.name)
   
     
     // const userName = ref();
@@ -108,11 +105,9 @@ if (token) {
     const links = [
       { path: '/dashboard', name: '모니터링' },
       { path: '/dataread', name: '이력조회' },
-     
     ];
         
     const linksAdmin = [
-   
       { path: '/admin/groupMng', name: '그룹관리' },
       { path: '/admin/equipmentMng', name: '권한관리' },
     ];

@@ -11,7 +11,6 @@ const useStore = createStore({
     dummy:false,
     role:'user',
     token:'null',
-
     equipmentlist: ['L-SF-04'],
     failCount:0,
 

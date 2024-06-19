@@ -29,6 +29,7 @@
             >
               {{ editCheck ? '권한 저장' : '권한 수정' }}
             </button>
+          <ModalMachineAdd/>
         </div>
 
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
@@ -158,6 +159,8 @@ import { ref, watch, onMounted, inject } from "vue";
 
 import { rippleMouseHandler } from "@syncfusion/ej2-buttons";
 
+import ModalMachineAdd from "@/components/modals/ModalMachineAdd.vue";
+
 // 감시할 data의 상태를 추가
 // 이 예제에서는 'test' 변수의 상태를 감시합니다.
 
@@ -172,6 +175,7 @@ function rippleHandler(e) {
 export default {
   components: {
     HeaderForm,
+    ModalMachineAdd,
 
     // CardLineChart,
     // CardBarChart,
