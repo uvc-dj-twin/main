@@ -24,4 +24,4 @@ dependencies:
   - certifi
   - ca-certificates
   # Windows-specific dependencies
-  - vs2015_runtime
+  # - vs2015_runtime

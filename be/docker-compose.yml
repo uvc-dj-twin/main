@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:12.19-bullseye
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_ID}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "5432:5432"
+
+  influxdb:
+    image: influxdb:2.7.6
+    environment:
+      INFLUXDB_INIT_MODE: setup
+      INFLUXDB_INIT_USERNAME: ${DB_ID}
+      INFLUXDB_INIT_PASSWORD: ${DB_PASS}
+      INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_INIT_BUCKET: ${INFLUXDB_ORG}
+      INFLUXDB_INIT_RETENTION: "30d"
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+
+  backend:
+    image: copeve1015/djtwin-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      BASE_URL: localhost
+      LOGGER_LEVEL: debug
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE}
+      DB_ID: ${DB_ID}
+      DB_PASS: ${DB_PASS}
+      DB_DIALECT: postgres
+      INFLUXDB_HOST: influxdb
+      INFLUXDB_PORT: 8086
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  influxdb-init:
+    image: influxdb:2.7.6
+    environment:
+      INFLUXDB_INIT_MODE: setup
+      INFLUXDB_INIT_USERNAME: ${DB_ID}
+      INFLUXDB_INIT_PASSWORD: ${DB_PASS}
+      INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_INIT_BUCKET: ${INFLUXDB_ORG}
+      INFLUXDB_INIT_RETENTION: "30d"
+    command: >
+      sleep 10 && \
+      token=$(influx auth create \
+      --org ${INFLUXDB_ORG} \
+      --description "Backend Token" \
+      --read-all \
+      --write-all \
+      --user ${DB_ID} \
+      --password ${DB_PASS} \
+      --json | jq -r '.token') && \
+      sed -i "s/INFLUXDB_TOKEN_PLACEHOLDER/$token/" /app/.env && \
+      influx setup \
+      -o ${INFLUXDB_ORG} \
+      -b ${INFLUXDB_ORG} \
+      -u ${DB_ID} \
+      -p ${DB_PASS} \
+      -t $token \
+      -r 365 \
+      -f
+    volumes:
+      - ./backend/.env:/app/.env
+    depends_on:
+      - influxdb
+
+volumes:
+  influxdb-data:

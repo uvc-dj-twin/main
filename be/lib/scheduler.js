@@ -54,7 +54,7 @@ const readCSV = async (filePath, baseTime) => {
 
 // influx에 저장
 const saveDB = async (csvData, baseTime, type) => {
-  const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
+  const writeApi = influx.getWriteApi(`${process.env.INFLUXDB_ORG}`, `${process.env.INFLUXDB_BUCKET}`, 'us'); // Precision를 마이크로초로 설정
   try {
     let startTime = baseTime.getTime() * 1000;
     let endTime = baseTime.getTime() * 1000;
@@ -129,7 +129,7 @@ const predict = async (data, csvPath, type) => {
   try {
     const result = await PythonShell.run(predictPath, options);
     const { code, rms } = JSON.parse(result[0])
-    const writeApi = influx.getWriteApi('test', 'test', 'us'); // Precision를 마이크로초로 설정
+    const writeApi = influx.getWriteApi(`${process.env.INFLUXDB_ORG}`, `${process.env.INFLUXDB_BUCKET}`, 'us'); // Precision를 마이크로초로 설정
     const point = new Point(_measurement)
       .tag('serial_no', data.machine)
       .intField('start_time', data.startTime)
