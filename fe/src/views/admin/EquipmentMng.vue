@@ -10,11 +10,18 @@
           </div>
           <div class="flex items-center justify-end w-full h-full">
             <HeaderForm :menu="menu" @handleSearch="handleSearch" />
-           
           </div>
           
         </div>
-        <div class="flex relative w-full px-6 py-4 max-w-full flex-grow flex-1"
+        <div v-if="isLoading"
+    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
+  </div>
+          <div v-else-if="totalRow==0" class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+            조회 결과가 없습니다.
+          </div>
+
+        <div v-else class="flex relative w-full px-6 py-4 max-w-full flex-grow flex-1"
           style="align-items: center; gap:10px;">
           <h3
             class="font-semibold text-lg">
@@ -30,15 +37,15 @@
               {{ editCheck ? '권한 저장' : '권한 수정' }}
             </button>
           <ModalMachineAdd/>
-        </div>
 
-        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+          <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
               <div class="relative w-full px-4 max-w-full flex-grow flex-1"></div>
             </div>
           </div>
-          <div v-if="true" class="text-left block w-full overflow-x-auto">
+       
+          <div class="text-left block w-full overflow-x-auto">
             <table class="items-center w-full bg-transparent border-collapse">
               <thead>
                 <tr>
@@ -115,10 +122,16 @@
               </tbody>
             </table>
           </div>
-          <div v-else class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
-            조회를 진행해주세요
-          </div>
+         
         </div>
+
+        </div>
+
+
+
+
+
+       
       </div>
     </div>
     <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -215,6 +228,8 @@ export default {
     const searchValue = ref('')
     const groupList = ref([])
     const editCheck = ref(false)
+
+    const isLoading=ref(false)
     const axios = inject('axios');
 
     onMounted(() => {
@@ -234,6 +249,11 @@ export default {
     }
 
     const getValue = () => {
+      isLoading.value = true;
+      // groups.value = [];
+      // users.value = [];
+     
+      
       console.log("axios 시작")
       const selectedMap = { 장비명: 'name', 그룹명: 'group' }
 
@@ -245,6 +265,7 @@ export default {
           }
         })
         .then((response) => {
+          isLoading.value = false;
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
           const result = JSON.parse(JSON.stringify(response.data));
@@ -257,6 +278,7 @@ export default {
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
+          isLoading.value = false;
           console.error('Error:', error)
         })
     };
@@ -325,16 +347,53 @@ export default {
         currentPage.value=currentPage.value-10
       }
     }    
+
+
+    ////////////////로딩관련 처리////////////////////////
+    let rotationDegree = ref(0);
+    let rotateInterval;
+
+    const startRotation = () => {
+      // 회전 각도 초기화
+      rotationDegree.value = 0;
+      // 회전 각도를 10도씩 증가시키는 인터벌 설정
+      rotateInterval = setInterval(() => {
+        rotationDegree.value += 10; // 회전 속도 조절 가능
+      }, 100); // 회전 속도 조절 가능
+    };
+
+    const stopRotation = () => {
+      clearInterval(rotateInterval); // 회전 인터벌 종료
+    };
+    
+    watch(() => isLoading.value, (newValue) => {
+      if (newValue) {
+        startRotation(); // 회전 시작
+      } else {
+        stopRotation(); // 회전 종료
+      }
+    });
     
 
 
     return {
       menu, columnList, data, pages, handlePages, addDeleteMachine, checkTF, limit, editEvent,
       handleSearch, selectedOption, searchValue, groupList, editCheck, DeleteMachineArray,
-      handleMinPages,handleMaxPages,totalRow,currentPage
+      handleMinPages,handleMaxPages,totalRow,currentPage,
+      isLoading,rotationDegree
     }
 
   }
 }
 
 </script>
+
+<style scoped>
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7986cb;
+  border-radius: 50%;
+}
+</style>

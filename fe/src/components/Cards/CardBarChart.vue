@@ -31,11 +31,17 @@ export default {
       type: Object,
     },
   },  setup(props) {
-    const chart = ref(null);
+    // 캔버스 요소 참조
+    // chart 변수는 캔버스 요소를 참조하는 데 사용됩니다.
+    // ref 함수는 Vue 3에서 반응성 변수를 만들기 위해 사용됩니다.
+    // 이 경우, 캔버스 요소를 참조하는 데 사용됩니다.
+    const chart = ref(null); // 캔버스 요소 참조
+    // 차트 인스턴스
     let myChart = null;
 
-    console.log()
+    // 컴포넌트 마운트 시 차트 초기화
     onMounted(() => {
+      // 차트 설정
       let config = {
         type: "bar",
         data: {
@@ -128,29 +134,26 @@ export default {
           },
         },
       };
+      // 캔버스 요소에 차트 생성
       let ctx = chart.value.getContext("2d");
       myChart = new Chart(ctx, config);
     });
 
+    // 데이터 변경 시 차트 업데이트
     const updateChart = () => {
       if (myChart) {
-       
-        console.log(props.data.data[0])
-        console.log(props.data.data[0])
-        console.log(props.data.data[0])
-
-        
+        // 차트 데이터 업데이트
         myChart.data.datasets[0].data = props.data.data[0];
         myChart.data.datasets[1].data = props.data.data[1];
 
+        // 차트 업데이트
         myChart.update();
       }
     };
 
-  
+    // 데이터 변경 시 차트 업데이트
     watch(() => props.data, () => {
-      console.log('bar chart watch 작동')
-      
+      console.log('바차트 watch 작동')
       updateChart();
     }, { deep: true });
     // watch로 처리하는 방법: watch(()=>변수명, 실행할 콜백함수, {설정});
