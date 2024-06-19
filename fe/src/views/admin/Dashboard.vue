@@ -75,7 +75,7 @@ export default {
           realtimeResult.value = response.data
           setDailyInfo()
 
-          // console.log(socket)
+          console.log(socket)
           socket.on('currents', (data) => {
             changeData(data)
           })

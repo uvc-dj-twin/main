@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { useStore } from 'vuex';
 import { ref } from 'vue';
 export default {
@@ -67,6 +67,7 @@ export default {
 
     const token = localStorage.getItem('token');
     const userRole =ref('');
+    const disconnectSocket = inject('disconnectSocket');
 
 if (token) {
   // Step 2: Split the token to get the payload part
@@ -124,6 +125,7 @@ if (token) {
       ,1000)
 
 const handleLogout = () => {
+  disconnectSocket();
   store.dispatch('logout');
 }
     

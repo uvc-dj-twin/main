@@ -1,25 +1,44 @@
-import io from 'socket.io-client';
+// socketPlugin.js
+import { io } from 'socket.io-client';
 
 export default {
-  install: (app,{host}) =>{
-    const jwtToken ='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6Iu2Zjeq4uOuPmSIsInJvbGUiOm51bGwsImlhdCI6MTcxNzU0NzIxNSwiZXhwIjoxNzQ2MzQ3MjE1fQ.WGAr3joPF9jBCuHFG3OqfXRnZe5wIjw4smLU4e6TSdQ';
-    // console.log("host",host)
-    // console.log("host",host)
-    // console.log("host",host)
-    // console.log("host",host)
-    // console.log("host",host)
-    // console.log("host",host)
+  install: (app, options) => {
+    let socket = null;
 
-    const socketClient = io(`${host}`, {
-      
+    function connectSocket() {
+      const jwtToken = localStorage.getItem('token');
+      const { host } = options;
 
-      extraHeaders: {
-        authorization:jwtToken,
+      socket = io(`${host}`, {
+        extraHeaders: {
+          authorization: `Bearer ${jwtToken}`,
+        },
+      });
+
+      app.config.globalProperties.$socket = socket;
+      app.provide('socket', socket);
+    }
+
+    function disconnectSocket() {
+      if (socket) {
+        socket.disconnect();
+        socket = null;
+        app.config.globalProperties.$socket = null;
+        app.provide('socket', null);
       }
+    }
 
+    // 로그인할 때 소켓 연결 설정
+    app.config.globalProperties.$connectSocket = connectSocket;
 
-    });
-    app.config.globalProperties.$socket = socketClient;
-    app.provide('socket', socketClient);
-  }
-}
+    // 로그아웃할 때 소켓 연결 해제
+    app.config.globalProperties.$disconnectSocket = disconnectSocket;
+
+    // 애플리케이션이 시작될 때 소켓 연결 설정
+    connectSocket();
+
+    app.provide('connectSocket', connectSocket)
+    // Vue 애플리케이션에서 로그아웃 이벤트를 감지하고 소켓 연결 해제
+    app.provide('disconnectSocket', disconnectSocket);
+  },
+};

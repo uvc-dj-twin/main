@@ -92,7 +92,7 @@
 
 import logo from "@/assets/img/logo.jpg";
 
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
 // import { useUserStore } from '@/stores/user' // Pinia 스토어 가져오기
@@ -105,11 +105,13 @@ export default {
     const store = useStore();
 
     const rememberMe = ref(false); // Initialize rememberMe to false
+    const connectSocket = inject('connectSocket');
 
 
     const handleSubmit = async () => {
       try {
         await store.dispatch('login', { email: email.value, password: password.value });
+        connectSocket();
         console.log(store);
         // 로그인 성공 시 리다이렉트 또는 다른 작업 수행
         console.log('성공')
