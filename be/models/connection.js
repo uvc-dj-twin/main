@@ -21,6 +21,12 @@ const sequelize = new Sequelize(
     host: db.host,
     port: db.port,
     dialect: db.dialect,
+    pool: {
+      max: 10, // 최대 연결 수
+      min: 1,  // 최소 연결 수
+      acquire: 30000, // 연결을 획득하는 데 최대 시간 (ms)
+      idle: 10000,    // 연결이 유휴 상태로 유지될 수 있는 최대 시간 (ms)
+    },
   },
 );
 

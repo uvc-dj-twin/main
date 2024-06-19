@@ -26,7 +26,7 @@ const dao = {
         const end = endUTC.toISOString();
   
         const fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
             |> range(start: ${start}, stop: ${end})
             |> filter(fn: (r) => r._measurement == "${params.measurement}")
             |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -79,7 +79,7 @@ const dao = {
         const end = endUTC.toISOString();
   
         const fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
             |> range(start: ${start}, stop: ${end})
             |> filter(fn: (r) => r._measurement == "${params.measurement}")
             |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -134,7 +134,7 @@ const dao = {
         const end = endUTC.toISOString();
   
         const fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
             |> range(start: -30d, stop: ${end})
             |> filter(fn: (r) => r._measurement == "${params.measurement}")
             |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -178,7 +178,7 @@ const dao = {
 
       try {
         const fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
           |> range(start: ${params.startDate}, stop: ${params.endDate})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -217,7 +217,7 @@ const dao = {
 
       try {
         const fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
           |> range(start: ${params.startDate}, stop: ${params.endDate})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -269,7 +269,7 @@ const dao = {
         const end = endUTC.toISOString();
 
         let fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
           |> range(start: ${start}, stop: ${end})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -333,7 +333,7 @@ const dao = {
         const time = params.time.toISOString();
   
         let fluxQuery = `
-          from(bucket: "test")
+          from(bucket: "${process.env.INFLUXDB_BUCKET}")
           |> range(start: ${start}, stop: ${end})
           |> filter(fn: (r) => r._measurement == "${params.measurement}")
           |> filter(fn: (r) => r.serial_no == "${params.serialNo}")
@@ -372,7 +372,7 @@ const dao = {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
       let fluxQuery = `
-        from(bucket: "test")
+        from(bucket: "${process.env.INFLUXDB_BUCKET}")
         |> range(start: ${params.startTime}, stop: ${params.endTime})
         |> filter(fn: (r) => r._measurement == "${params.measurement}")
         |> filter(fn: (r) => r.serial_no == "${params.serialNo}")

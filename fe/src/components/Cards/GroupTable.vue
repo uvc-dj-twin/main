@@ -242,7 +242,7 @@ export default {
         selectedGroupArray.value = (new Array(props.people.length).fill(0));
       } else {
         checkedArray.value = (new Array(props.people.length).fill(false));
-        selectedGroupArray.value = props.people.map(person => person.Group.id);
+        selectedGroupArray.value = props.people.map(person => person.Group?.id);
       }
       if (props.people.length > 0) {
         editCheck.value = !editCheck.value
