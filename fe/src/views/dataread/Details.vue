@@ -54,8 +54,20 @@
 <!-- //////// v-show="Math.floor(currentPage/10) === Math.floor(page / 10)"////////////// -->
       </div>
     </div>
- 
+
+    <div v-if="isLoading"
+    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
+  </div>
+
+  <div v-else-if="testResultArray.length == 0"
+
+    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    조회 결과가 없습니다.
+  </div>
+    <div v-else> 
       <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
+    </div>
 
     <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button @click="handleMinPages">이전</button>
@@ -115,7 +127,7 @@
 import EquipmentTable from "@/components/Cards/EquipmentTable.vue";
 import HeaderDataRead from "@/components/Headers/HeaderDataRead.vue";
 
-import { inject, ref } from "vue";
+import { inject, ref,watch } from "vue";
 import {onMounted} from "vue";
 
 //장비선택
@@ -196,7 +208,9 @@ export default {
     ]);
     const axios = inject('axios');
 
-    onMounted( //장비목록 불러오는 API GET 실행
+    onMounted( ()=>{
+      
+       //장비목록 불러오는 API GET 실행
     axios
         .get(`/board/machines`, {
           headers: {
@@ -218,7 +232,16 @@ export default {
           console.error('Error:', error)
 
         })
-      )
+
+
+        selectedMachine.value.id = equipmentList.value[0].id
+        startTime.value=
+        endTime.value
+        selectedDefectType.value=equipmentList.value[0].defectType[0].id
+
+      
+
+})
 
       // const equipmentList = ref(machinetList.value.map(equipment => equipment.name));
 
@@ -326,6 +349,9 @@ const handleId = ()=>{
     const getValue = () => {
 
 
+      isLoading.value=true //로딩변수 활성화
+
+
       const inputElement = document.querySelector('.wrapper .e-control.e-daterangepicker.e-lib.e-input.e-keyboard');
       
       if (inputElement) {
@@ -389,6 +415,8 @@ const handleId = ()=>{
         }
       })
       .then((response) => {
+      isLoading.value=false //로딩변수 비활성화
+
         
         // 요청이 성공하면 실행되는 코드
         console.log('Response:', response.data)
@@ -414,138 +442,161 @@ const handleId = ()=>{
       })
       .catch((error) => {
         // 요청이 실패하면 실행되는 코드
+      isLoading.value=false //로딩변수 비활성화
+
         console.error('Error:', error)
-
       })
-   
-
-
-   
   };
+
+
+  const isLoading=ref(false)
+  let rotationDegree = ref(0);
+    let rotateInterval;
+
+    const startRotation = () => {
+      // 회전 각도 초기화
+      rotationDegree.value = 0;
+      // 회전 각도를 10도씩 증가시키는 인터벌 설정
+      rotateInterval = setInterval(() => {
+        rotationDegree.value += 10; // 회전 속도 조절 가능
+      }, 100); // 회전 속도 조절 가능
+    };
+
+    const stopRotation = () => {
+      clearInterval(rotateInterval); // 회전 인터벌 종료
+    };
+    
+    watch(() => isLoading.value, (newValue) => {
+      if (newValue) {
+        startRotation(); // 회전 시작
+      } else {
+        stopRotation(); // 회전 종료
+      }
+    });
 
 
 
   const testResultArray=ref([
-		{
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
-    {
-        "currentResult": "정상",
-        "currentTime": "2024-06-07T02:27:21Z",
-        "vibrationResult": "정상",
-        "vibrationTime": "2024-06-07T02:27:26Z",
-    },
+		// {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
+    // {
+    //     "currentResult": "정상",
+    //     "currentTime": "2024-06-07T02:27:21Z",
+    //     "vibrationResult": "정상",
+    //     "vibrationTime": "2024-06-07T02:27:26Z",
+    // },
 
 	])
   
@@ -578,6 +629,9 @@ const handleId = ()=>{
       currentPage,
       handleMaxPages,
       handleMinPages,
+
+      isLoading,
+      rotationDegree
     
       
     };
@@ -587,6 +641,13 @@ const handleId = ()=>{
 </script>
 
 <style scoped>
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7986cb;
+  border-radius: 50%;
+}
 
 #component_wrapper {
   display: block;

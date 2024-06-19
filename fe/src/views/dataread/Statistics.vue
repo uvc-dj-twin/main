@@ -41,7 +41,20 @@
             </div>
           </div>
         </div>
-        <div v-if="showGraph"> 
+        <div v-if="isLoading"
+        class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+        <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"
+        style="  width: 50px;
+                height: 50px;
+                border: 4px solid rgba(0, 0, 0, 0.1);
+                border-left-color: #7986cb;
+                border-radius: 50%;"
+        ></div>
+      </div>
+        <!-- <div v-else-if="true" class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+          조회를 진행해주세요
+        </div> -->
+        <div v-else-if="showGraph"> 
           
           <div class="flex">
             <card-machine-info :infoData="infoData"></card-machine-info>
@@ -53,9 +66,7 @@
             <CardLineChart :data="dailyTrend"/>
           </div>
         </div>
-        <div v-else class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
-          조회를 진행해주세요
-        </div>
+       
       </div>
   </div>
 </template>
@@ -69,7 +80,7 @@ import CardBarChart from '@/components/Cards/CardBarChart.vue';
 import PieChart from '@/components/Cards/PieChart.vue'
 import CardLineChart from '@/components/Cards/CardLineChart.vue'
 import data from "@/data/statistics.js";
-import {inject, ref}  from "vue";
+import {inject, ref,watch}  from "vue";
 import { onMounted } from "vue";
 
 import '@syncfusion/ej2-base/styles/material.css';
@@ -114,6 +125,9 @@ export default {
       })
 
       onMounted( //장비목록 불러오기
+
+      ()=>{
+      
       axios
         .get(`/board/machines`, {
           headers: {
@@ -136,6 +150,11 @@ export default {
           showGraph.value=true
 
         })
+      
+      getValue(); //
+      }
+
+        
       )
 
 
@@ -184,6 +203,7 @@ export default {
     }
 
     const getValue = () => {
+      isLoading.value=true //로딩확인변수 활성화 
      
         showGraph.value=true
       
@@ -211,6 +231,8 @@ export default {
         })
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
+           isLoading.value=false //로딩 종료 후 false처리
+
           console.log('Response:', response.data)
           dailyTrend.value=response.data.dailyTrend
           totalCount.value=response.data.totalCount
@@ -240,55 +262,46 @@ export default {
       // infoData.value.endDate=dailyTrend.value.labels[dailyTrend.value.labels.length-1]    
       //설비명,장비시리얼, 이상율,날짜 확인완료//
       //
-        
-          
-          
-          
-          
-          ////
-         
-      
-      
 
-      
-     
-
-    
-      //////////
-          
-          
-          
-          
-          
-          
           showGraph.value=true
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
+         isLoading.value=false //로딩 종료 후 false처리
+
           console.error('Error:', error)
           showGraph.value=true
 
         })
-
-
       console.log(dailyTrend.value)
-    
-
-     
-
-
-
-     
-
-
-
-
-     
-      
-
-
-  
     };
+
+    /////////// 회전관련///////////
+
+    const isLoading = ref(false);
+    let rotationDegree = ref(0);
+    let rotateInterval;
+
+    const startRotation = () => {
+      // 회전 각도 초기화
+      rotationDegree.value = 0;
+      // 회전 각도를 10도씩 증가시키는 인터벌 설정
+      rotateInterval = setInterval(() => {
+        rotationDegree.value += 10; // 회전 속도 조절 가능
+      }, 100); // 회전 속도 조절 가능
+    };
+
+    const stopRotation = () => {
+      clearInterval(rotateInterval); // 회전 인터벌 종료
+    };
+    
+    watch(() => isLoading.value, (newValue) => {
+      if (newValue) {
+        startRotation(); // 회전 시작
+      } else {
+        stopRotation(); // 회전 종료
+      }
+    });
 
 
 
@@ -312,6 +325,8 @@ export default {
       dailyTrend,
       showGraph,
       infoData, //infoData prop데이터
+      isLoading, //TF ref변수
+      rotationDegree, // 회전각도 ref변수
       
     };
   },
@@ -320,6 +335,9 @@ export default {
 
 
 <style module>
+
+
+
 .e-input-group.e-control-wrapper.e-date-range-wrapper.e-valid-input {
   font-size: var(--font-size-extra-large);
 }
@@ -331,20 +349,5 @@ export default {
   }
 
 
-</style>
-<!-- 
-/* 
-  .container {
-  display: flex;
-  justify-content: space-between; /* div 요소 사이에 공간을 동일하게 분배합니다 */
-  align-items: center; /* 세로 방향 가운데 정렬 */
-  height: 100px; /* 예시로 설정한 높이. 필요에 따라 조정하세요 */
-  background-color: #f0f0f0; /* 배경색 추가 */
-  padding: 0 20px; /* 좌우 여백을 추가하여 내용이 너무 가깝지 않게 합니다 */
-} */
 
-.item {
-  /* 각각의 div 요소에 스타일을 추가할 수 있습니다 */
-  padding: 10px; /* 내부 여백을 추가하여 내용을 좀 더 간격있게 합니다 */
-  background-color: #ccc; /* 예시로 배경색 추가 */
-} -->
+</style>
