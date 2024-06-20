@@ -9,7 +9,7 @@
         <HeaderDataRead/>
         <div class="w-full">
               <div class="flex items-center justify-end w-full h-full"
-            style="gap: 8px;height: 65px;"> 
+            style="gap: 16px; height: 65px;"> 
              
               <EquipmentDropdown 
                 :equipmentList="equipmentList" 
@@ -38,8 +38,8 @@
 
 
             <button @click="getValue"
-                      class="text-2xl px-4 get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-emerald-600"
-                      style="height:32px"
+                      class="text-xl px-4 py-1 get-started  font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1 bg-white border-2 border-blueGray-600 text-black active:bg-emerald-600"
+                      style="line-height: 20px; height:32px"
                       type="button"     
                       click=""       
               >
