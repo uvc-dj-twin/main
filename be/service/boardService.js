@@ -97,49 +97,42 @@ const service = {
         }
         machineInfo.thresholdPercent = (Math.max(currentFailCount, vibrationFailCount) / machine.threshold) * 100;
 
+        console.log(currentLastPredict);
+
         // 상세 데이터
         // 데이터 수
         const dataPerOnce = 120;
-        const currentResult = await sensorDao.nearestPredict({
-          serialNo: machineInfo.serialNo,
-          time: params.time,
-          measurement: 'current_predictions',
-        })
         let current = {
           data: [],
         }
-        const currentStartTime = microISOString(currentResult._value);
+        const currentStartTime = microISOString(currentLastPredict.startTime);
         for (const item of ['x', 'y', 'z']) {
           const currentData = await sensorDao.detailsData({
-            serialNo: machineInfo.serialNo,
+            serialNo: machine.serialNo,
             startTime: currentStartTime,
-            endTime: currentResult._time,
+            endTime: currentLastPredict.time,
             field: item,
             measurement: 'currents',
           })
+          console.log(currentData);
           const length = currentData.length;
           const offset = length / dataPerOnce;
           let data = [];
           for (let i = 0; i < dataPerOnce; i++) {
             const index = Math.floor(i * offset);
-            data.push(currentData[index]._value);
+            data.push(currentData[index]?._value);
           }
           current.data.push(data);
         }
 
-        const vibrationResult = await sensorDao.nearestPredict({
-          serialNo: machineInfo.serialNo,
-          time: params.time,
-          measurement: 'vibration_predictions',
-        })
         let vibration = {
           data: [],
         }
-        const vibrationStartTime = microISOString(vibrationResult._value);
+        const vibrationStartTime = microISOString(vibrationLastPredict.startTime);
         const vibrationData = await sensorDao.detailsData({
-          serialNo: machineInfo.serialNo,
+          serialNo: machine.serialNo,
           startTime: vibrationStartTime,
-          endTime: vibrationResult._time,
+          endTime: vibrationLastPredict.time,
           field: 'x',
           measurement: 'vibrations',
         })
@@ -148,7 +141,7 @@ const service = {
         let data = [];
         for (let i = 0; i < dataPerOnce; i++) {
           const index = Math.floor(i * offset);
-          data.push(vibrationData[index]._value);
+          data.push(vibrationData[index]?._value);
         }
         vibration.data.push(data);
 

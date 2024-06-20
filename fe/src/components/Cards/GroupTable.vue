@@ -135,8 +135,9 @@
               {{ person.email }}
             </td>
 
-            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4">{{
-              person.Group?.name }}
+            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
+              :style="{ color: person.Group && person.Group.name ? '' : 'gray' }">
+              {{ person.Group?.name || '-미소속-' }}
               <!-- {{person.currentGroup}} -->
             </td>
             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4">

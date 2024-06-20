@@ -155,6 +155,8 @@ const dao = {
               result.code = o._value;
             } else if (o._field === 'rms') {
               result.rms = o._value;
+            } else if (o._field === 'start_time') {
+              result.startTime = o._value;
             }
           },
           error(err) {
@@ -371,6 +373,8 @@ const dao = {
     return new Promise(async (resolve, reject) => {
       const queryApi = influx.getQueryApi(process.env.INFLUXDB_ORG);
 
+      // console.log(`detailsData: ${params.startTime}, ${params.endTime}, ${params.serialNo}, ${params.field}`);
+
       let fluxQuery = `
         from(bucket: "${process.env.INFLUXDB_BUCKET}")
         |> range(start: ${params.startTime}, stop: ${params.endTime})
@@ -385,7 +389,7 @@ const dao = {
         });
         resolve(rows);
       } catch (err) {
-        console.log(`sensorDao.detailsData error: ${err.message}`);
+        // console.log(`sensorDao.detailsData error: ${err.message}`);
         reject(err);
       }
 

@@ -17,6 +17,8 @@ router.get('/monitoring-data/:id', isLoggedIn, async (req, res, next) => {
     logger.info(`(board.machine.info.params) ${JSON.stringify(params)}`);
     const result = await boardService.monitoringMachineDataList(params);
     logger.info(`(board.machine.info.result) ${JSON.stringify(result)}`);
+
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
