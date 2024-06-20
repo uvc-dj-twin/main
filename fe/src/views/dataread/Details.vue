@@ -69,8 +69,8 @@
       <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
     </div>
 
-    <div v-if="!isLoading && testResultArray.length !== 0" class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-      <button @click="handleMinPages">이전</button>
+    <div v-if="!isLoading && testResultArray.length !== 0" class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right justify-center">
+      <button @click="handleMinPages" class="mr-2">이전</button>
 
       <div class="mt-2">
         <button
@@ -91,7 +91,7 @@
         </button>
       </div>
 
-      <button @click="handleMaxPages">다음</button>
+      <button @click="handleMaxPages" class="ml-2">다음</button>
     </div>
   </div>
 

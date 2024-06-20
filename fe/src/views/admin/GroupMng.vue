@@ -20,8 +20,8 @@
       <div class="w-full">
         <GroupTable :isLoading="isLoading" :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
       </div>
-      <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-      <button @click="handleMinPages">이전</button>
+      <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right justify-center">
+      <button @click="handleMinPages" class="mr-2">이전</button>
       <div class="mt-2">
         <button
           class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
@@ -40,7 +40,7 @@
           {{ page }}
         </button>
       </div>
-      <button @click="handleMaxPages">다음</button>
+      <button @click="handleMaxPages" class="ml-2">다음</button>
     </div>
     </div>
   </div>
