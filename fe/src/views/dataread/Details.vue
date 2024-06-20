@@ -166,13 +166,41 @@ export default {
     
   },
   setup() {
+    const selectedValue =ref();
     //초기화 관련 - 테이블 칼럼, 장비목록, 고장목록
-    const startVal = ref(new Date("06/06/2024 12:00 PM"));
-    const endVal = ref(new Date("06/20/2024 5:00 PM"));
+    // const startVal = ref(new Date("06/16/2024 12:00 PM"));
+    const startVal = ref(new Date(new Date().setDate(new Date().getDate() - 1)));
+    const endVal = ref(new Date());
+    
+
+
+    // start.value=
+    
+    // const endVal = ref(new Date("06/19/2024 5:00 PM"));
         // 값을 저장할 변수
-        const inputValue = ref('');
-      const startDate = ref();
-      const endDate = ref();
+      const inputValue = ref('');
+      const startDate = ref(new Date('2024-06-10T16:00:00.000Z')
+      );
+      const endDate = ref(new Date('2024-06-12T16:00:00.000Z')
+      );
+
+      
+// 달력관련 변수들 
+    const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
+    const datePicker = ref(null);
+    const startTime = ref(new Date('2024-06-14T16:00:00.000Z')
+    );
+    const endTime = ref(new Date('2024-06-14T23:00:00.000Z')
+    );
+
+// 조회 시 받아올 데이터 수 
+    const totalRow=ref(100);
+    // 데이터 수를 받고서 만들 페이지 수
+    const pages=ref(0);
+    const currentPage=ref(1);
+    // 한 페이지 표시 행 수 
+    const limits=ref(30);
+
 
 
     const columnList=['검사 결과','전류 검사 시간','검사 결과','진동 검사 시간','상세보기']
@@ -224,8 +252,12 @@ export default {
           
           equipmentList.value = response.data
           console.log(equipmentList.value)
-        //   equipmentList.value =response.data.map((x)=>x.name)
-        //   console.log(equipmentList.value)
+
+
+          // .get(`/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&result=${selectedDefectType.value}&limit=${limits.value}&page=${currentPage.value}`, {
+          selectedMachine.value.id=equipmentList.value[0].id
+          selectedDefectType.value=equipmentList.value[0].defectTypes[0].id
+          getValue();
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
@@ -234,12 +266,7 @@ export default {
         })
 
 
-        selectedMachine.value.id = equipmentList.value[0].id
-        startTime.value=
-        endTime.value
-        selectedDefectType.value=equipmentList.value[0].defectType[0].id
-
-      
+        
 
 })
 
@@ -274,20 +301,6 @@ const handleId = ()=>{
  // 장비선택 @click이벤트로 막 업데이트된 selectedEquipmentName정보로 머신과 머신의 불량유형저장함수
 
  
-
-// 달력관련 변수들 
-    const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
-    const datePicker = ref(null);
-    const startTime=ref();
-    const endTime=ref();
-
-// 조회 시 받아올 데이터 수 
-    const totalRow=ref(100);
-    // 데이터 수를 받고서 만들 페이지 수
-    const pages=ref(0);
-    const currentPage=ref(1);
-    // 한 페이지 표시 행 수 
-    const limits=ref(30);
 
     const handleMaxPages=()=>{
       if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
@@ -606,7 +619,7 @@ const handleId = ()=>{
       startVal,
       columnList, //초기화 칼럼
       equipmentList, // 초기화장비목록
-
+      selectedValue,
       handleUpdateEquipment, //장비 선택
       handleUpdateDefect, // 불량유형 업데이트
       

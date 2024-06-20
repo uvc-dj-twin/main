@@ -130,6 +130,9 @@ export default {
             console.log(equipmentList.value)
             //   equipmentList.value =response.data.map((x)=>x.name)
             //   console.log(equipmentList.value)
+            // equipmentList[0].id
+            selectedValue.value=equipmentList.value[0].id
+            getValue(); //
           })
           .catch((error) => {
             // 요청이 실패하면 실행되는 코드
@@ -138,7 +141,7 @@ export default {
 
           })
 
-        getValue(); //
+        
       }
 
 

@@ -82,7 +82,7 @@
               </div>
             </td>
             <td
-              class="text-center border-t-0 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap "
+              class="text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <div class="items-center">
                 <span class="mr-2">
@@ -107,33 +107,33 @@
                   <i
                     class="ellipse w-full text-5xl fas mr-2"
                     :class="[
-                      result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500',
+                      result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500',
                     ]"
                   >
                     <p class="text-white text-xl text-center">
-                      {{ result.vibrationResult }}
+                      {{ result.currentResult }}
                     </p>
                   </i>
                 </div>
               </div>
             </td>
 
-            <td
+              <td
               class="text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <div class="items-center">
                 <span class="mr-2">
                   {{ result.vibrationFailCount }} / {{ result.vibrationCount }}
                 </span>
-                <div class="h-8 w-full">
+                <div class="relative w-full">
                   <div class="h-4 flex rounded bg-gray-100">
                     <div
                       :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
                       :class="[
-                        result.currentRatioPercent > 70
+                        result.vibrationRatioPercent > 70
                           ? 'bg-red-500'
-                          : result.currentRatioPercent > 50
+                          : result.vibrationRatioPercent > 50
                           ? 'bg-yellow-500'
                           : 'bg-emerald-500',
                       ]"
@@ -142,7 +142,7 @@
                     </div>
                   </div>
                   <i
-                    class="ellipse text-5xl fas mr-2"
+                    class="ellipse w-full text-5xl fas mr-2"
                     :class="[
                       result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500',
                     ]"
@@ -154,6 +154,12 @@
                 </div>
               </div>
             </td>
+
+
+
+
+
+            
 
             <td
               class="text-4xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
