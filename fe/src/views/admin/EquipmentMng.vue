@@ -67,10 +67,10 @@
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     {{ machine.name }}
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4" style="width: 15%;">
                     <input v-if="editCheck" type="text" v-model="machine.threshold" placeholder="Search here..."
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
-                    <div v-else>{{ machine.threshold }}</div>
+                    <div v-else class="px-3 py-3 text-blueGray-600 relative bg-white rounded text-sm outline-none w-full pl-10">{{ machine.threshold }}</div>
                   </td>
                   <td v-for="(group, groupIndex) in machine.groups" :key="groupIndex"
                     class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
