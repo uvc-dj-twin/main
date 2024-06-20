@@ -114,13 +114,14 @@ export default {
         threshold: threshold.value,
         serialNo: serialNo.value
       })
-        .then((response) => {
+        .then(() => {
           // 요청이 성공하면 실행되는 코드
-          console.log('추가요청 완료 후 Response:', response.data)
+          MessageChannel.value="요청이 처리되었습니다."
           showModal.value = !showModal.value;
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
+          "등록에 실패하였습니다. 통신상태와 입력정보를 다시 확인해주세요"
           console.error('Error:', error)
 
         })

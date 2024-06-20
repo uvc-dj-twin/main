@@ -143,7 +143,12 @@ export default {
         passCount: totalEquipments - equipmentsWithFailures,
         failCount: equipmentsWithFailures
       }
-      store.state.failCount = dailyState.value.failCount
+      // store.state.failCount = dailyState.value.failCount
+
+      store.dispatch('checkAlarm',dailyState.value.failCount);
+
+      
+      
     }
 
     const changeData = async (data) => {

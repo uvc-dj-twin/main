@@ -172,6 +172,7 @@ export default {
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
+          message.value="회원정보가 변경되었습니다."
 
           const userData = JSON.parse(JSON.stringify(response.data));
           console.log(userData)
@@ -187,6 +188,8 @@ export default {
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
+          message.value="요청이 실패했습니다."
+
           console.error('Error:', error)
 
         })
@@ -233,7 +236,7 @@ export default {
       changeCheck.value = false;
     }
     if(password.value === confirmPassword.value) {
-       message.value="변경 비밀번호가 확인되었습니다."
+       message.value="변경하실 비밀번호가 확인되었습니다."
        changeCheck.value = true;
      }
 }

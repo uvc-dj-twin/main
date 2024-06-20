@@ -255,8 +255,8 @@ const useStore = createStore({
       const groupList = ['L-SF-04','L-SF-05','L-SF-06']
        commit('loadEquipment', groupList); // Mutation loadEquipment실행, groupList를 전달
     },
-    checkAlarm({ commit }) {
-      commit('checkAlarm');
+    checkAlarm({ commit },failCount) {
+      commit('checkAlarm',failCount);
     },
   },
   getters: {
