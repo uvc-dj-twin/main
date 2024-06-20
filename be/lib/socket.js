@@ -1,6 +1,7 @@
 const SocketIO = require('socket.io');
 const tokenUtil = require('./tokenUtil');
 const userService = require('../service/userService');
+const groupMachineJoinDao = require('../dao/groupMachineJoinDao');
 
 
 module.exports = (server, app) => {
@@ -43,7 +44,26 @@ module.exports = (server, app) => {
 
   io.on('connection', async (socket) => {
 
-    socket.join(socket.groupId)
+    socket.on('requestGroupData', () => {
+      socket.join(socket.groupId)
+    });
+
+    socket.on('requestMachineData', async (machineId) => {
+      try {
+        const machine = groupMachineJoinDao.selectOne({
+          groupId: socket.groupId,
+          machineId: machineId,
+        })
+        if (machine) {
+          socket.join(`machine${machineId}`)
+        } else {
+          socket.emit('machineJoinError', { message: 'Machine not found or not accessible' });
+        }
+      } catch (err) {
+        console.error('Error querying machine data:', error);
+        socket.emit('machineJoinError', { message: 'Error querying machine data' });
+      }
+    });
 
   });
 }

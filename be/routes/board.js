@@ -8,6 +8,20 @@ const CustomError = require('../error/CustomError');
 const fs = require('fs');
 const path = require('path');
 
+router.get('/monitoring-data/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const params = {
+      id: req.user.id,
+      machineId: req.params.id,
+    }
+    logger.info(`(board.machine.info.params) ${JSON.stringify(params)}`);
+    const result = await boardService.monitoringMachineDataList(params);
+    logger.info(`(board.machine.info.result) ${JSON.stringify(result)}`);
+  } catch (err) {
+    next(err);
+  }
+})
+
 router.get('/monitoring-data', isLoggedIn, async (req, res, next) => {
   try {
     const params = {
@@ -22,6 +36,7 @@ router.get('/monitoring-data', isLoggedIn, async (req, res, next) => {
     next(err);
   }
 })
+
 
 router.get('/machines', isLoggedIn, async (req, res, next) => {
   try {

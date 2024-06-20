@@ -4,7 +4,9 @@ const userDao = require('../dao/userDao');
 const machineDao = require('../dao/machineDao');
 const sensorDao = require('../dao/sensorDao');
 const codeDao = require('../dao/codeDao');
+const groupMachineJoinDao = require('../dao/groupMachineJoinDao');
 const { makeWav } = require('../lib/wavUtil');
+const CustomError = require('../error/CustomError');
 
 const microISOString = (timestamp) => {
   const millisecondsTime = new Date(timestamp / 1000).toISOString();
@@ -14,6 +16,161 @@ const microISOString = (timestamp) => {
 }
 
 const service = {
+  // 설비 하나 조회
+  async monitoringMachineDataList(params) {
+    let result = null;
+
+    try {
+      // 권한 체크
+      const userInfo = await userDao.selectInfo({ id: params.id });
+      const groupMachineInfo = await groupMachineJoinDao.selectOne({
+        groupId: userInfo.Group.id,
+        machineId: params.machineId,
+      })
+      if (!groupMachineInfo) {
+        reject(new CustomError(403, 'Forbidden'));
+      } else {
+        // 장비 정보
+        const machine = await machineDao.selectById({ id: params.machineId });
+        let machineInfo = {};
+        machineInfo.equipmentId = machine.id;
+        machineInfo.equipmentSerialNo = machine.serialNo;
+        machineInfo.equipmentName = machine.name;
+        machineInfo.thresholdCount = machine.threshold;
+
+        // 장비 데이터
+        const currentCount = await sensorDao.countTodayPredict({
+          serialNo: machine.serialNo,
+          measurement: 'current_predictions',
+        });
+        machineInfo.currentCount = currentCount;
+
+        const currentFailCount = await sensorDao.countTodayFailPredict({
+          serialNo: machine.serialNo,
+          measurement: 'current_predictions',
+        });
+        machineInfo.currentFailCount = currentFailCount;
+        machineInfo.currentRatioPercent = (currentFailCount / currentCount) * 100;
+
+        const vibrationCount = await sensorDao.countTodayPredict({
+          serialNo: machine.serialNo,
+          measurement: 'vibration_predictions',
+        });
+        machineInfo.vibrationCount = vibrationCount;
+
+        const vibrationFailCount = await sensorDao.countTodayFailPredict({
+          serialNo: machine.serialNo,
+          measurement: 'vibration_predictions',
+        });
+        machineInfo.vibrationFailCount = vibrationFailCount;
+        machineInfo.vibrationRatioPercent = (vibrationFailCount / vibrationCount) * 100;
+
+        const currentLastPredict = await sensorDao.lastPredict({
+          serialNo: machine.serialNo,
+          measurement: 'current_predictions',
+        })
+        const currentResultInfo = await codeDao.info({ machineId: machine.id, code: currentLastPredict.code })
+        console.log(`${machine.id}: `, currentResultInfo);
+        if (currentResultInfo) {
+          machineInfo.currentResult = currentResultInfo.name;
+          machineInfo.currentTime = currentLastPredict.time;
+          machineInfo.currentRms = currentLastPredict.rms;
+        } else {
+          machineInfo.currentResult = null;
+          machineInfo.currentTime = null;
+          machineInfo.currentRms = null;
+        }
+
+        const vibrationLastPredict = await sensorDao.lastPredict({
+          serialNo: machine.serialNo,
+          measurement: 'vibration_predictions',
+        })
+        const vibrationResultInfo = await codeDao.info({ machineId: machine.id, code: vibrationLastPredict.code })
+        if (vibrationResultInfo) {
+          machineInfo.vibrationResult = vibrationResultInfo.name;
+          machineInfo.vibrationTime = vibrationLastPredict.time;
+          machineInfo.vibrationRms = vibrationLastPredict.rms;
+        } else {
+          machineInfo.vibrationResult = null;
+          machineInfo.vibrationTime = null;
+          machineInfo.vibrationRms = null;
+        }
+        machineInfo.thresholdPercent = (Math.max(currentFailCount, vibrationFailCount) / machine.threshold) * 100;
+
+        // 상세 데이터
+        // 데이터 수
+        const dataPerOnce = 120;
+        const currentResult = await sensorDao.nearestPredict({
+          serialNo: machineInfo.serialNo,
+          time: params.time,
+          measurement: 'current_predictions',
+        })
+        let current = {
+          data: [],
+        }
+        const currentStartTime = microISOString(currentResult._value);
+        for (const item of ['x', 'y', 'z']) {
+          const currentData = await sensorDao.detailsData({
+            serialNo: machineInfo.serialNo,
+            startTime: currentStartTime,
+            endTime: currentResult._time,
+            field: item,
+            measurement: 'currents',
+          })
+          const length = currentData.length;
+          const offset = length / dataPerOnce;
+          let data = [];
+          for (let i = 0; i < dataPerOnce; i++) {
+            const index = Math.floor(i * offset);
+            data.push(currentData[index]._value);
+          }
+          current.data.push(data);
+        }
+
+        const vibrationResult = await sensorDao.nearestPredict({
+          serialNo: machineInfo.serialNo,
+          time: params.time,
+          measurement: 'vibration_predictions',
+        })
+        let vibration = {
+          data: [],
+        }
+        const vibrationStartTime = microISOString(vibrationResult._value);
+        const vibrationData = await sensorDao.detailsData({
+          serialNo: machineInfo.serialNo,
+          startTime: vibrationStartTime,
+          endTime: vibrationResult._time,
+          field: 'x',
+          measurement: 'vibrations',
+        })
+        const length = vibrationData.length;
+        const offset = length / dataPerOnce;
+        let data = [];
+        for (let i = 0; i < dataPerOnce; i++) {
+          const index = Math.floor(i * offset);
+          data.push(vibrationData[index]._value);
+        }
+        vibration.data.push(data);
+
+        result = {
+          ...machineInfo,
+          currentData: current,
+          vibrationData: vibration,
+        }
+      }
+
+    } catch (err) {
+      logger.error(`(boardService.monitoringMachineDataList) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   // 조회
   async monitoringDataList(params) {
     let result = null;
@@ -196,8 +353,8 @@ const service = {
       let totalCount = {
         data: [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]],
       }
-      
-      for (let currentDate = new Date(startDate); currentDate < endDate ;currentDate.setDate(currentDate.getDate() + 1)){
+
+      for (let currentDate = new Date(startDate); currentDate < endDate; currentDate.setDate(currentDate.getDate() + 1)) {
         let currentEndDate = new Date(currentDate);
         currentEndDate.setDate(currentEndDate.getDate() + 1);
         console.log('####', currentDate.getUTCDay(), ' ~ ', currentEndDate.getUTCDay())

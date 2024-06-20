@@ -79,6 +79,8 @@ export default {
           connectSocket().then((socket) => {
             console.log('Socket connected:', socket);
 
+            socket.emit('requestGroupData');
+
             // 'currents' 이벤트 리스너 등록
             socket.on('currents', (data) => {
               changeData(data);

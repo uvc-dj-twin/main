@@ -184,6 +184,23 @@ const sendSocket = async (io, type, data, result) => {
       groupIds.push(group.id);
     }
     io.to(groupIds).emit(type, socketInfo)
+
+    // 상세 데이터
+    // 데이터 수
+    const dataPerOnce = 120;
+    const length = data.data.length;
+    const offset = length / dataPerOnce;
+    let data = [];
+    for (let i = 0; i < dataPerOnce; i++) {
+      const index = Math.floor(i * offset);
+      data.push(data.data[index]);
+    }
+
+    const machineSocketInfo = {
+      ...socketInfo,
+      data: data.data,
+    }
+    io.to(`machine${machine.id}`).emit(type, machineSocketInfo);
   }
 }
 
