@@ -27,6 +27,9 @@ import Auth from "@/layouts/Auth.vue";
 // views for Admin layout
 
 import Dashboard from "@/views/admin/Dashboard.vue";
+import DashboardSingle from "@/views/admin/DashboardSingle.vue";
+
+
 
 
 
@@ -79,6 +82,13 @@ const routes = [
       {
         path: "/dashboard",
         component: Dashboard,
+      },
+      {
+        path: "/dashboardSingle/:id",
+        name: 'DashboardSingle',
+        component: DashboardSingle,
+        props: true,
+        // props: true는 라우터가 URL 파라미터를 컴포넌트의 props로 전달하도록 합니다
       },
       {
         path: "/mypage",

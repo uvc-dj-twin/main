@@ -114,6 +114,35 @@
                 />
                 <p>                  {{ message }}
                 </p>
+                <button @click="toggleModal">클릭</button>
+
+                <!-- <button @click="showModal=!showModal">클릭</button> -->
+                <!-- <div v-if="showModal==true">
+                  <Modal/>
+                </div> -->
+                <div v-show="showModal==true">
+                <div
+                class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div class="bg-white p-6 rounded shadow-lg" style="width: 30vw; height: 200px;">
+                  <!-- 모달 헤더 -->
+                  <div class="flex justify-end p-4">
+                    <button @click="cancelDelete" class="text-gray-600 hover:text-gray-800">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <!-- 모달 내용 -->
+                  <div class="p-6 text-center">
+                    <p class="mb-4 text-lg font-semibold">회원정보가 수정되었습니다.</p>
+                    <!--  버튼 -->
+                    <div class="flex justify-center">
+                      <button @click="toggleModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded m-2">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                
+
               </div>
               
 
@@ -142,7 +171,11 @@ import { useStore } from "vuex";
 
 
 
+
 export default {
+  components: {
+    
+  },
 
   setup() {
     const store = useStore(); //stor 불러오기 
@@ -156,8 +189,14 @@ export default {
     const confirmPassword = ref('');
     const message=ref('')
     const changeCheck=ref('false')
+    const showModal=ref('false')
     // const id = ref(1)
     const axios = inject('axios')
+
+
+    const toggleModal = () => {
+        showModal.value = true
+    }
 
 
     onMounted( // 회원정보 불러오는 api
@@ -172,7 +211,6 @@ export default {
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
-          message.value="회원정보가 변경되었습니다."
 
           const userData = JSON.parse(JSON.stringify(response.data));
           console.log(userData)
@@ -213,6 +251,7 @@ export default {
         })
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
+          toggleModal()
           console.log('Response:', response.data)
 
         
@@ -242,7 +281,8 @@ export default {
 }
     return {
       name,phone,groupName,email,userId,userRoll,editEvent,
-      password,confirmPassword,handlePasswordCheck,message
+      password,confirmPassword,handlePasswordCheck,message,
+      showModal,toggleModal,
       }
   } 
 }

@@ -10,7 +10,6 @@
         <footer-admin />
       </div>
     </div>
-  </div>
 </template>
 <script>
 import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";

@@ -11,7 +11,7 @@
     </div>
     <div class="p-4 flex-auto">
       <div class="relative">
-        <canvas ref="chart"></canvas>
+        <canvas ref="chart" style="height: 15vw"></canvas>
         <!-- <button @click="addData">버튼</button> -->
       </div>
     </div>

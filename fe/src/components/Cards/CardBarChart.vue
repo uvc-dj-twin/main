@@ -14,7 +14,7 @@
     </div>
     <div class="p-4 flex-auto">
       <div class="relative ">
-        <canvas ref="chart"></canvas>
+        <canvas ref="chart" style="height: 15vw"></canvas>
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@ export default {
               borderColor: "#ed64a6",
               data: props.data.data[0],
               fill: false,
-              barThickness: 8,
+              barThickness: 20,
             },
             {
               label: '이상',
@@ -69,7 +69,7 @@ export default {
               backgroundColor: "#001832",
               borderColor: "#4c51bf",
               data: props.data.data[1],
-              barThickness: 8,
+              barThickness: 20,
             },
           ],
         },
@@ -98,7 +98,7 @@ export default {
           scales: {
             xAxes: [
               {
-                display: false,
+                display: true, //X라벨 표시 결정 
                 scaleLabel: {
                   display: true,
                   labelString: "Month",
