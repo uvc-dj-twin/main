@@ -190,15 +190,15 @@ const sendSocket = async (io, type, data, result) => {
     const dataPerOnce = 120;
     const length = data.data.length;
     const offset = length / dataPerOnce;
-    let data = [];
+    let sensorData = [];
     for (let i = 0; i < dataPerOnce; i++) {
       const index = Math.floor(i * offset);
-      data.push(data.data[index]);
+      sensorData.push(data.data[index]);
     }
 
     const machineSocketInfo = {
       ...socketInfo,
-      data: data.data,
+      data: sensorData,
     }
     io.to(`machine${machine.id}`).emit(type, machineSocketInfo);
   }
