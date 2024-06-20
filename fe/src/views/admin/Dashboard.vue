@@ -105,6 +105,16 @@ export default {
             }
 
             realtimeMachineData.value[labelTime] = dailyState.value.failCount;
+            const machineKeys = Object.keys(realtimeMachineData.value)
+            if (machineKeys.length > 20) {
+              const recentKeys = machineKeys.slice(-20);
+              const newObject = {};
+
+              recentKeys.forEach(key => {
+                newObject[key] = realtimeMachineData.value[key];
+              });
+              realtimeMachineData.value = newObject;
+            }
           }, 3000);
         })
         .catch((error) => {

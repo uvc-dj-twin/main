@@ -135,12 +135,12 @@ export default {
 
         // console.log(this.$router)
         // self.$router.push({name: "Dashboard"})
-        router.push({ name: 'Dashboard' })
+        router.push({ name: 'Login' })
         
 
 
       } catch (error) {
-        router.push({ name: 'Dashboard' })
+        router.push({ name: 'Register' })
 
         console.error(error.message);
         // 로그인 실패 처리
