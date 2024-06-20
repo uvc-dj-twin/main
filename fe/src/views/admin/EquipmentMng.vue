@@ -4,9 +4,9 @@
       <div class="w-full">
         <div class="flex flex-row mt-4">
           <div>
-            <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px">
+            <!-- <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px">
               장비 테이블
-            </h3>
+            </h3> -->
           </div>
           <div class="flex items-center justify-end w-full h-full">
             <HeaderForm :menu="menu" @handleSearch="handleSearch" />

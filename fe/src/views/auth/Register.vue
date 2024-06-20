@@ -55,6 +55,20 @@
                   v-model="password"
                 />
               </div>
+              <div class="relative w-full mb-3">
+                <label
+                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  confirm password
+                </label>
+                <input
+                  type="password"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  placeholder="confirm Password"
+                  v-model="confirmPassword"
+                />
+              </div>
 
               <div class="relative w-full mb-3">
                 <label
@@ -85,7 +99,8 @@
                   v-model="phone"
                 />
               </div>
-              <div class="text-center mt-6">
+              <div class="text-center mt-6">\
+                <p>{{message}}</p>
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
@@ -114,12 +129,32 @@ export default {
     const store = useStore();
     const email = ref('');
     const password = ref('');
+    const confirmPassword = ref('');
     const name = ref('');
     const phone =ref('');
 
+    const message=ref('');
+
+    const validation = () => {
+      if (!email.value || !password.value) {
+        message.value = 'Email, Password를 입력해주세요';
+        return false;
+      }
+      if (password.value!=confirmPassword.value) {
+        message.value = 'Password가 일치하지 않습니다.';
+        return false;
+      }
+      if (phone.value.length<10) {
+        message.value = '전화번호가 올바르지 않습니다.';
+        return false;
+        
+      }
+    }
+  
 
 
     const register = async () => {
+      validation()
       try {
         console.log(email.value)
         console.log(password.value)
@@ -130,6 +165,8 @@ export default {
         console.log(store);
         // 로그인 성공 시 리다이렉트 또는 다른 작업 수행
         console.log('가입 성공')
+        
+        
         // console.log("유저정보는 토큰:",store.state.user)
         // const redirectPath = '/dashboard'; 
 
@@ -141,6 +178,7 @@ export default {
 
       } catch (error) {
         router.push({ name: 'Register' })
+        message.value="가입에 실패하였습니다. 확인 후 다시 가입바랍니다."
 
         console.error(error.message);
         // 로그인 실패 처리

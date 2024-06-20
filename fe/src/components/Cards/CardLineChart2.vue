@@ -6,9 +6,9 @@
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-black text-xl font-semibold">
+          <h2 class="text-black text-5xl font-semibold">
             <!-- {{ data.title }} -->
-            <button @click="addData">전류검사 </button>
+          전류검사 
 
           </h2>
         </div>

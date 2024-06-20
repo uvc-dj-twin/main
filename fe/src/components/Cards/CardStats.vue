@@ -2,44 +2,50 @@
   <div
     class="text-xl text-center relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg h-full items-center"
   >
-    <div class="flex-auto">
-      <div class="flex flex-wrap">
-        <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-          <h5 class="font-semibold text-xl text-blueGray-700">
-            {{ statSubtitle }}
-          </h5>
-            <br>
-          <span class="font-semibold text-blueGray-700">
-            {{ statDescripiron1 }}
-          </span>
-          <br>
-          <span class="font-semibold text-blueGray-700">
-            {{ statTitle1 }}
-          </span>
-          <br>
+    <div class="flex-auto w-full h-full">
+      <div class="flex flex-wrap h-full">
+        <div class="w-full max-w-full h-full flex-col flex items-center">
+          <div class="w-full flex flex-column justify-around flex-grow">
+            <h5 class="font-semibold text-xl text-blueGray-700">
+              {{ statSubtitle }}
+            </h5>
+          </div>
+          <div class="w-full flex flex-column justify-around flex-grow">
+            <span class="font-semibold text-blueGray-700">
+              {{ statDescripiron1 }}
+            </span>
+            <span class="font-semibold text-blueGray-700">
+              {{ statTitle1 }}
+            </span>
+          </div>
 
 
-
-          <span class="font-semibold  text-blueGray-700">
-            {{ statDescripiron2 }}
-          </span>
-          <br>
-          <span class="font-semibold  text-blueGray-700">
-            {{ statTitle2 }}
-          </span>
+          <div class="w-full flex flex-column justify-around flex-grow">
+            <span class="font-semibold  text-blueGray-700">
+              {{ statDescripiron2 }}
+            </span>
+            <span class="font-semibold  text-blueGray-700">
+              {{ statTitle2 }}
+            </span>
+          </div>
     
-          <br>
-          <span class="font-semibold  text-blueGray-700">
-            {{ statDescripiron3 }}
-          </span>
-          <br>
-          <span class="font-semibold text-blueGray-700">
-            {{ statTitle3 }}
-          </span>
+          <div class="w-full flex flex-column justify-around flex-grow"
+          @mouseover="hovered=true" @mouseleave="hovered=false">
+            <span class="font-semibold  text-blueGray-700">
+              {{ statDescripiron3 }}
+            </span>
+            <span class="font-semibold text-blueGray-700">
+              {{ statTitle3 }}
+              </span>
+             
+            
+          </div>
+          
          
           
           
         </div>
+        <p v-show="hovered==true"> {{props.warningEquipmentArray}} </p>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">
           <div
             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full"
@@ -56,9 +62,15 @@
 </template>
 
 <script>
+
+import { onMounted,ref } from 'vue';
 export default {
   name: "card-stats",
   props: {
+    warningEquipmentArray: {
+      type: Array,
+      default: () => [],
+    },
     statSubtitle: {
       type: String,
       default: "총 수",
@@ -102,7 +114,8 @@ export default {
       default: "bg-red-500",
     },
   },
-  setup() {
+  setup(props) {
+    const hovered =ref(false);
 
     // const {data} = props
     // const dailyCount =ref();
@@ -117,7 +130,11 @@ export default {
     //   percent.value = newVal;
     // });
 
-    return {  };
+    onMounted(() => {
+      console.log(props.warningEquipmentArray)
+    });
+
+    return { props,hovered };
   },
 };
 </script>

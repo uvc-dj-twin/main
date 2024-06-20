@@ -1,21 +1,18 @@
 <template>
   <div class="container mx-auto px-4 h-full">
-    <div class="flex content-center items-center justify-center h-full">
+    <div class="flex content-center justify-center h-full">
       <div class="w-full lg:w-4/12 px-4">
         <div
           class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0"
         >
           <div class="rounded-t mb-0 px-6 py-6">
-            <div class="text-center mb-3">
-              <h6 class="text-blueGray-500 text-5xl font-bold">
-                기계시설물 <br>
-                모니터링 
-                <br>
-                시스템
-              </h6>
+            <div class="btn-wrapper flex justify-center">
+              <img alt="..." class="w-32 h-32 mb-4" :src="logo" />
             </div>
-            <div class="btn-wrapper text-center">
-                    <img alt="..." class="w-120 h-120" :src="logo" />
+            <div class="text-center mb-3">
+              <h6 class="text-blueGray-500 text-lg font-bold">
+                기계시설물 모니터링 시스템
+              </h6>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
@@ -76,8 +73,8 @@
             </form>
           </div>
         </div>
-        <div class="flex flex-wrap mt-6 relative">
-          <div class="w-1/2 text-right">
+        <div class="flex flex-wrap mt-6 relative justify-center">
+          <div class="w-1/2 text-center">
             <router-link to="/auth/register" class="text-blueGray-200">
               <small>Create new account</small>
             </router-link>

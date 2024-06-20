@@ -2315,6 +2315,10 @@ select {
   font-size: 3rem;
   line-height: 1;
 }
+.text-6xl {
+  font-size: 5.5rem;
+  line-height: 1;
+}
 
 .leading-none {
   line-height: 1;

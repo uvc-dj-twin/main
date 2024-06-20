@@ -27,9 +27,9 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
               v-for="link in links"
               :key="link.path"
               :to="link.path"
-              class="text-2xl get-started text-white font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"      :class="{
-              'bg-color3 active:bg-emerald-600': this.$route.path.includes(link.path),
-              'bg-color1 active:bg-emerald-600': !(this.$route.path.includes(link.path)),
+              class="text-xl px-4 py-1 get-started  font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"      :class="{
+              'bg-color3 text-white active:bg-emerald-600': this.$route.path.includes(link.path),
+              'bg-white border-2 border-blueGray-600 text-black active:bg-emerald-600': !(this.$route.path.includes(link.path)),
       }"
     >
       {{ link.name }}

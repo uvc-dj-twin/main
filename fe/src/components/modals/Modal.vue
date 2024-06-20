@@ -76,7 +76,7 @@ export default {
 
   },
   setup(props, { emit }) {
-    const showModal = ref(false);
+    const showModal = ref(true);
     const axios = inject('axios')
     const machineName = ref();
     const threshold = ref();

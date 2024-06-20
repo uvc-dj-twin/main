@@ -1,19 +1,24 @@
 <template>
   <div>
-  
     <div class="flex flex-wrap mt-4">
       <div class="w-full">
 
+        <p class="text-6xl">
+          장비명:{{props.id}}
+
+        </p>
 
 
-        <HeaderStats 
-        :warningEquipmentArray="warningEquipmentArray"
-        :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData"
-          :machineChartData="machineChartData" />
+
+     
+        <HeaderStatsSingle :dailyCount="dailyCount" :dailyState="dailyState" 
+        />
 
 
-        <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
-        <RealTimeCard :dataRealtimeCard="realtimeResult" />
+          <CardLineChartDetail></CardLineChartDetail>
+          <CardLineChart2></CardLineChart2>
+
+         
 
         <!-- <h1>{{ realtimeResult }}</h1>   
       <h1>{{ dailyCount }}</h1>       
@@ -25,35 +30,37 @@
   </div>
 </template>
 <script>
-import RealTimeCard from "@/components/Cards/RealTimeCard.vue";
-import HeaderStats from "@/components/Headers/HeaderStats.vue";
-import CardLineChart from "@/components/Cards/CardLineChartDashboard.vue";
 // import data from "@/data/dashboard.js";
 import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
-
 import { useStore } from 'vuex';
 
+import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
+import CardLineChartDetail from "@/components/Cards/CardLineChartDetail.vue";
+import CardLineChart2 from "@/components/Cards/CardLineChart2.vue";
 
 
 export default {
   components: {
-    HeaderStats,
-    RealTimeCard,
-    // CardLineChart,
+    HeaderStatsSingle,
+    CardLineChartDetail,
+    CardLineChart2,
+    
     // CardBarChart,
     // CardPageVisits,
     // CardSocialTraffic,
   },
-  setup() {
+  props: {
+    id: {
+      type: Number,
+    },
+  },
+  setup(props) {
+    console.log(props)
 
     const dailyCount = ref();
     const dailyState = ref();
     const realtimeResult = ref();
     const store = useStore();
-
-
-    const warningEquipmentArray =ref([])
-
     const testChartData = computed(() => {
       const labels = Object.keys(realtimeTestData.value);
       const data = Object.values(realtimeTestData.value);
@@ -87,8 +94,6 @@ export default {
           connectSocket().then((socket) => {
             console.log('Socket connected:', socket);
 
-            socket.emit('requestGroupData');
-
             // 'currents' 이벤트 리스너 등록
             socket.on('currents', (data) => {
               changeData(data);
@@ -115,16 +120,6 @@ export default {
             }
 
             realtimeMachineData.value[labelTime] = dailyState.value.failCount;
-            const machineKeys = Object.keys(realtimeMachineData.value)
-            if (machineKeys.length > 20) {
-              const recentKeys = machineKeys.slice(-20);
-              const newObject = {};
-
-              recentKeys.forEach(key => {
-                newObject[key] = realtimeMachineData.value[key];
-              });
-              realtimeMachineData.value = newObject;
-            }
           }, 3000);
         })
         .catch((error) => {
@@ -197,16 +192,6 @@ export default {
         newData.thresholdPercent =
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
-
-          
-        if (!warningEquipmentArray.value.includes(newData.equipmentName) 
-        && newData.thresholdPercent >= 100) {
-          warningEquipmentArray.value.push(newData.equipmentName);
-        }
-        console.log(warningEquipmentArray.value)
-
-
-
         realtimeResult.value[index] = newData
         if (data.resultCode !== 0) {
           realtimeFailCount.value += 1
@@ -220,12 +205,15 @@ export default {
 
 
     return {
-      warningEquipmentArray,
+      props,
+
+
+
       dailyCount,
       dailyState,
       realtimeResult,
-      CardLineChart, testChartData, realtimeTestData, realtimeMachineData, machineChartData,
-      
+       testChartData, realtimeTestData, realtimeMachineData, machineChartData
+
 
 
     }
