@@ -45,7 +45,8 @@
           
           
         </div>
-        <p v-show="hovered==true"> {{props.warningEquipmentArray}} </p>
+        <p v-show="hovered==true && props.warningEquipmentArray.length>1"> 
+          {{ props.warningEquipmentArray}} </p>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">
           <div
             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full"
@@ -69,7 +70,7 @@ export default {
   props: {
     warningEquipmentArray: {
       type: Array,
-      default: () => [],
+      // default: () => [],
     },
     statSubtitle: {
       type: String,
