@@ -69,7 +69,7 @@
       <EquipmentTable  :id="selectedMachine.id" :columnList="columnList" :rowList="testResultArray" :totalRow="totalRow"/>
     </div>
 
-    <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+    <div v-if="!isLoading && testResultArray.length !== 0" class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
       <button @click="handleMinPages">이전</button>
 
       <div class="mt-2">
@@ -291,11 +291,11 @@ const handleId = ()=>{
 
     const handleMaxPages=()=>{
       if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
-        currentPage.value=currentPage.value+10}
+        currentPage.value=Number(currentPage.value)+10}
     }    
     const handleMinPages=()=>{
       if(Math.floor(currentPage.value/10)>=1) {
-        currentPage.value=currentPage.value-10
+        currentPage.value=Number(currentPage.value)-10
       }
     }    
 

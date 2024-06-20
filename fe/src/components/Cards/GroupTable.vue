@@ -1,6 +1,5 @@
 <template>
-  <div v-if="isLoading"
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+  <div v-if="isLoading" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
   </div>
   <div v-else-if="people.length == 0"
@@ -71,7 +70,7 @@
             style="min-width: 100px; max-width: 200px" @click="checkGroupAll">일괄 변경</button>
         </div>
         <button
-          class="get-started bg-color3 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
+          class="get-started bg-color3 text-white font-bold py-4 px-12 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
           style="min-width: 100px; max-width: 200px" @click="handleEdit">{{ editCheck ? '저장' : '수정' }}
         </button>
       </div>
@@ -299,7 +298,7 @@ export default {
     const stopRotation = () => {
       clearInterval(rotateInterval); // 회전 인터벌 종료
     };
-    
+
     watch(() => props.isLoading, (newValue) => {
       if (newValue) {
         startRotation(); // 회전 시작

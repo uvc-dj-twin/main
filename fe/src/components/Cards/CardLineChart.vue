@@ -30,6 +30,12 @@ import Chart from "chart.js";
 import {watch} from "vue";
 
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({data: [], labels: []}),
+    },
+  },
   setup(props) {
     const chart = ref(null);
     let myChart = null;
@@ -56,16 +62,17 @@ export default {
 
 
     onMounted(() => {
+      console.log('props', props.data);
       let config = {
         type: "line",
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: props.data.labels,
           datasets: [
             {
               label: '일자 별 이상 수',
               backgroundColor: "white",
               borderColor: "#4c51bf",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: props.data.data,
               fill: false,
             },
           ],
@@ -155,16 +162,12 @@ export default {
 
   
     watch(() => props.data, () => {
+      console.log(props.data);
       updateChart();
     }, { deep: true });
     // watch로 처리하는 방법: watch(()=>변수명, 실행할 콜백함수, {설정});
 
     return { chart };
-  },
-  props: {
-    data: {
-      type: Object,
-    },
   },
 };
 </script>

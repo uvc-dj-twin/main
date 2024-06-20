@@ -7,7 +7,7 @@ module.exports = (server, app) => {
   const io = SocketIO(server, {
     path: '/socket.io',
     cors: {
-      origin: ["http://localhost:8080", "http://43.201.49.137", "http://djtwin"], // 허용할 출처
+      origin: ["http://localhost", "http://localhost:8080", "http://43.201.49.137", "http://djtwin"], // 허용할 출처
       methods: ['GET', 'POST'], // 허용할 메서드
       credentials: true // 인증 정보를 허용
     }

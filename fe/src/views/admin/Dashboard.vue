@@ -5,7 +5,8 @@
 
 
 
-        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData" :machineChartData="machineChartData" />
+        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData"
+          :machineChartData="machineChartData" />
 
         <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
         <RealTimeCard :dataRealtimeCard="realtimeResult" />
@@ -62,11 +63,11 @@ export default {
     const realtimeMachineData = ref({});
     const interval = ref(null);
     const axios = inject('axios');
-    
-    
+    const connectSocket = inject('connectSocket')
+
+
     //socket//
     onMounted(() => {
-      const socket = inject('socket')
       axios
         .get(`/board/monitoring-data`)
         .then((response) => {
@@ -75,13 +76,19 @@ export default {
           realtimeResult.value = response.data
           setDailyInfo()
 
-          console.log(socket)
-          socket.on('currents', (data) => {
-            changeData(data)
-          })
-          socket.on('vibrations', (data) => {
-            changeData(data)
-          })
+          connectSocket().then((socket) => {
+            console.log('Socket connected:', socket);
+
+            // 'currents' 이벤트 리스너 등록
+            socket.on('currents', (data) => {
+              changeData(data);
+            });
+
+            // 'vibrations' 이벤트 리스너 등록
+            socket.on('vibrations', (data) => {
+              changeData(data);
+            });
+          });
           interval.value = setInterval(() => {
             const labelTime = new Date(Date.now()).toLocaleTimeString([], { hour12: false, minute: '2-digit', second: '2-digit' });
             realtimeTestData.value[labelTime] = realtimeFailCount.value;

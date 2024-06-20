@@ -1,5 +1,5 @@
 {
-  "origin": ["http://localhost:8080", "http://43.201.49.137", "http://djtwin"],
+  "origin": ["http://localhost", "http://localhost:8080", "http://43.201.49.137", "http://djtwin"],
   "methods": ["OPTIONS", "GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   "credentials": true
 }
