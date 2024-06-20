@@ -27,6 +27,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 <template>
   <!-- Header -->
   <div class="relative">
+   
     <div class="py-8 mx-auto w-full">
       <div>
         <!-- Card stats -->
@@ -56,6 +57,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
                 :statTitle1="props.dailyState.totalCount"
                 :statTitle2="props.dailyState.passCount"
                 :statTitle3="props.dailyState.failCount"
+                :warningEquipmentArray="warningEquipmentArray"
              
               />
             </div>
@@ -80,6 +82,10 @@ export default {
     CardStats, // CardStats 컴포넌트 등록
   },
   props: {
+    warningEquipmentArray : {
+      type: Array,
+      default: () => []
+    },
     dailyCount: {
       type: Object,
       default: () => ({ totalCount: 0, passCount: 0, failCount: 0 })

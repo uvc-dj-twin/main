@@ -1,8 +1,8 @@
 <template>
   <div>
     <admin-navbar style=" top: 0;" />
-      <div class="mt-0 px-4 md:px-10 mx-auto w-full -m-24"
-      style="margin-bottom:40px">
+      <div class="mt-0 px-4 md:px-10 mx-4 w-full"
+      style="margin-right:40px; margin-left:40px;">
           <router-view />
         </div>
         <footer-admin />

@@ -1,12 +1,16 @@
 <template>
   <div>
+  
     <div class="flex flex-wrap mt-4">
       <div class="w-full">
 
 
 
-        <HeaderStats :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData"
+        <HeaderStats 
+        :warningEquipmentArray="warningEquipmentArray"
+        :dailyCount="dailyCount" :dailyState="dailyState" :testChartData="testChartData"
           :machineChartData="machineChartData" />
+
 
         <!-- 두번째 props가 전달이 안되고 props안에서 첫번째인 dailycount만 자식에게 전달되는 문제를 수정 -->
         <RealTimeCard :dataRealtimeCard="realtimeResult" />
@@ -83,6 +87,8 @@ export default {
           connectSocket().then((socket) => {
             console.log('Socket connected:', socket);
 
+            socket.emit('requestGroupData');
+
             // 'currents' 이벤트 리스너 등록
             socket.on('currents', (data) => {
               changeData(data);
@@ -109,6 +115,16 @@ export default {
             }
 
             realtimeMachineData.value[labelTime] = dailyState.value.failCount;
+            const machineKeys = Object.keys(realtimeMachineData.value)
+            if (machineKeys.length > 20) {
+              const recentKeys = machineKeys.slice(-20);
+              const newObject = {};
+
+              recentKeys.forEach(key => {
+                newObject[key] = realtimeMachineData.value[key];
+              });
+              realtimeMachineData.value = newObject;
+            }
           }, 3000);
         })
         .catch((error) => {
@@ -182,10 +198,12 @@ export default {
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
 
-         
-        if (!warningEquipmentArray.includes(newData.equipmentName) && newData.thresholdPercent >= 100) {
-          warningEquipmentArray.push(newData.equipmentName);
+          
+        if (!warningEquipmentArray.value.includes(newData.equipmentName) 
+        && newData.thresholdPercent >= 100) {
+          warningEquipmentArray.value.push(newData.equipmentName);
         }
+        console.log(warningEquipmentArray.value)
 
 
 
@@ -206,8 +224,8 @@ export default {
       dailyCount,
       dailyState,
       realtimeResult,
-      CardLineChart, testChartData, realtimeTestData, realtimeMachineData, machineChartData
-
+      CardLineChart, testChartData, realtimeTestData, realtimeMachineData, machineChartData,
+      
 
 
     }

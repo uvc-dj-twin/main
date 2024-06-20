@@ -1,9 +1,9 @@
 <template>
-  <div class="p-8 flex flex-wrap">
+  <div class="px-8 flex flex-wrap">
       <div class="w-full ">
         <div class="flex">
           <p class="text-5xl font-bold"
-              style="width: 300px">이력조회</p>
+              style="width: 300px"></p>
         </div>
         <div style="display:flex">
         <HeaderDataRead/>

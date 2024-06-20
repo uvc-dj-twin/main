@@ -10,7 +10,7 @@
     <div class="flex-auto">
       <div class="flex flex-wrap">
         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-          <h5 class="font-bold text-6xl text-blueGray-700">
+          <h5 class="font-bold text-5xl text-blueGray-700">
             {{ title }}
           </h5>
             <br>

@@ -172,13 +172,13 @@ export default {
 
         // console.log(this.$router)
         // self.$router.push({name: "Dashboard"})
-        router.push({ name: 'Dashboard' })
+        router.push({ name: 'Login' })
         
 
 
       } catch (error) {
+        router.push({ name: 'Register' })
         message.value="가입에 실패하였습니다. 확인 후 다시 가입바랍니다."
-
 
         console.error(error.message);
         // 로그인 실패 처리

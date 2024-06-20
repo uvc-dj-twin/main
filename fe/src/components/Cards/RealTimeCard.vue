@@ -5,11 +5,7 @@
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
-        <div
-          class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1"
-        >
-          Monitoring Board
-        </div>
+      
       </div>
     </div>
     <div class="block vw-50%">
@@ -36,7 +32,7 @@
         <tbody>
           <tr v-for="(result, index) in props.dataRealtimeCard" :key="index">
             <th
-              class="text-4xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-4xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <span
                 class="ml-3 font-bold"
@@ -49,7 +45,7 @@
             </th>
 
             <td
-              class="text-4xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-2xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <span
                 class="ml-3 font-bold"
@@ -62,7 +58,7 @@
             </td>
 
             <td
-              class="text-xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <div class="flex items-center">
                 <div class="relative w-full">
@@ -86,14 +82,14 @@
               </div>
             </td>
             <td
-              class="text-center border-t-0 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+              class="text-center border-t-0 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap "
             >
               <div class="items-center">
                 <span class="mr-2">
                   {{ result.currentFailCount }} / {{ result.currentCount }}
                 </span>
                 <div class="relative w-full">
-                  <div class="h-12 flex rounded bg-gray-100">
+                  <div class="h-4 flex rounded bg-gray-100">
                     <div
                       :style="{ width: `${Math.round(result.currentRatioPercent)}%` }"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
@@ -123,14 +119,14 @@
             </td>
 
             <td
-              class="text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <div class="items-center">
                 <span class="mr-2">
                   {{ result.vibrationFailCount }} / {{ result.vibrationCount }}
                 </span>
-                <div class="relative w-full">
-                  <div class="h-12 flex rounded bg-gray-100">
+                <div class="h-8 w-full">
+                  <div class="h-4 flex rounded bg-gray-100">
                     <div
                       :style="{ width: `${Math.round(result.vibrationRatioPercent)}%` }"
                       class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center"
@@ -160,18 +156,18 @@
             </td>
 
             <td
-              class="text-4xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4"
+              class="text-4xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               {{ new Date(result.vibrationTime).toLocaleTimeString('ko-KR') }}
             </td>
             <td
-              class="border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center"
+              class="border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap  text-center"
               style="text-align: center;"
             >
               <router-link
                 :to="{
                   name: 'DashboardSingle',
-                  params: { id: id? id : 10 },
+                  params: { id: result.equipmentId? result.equipmentId : 10 },
                 }"
                 class="bg-color1 text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
               >
