@@ -4,9 +4,9 @@
   >
     <div class="flex-auto w-full h-full">
       <div class="flex flex-wrap h-full">
-        <div class="w-full max-w-full h-full flex-col flex items-center">
+        <div class="w-full text-3xl max-w-full h-full flex-col flex items-center">
           <div class="w-full flex flex-column justify-around flex-grow">
-            <h5 class="font-semibold text-xl text-blueGray-700">
+            <h5 class="font-semibold text-blueGray-700">
               {{ statSubtitle }}
             </h5>
           </div>

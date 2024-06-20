@@ -78,7 +78,7 @@ export default {
           title: {
             display: true,
             text: props.title,
-            fontColor: "black",
+            fontColor: "white",
           },
           legend: {
             display: false,
