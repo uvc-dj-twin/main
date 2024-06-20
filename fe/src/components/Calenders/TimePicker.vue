@@ -18,7 +18,7 @@
           <div class="wrap">
             <ejs-timepicker 
              style="width:100px"
-            id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead'  :max="max" :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
+            id='endPicker' :placeholder="timeplaceholder" :enabled="endEnable" :readonly='endRead' :step="step" v-model="endVal" @change='changeValue'></ejs-timepicker>
           </div>
         </div>
         <!-- <div class="tabs-wrap">
@@ -48,7 +48,6 @@ export default {
     const startRead = ref(false);
     const endRead = ref(false);
     const min = ref(new Date());
-    const max = ref(); // max 값 추가
 
     const step = 30;
     const startVal = ref(null);
@@ -69,10 +68,7 @@ export default {
         endVal.value = null;
         const value = new Date(startVal.value);
         value.setMinutes(value.getMinutes() + step);
-        
-        const maxValue = new Date(startVal.value);
-        maxValue.setHours(maxValue.getHours() + 1); // startTime의 1시간 후로 max 설정
-        max.value = maxValue;
+
         emit('update:startTime',args.value)
       }
     };
@@ -100,7 +96,6 @@ export default {
       startRead,
       endRead,
       min,
-      max,
       step,
       startVal,
       endVal,

@@ -19,6 +19,12 @@ ENV PATH /opt/conda/envs/xgboost/bin:$PATH
 RUN conda install --name xgboost xgboost==1.2.0 && \
     conda install --name xgboost nodejs
 
+# 타임존 설정
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+    ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone
+
 # 소스 코드 복사
 COPY . .
 

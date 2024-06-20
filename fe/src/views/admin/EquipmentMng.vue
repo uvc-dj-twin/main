@@ -11,64 +11,53 @@
           <div class="flex items-center justify-end w-full h-full">
             <HeaderForm :menu="menu" @handleSearch="handleSearch" />
           </div>
-          
+
         </div>
-        <div v-if="isLoading"
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
-    <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
-  </div>
-          <div v-else-if="totalRow==0" class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
-            조회 결과가 없습니다.
-          </div>
+        <div v-if="isLoading" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+          <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
+        </div>
+        <div v-else-if="totalRow == 0"
+          class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+          조회 결과가 없습니다.
+        </div>
 
-        <div v-else class="flex relative w-full px-6 py-4 max-w-full flex-grow flex-1"
-          style="align-items: center; gap:10px;">
-          <h3
-            class="font-semibold text-lg">
-            {{editCheck ? '접근 권한 수정' : '접근 권한 조회'}}
-          
-          </h3>
 
-        <button
-              class="get-started bg-color3 text-white font-bold py-4 px-12 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
-              @click="editEvent"
-              style="min-width: 200px; max-width: 400px"
-            >
-              {{ editCheck ? '권한 저장' : '권한 수정' }}
-            </button>
-          <ModalMachineAdd/>
-
-          <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+        <div v-else class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
-              <div class="relative w-full px-4 max-w-full flex-grow flex-1"></div>
+              <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                <h3 class="font-semibold text-lg">
+                  {{ editCheck ? '접근 권한 수정' : '접근 권한 조회' }}
+                </h3>
+              </div>
+
+              <ModalMachineAdd @handleAddEquipment="handleAddEquipment" />
+              <button
+                class="get-started bg-color3 text-white font-bold py-4 px-12 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3 active:bg-emerald-600"
+                @click="editEvent" style="min-width: 100px; max-width: 200px">
+                {{ editCheck ? '권한 저장' : '권한 수정' }}
+              </button>
             </div>
           </div>
-       
+
           <div class="text-left block w-full overflow-x-auto">
             <table class="items-center w-full bg-transparent border-collapse">
               <thead>
                 <tr>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                  >
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     장비명
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                  >
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     Threshold
                   </th>
-                  <th
-                    v-for="(group, index) in groupList"
-                    :key="index"
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                  >
+                  <th v-for="(group, index) in groupList" :key="index"
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     그룹 {{ group.name }}
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                  >
+                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     삭제
                   </th>
                 </tr>
@@ -79,59 +68,39 @@
                     {{ machine.name }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
-                    <input
-                      v-if="editCheck"
-                      type="text"
-                      v-model="machine.threshold"
-                      placeholder="Search here..."
-                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-                    />
+                    <input v-if="editCheck" type="text" v-model="machine.threshold" placeholder="Search here..."
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
                     <div v-else>{{ machine.threshold }}</div>
                   </td>
-                  <td
-                    v-for="(group, groupIndex) in machine.groups"
-                    :key="groupIndex"
-                    class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
-                  >
+                  <td v-for="(group, groupIndex) in machine.groups" :key="groupIndex"
+                    class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     <div class="col-lg-12 control-section">
                       <div class="content-wrapper">
                         <div class="container switch-control">
                           <div>
                             <label for="groupA" style="padding: 10px 10px 10px 0"> 권한부여 </label>
-                            <input
-                              type="checkbox"
-                              v-model="group.access"
-                              @click="checkTF(index, groupIndex)"
-                              :disabled="!editCheck"
-                            />
+                            <input type="checkbox" v-model="group.access" @click="checkTF(index, groupIndex)"
+                              :disabled="!editCheck" />
                           </div>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <button
-                      @click="addDeleteMachine(machine.id)"
+                    <button @click="addDeleteMachine(machine.id)"
                       class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
-                      style="text-align: right;"
-                    >
-                      삭제
+                      style="text-align: right;">
+                      {{ DeleteMachineArray.includes(machine.id) ? '취소' : '삭제' }}
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-         
-        </div>
 
         </div>
 
 
-
-
-
-       
       </div>
     </div>
     <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -139,18 +108,11 @@
       <div class="mt-2">
         <button
           class="bg-emerald-500 text-white active:bg-emerald-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-          type="button"
-          style="transition: all .15s ease"
-          v-for="(page) in pages"
-          :key="page"
-          :value="page"
-          :class="{
+          type="button" style="transition: all .15s ease" v-for="(page) in pages" :key="page" :value="page" :class="{
             'hidden': !(Math.floor(page / 10) === Math.floor(currentPage / 10)) &&
               page !== 1 &&
               page !== pages
-          }"
-          @click="handlePages"
-        >
+          }" @click="handlePages">
           {{ page }}
         </button>
       </div>
@@ -215,21 +177,21 @@ export default {
 
   },
   setup() {
-    
+
     const menu = ['장비명', '그룹명'];
     const DeleteMachineArray = ref([]);
 
     const columnList = ['장비명', 'Threshold', '그룹A', '그룹B', '그룹C', '삭제요청']
     const pages = ref(0);
     const currentPage = ref(1);
-    const totalRow=ref(0);
+    const totalRow = ref(0);
     const limit = ref(10);
     const selectedOption = ref(menu[0])
     const searchValue = ref('')
     const groupList = ref([])
     const editCheck = ref(false)
 
-    const isLoading=ref(false)
+    const isLoading = ref(false)
     const axios = inject('axios');
 
     onMounted(() => {
@@ -248,12 +210,16 @@ export default {
       getValue()
     }
 
+    const handleAddEquipment = () => {
+      getValue();
+    }
+
     const getValue = () => {
       isLoading.value = true;
       // groups.value = [];
       // users.value = [];
-     
-      
+
+
       console.log("axios 시작")
       const selectedMap = { 장비명: 'name', 그룹명: 'group' }
 
@@ -270,6 +236,7 @@ export default {
           console.log('Response:', response.data)
           const result = JSON.parse(JSON.stringify(response.data));
           data.value = result
+          totalRow.value = Number(data.value.totalRow);
           const total = Number(data.value.totalRow);
           pages.value = total % limit.value === 0 ? total / limit.value : Math.floor(total / limit.value) + 1;
           if (result.machines.length > 0) {
@@ -307,7 +274,7 @@ export default {
     }
 
     const editEvent = () => {
-      if (editCheck.value){
+      if (editCheck.value) {
         console.log("axios 시작")
         axios
           .patch(`/admin/machines`, {
@@ -334,19 +301,20 @@ export default {
         console.log('수정으로 변경')
       }
       if (data.value.totalRow > 0) {
-        editCheck.value=!editCheck.value
+        editCheck.value = !editCheck.value
       }
     }
 
-    const handleMaxPages=()=>{
-      if(Math.floor(currentPage.value/10)<Math.floor(totalRow.value/10)) {
-        currentPage.value=currentPage.value+10}
-    }    
-    const handleMinPages=()=>{
-      if(Math.floor(currentPage.value/10)>=1) {
-        currentPage.value=currentPage.value-10
+    const handleMaxPages = () => {
+      if (Math.floor(currentPage.value / 10) < Math.floor(totalRow.value / 10)) {
+        currentPage.value = currentPage.value + 10
       }
-    }    
+    }
+    const handleMinPages = () => {
+      if (Math.floor(currentPage.value / 10) >= 1) {
+        currentPage.value = currentPage.value - 10
+      }
+    }
 
 
     ////////////////로딩관련 처리////////////////////////
@@ -365,7 +333,7 @@ export default {
     const stopRotation = () => {
       clearInterval(rotateInterval); // 회전 인터벌 종료
     };
-    
+
     watch(() => isLoading.value, (newValue) => {
       if (newValue) {
         startRotation(); // 회전 시작
@@ -373,14 +341,14 @@ export default {
         stopRotation(); // 회전 종료
       }
     });
-    
+
 
 
     return {
       menu, columnList, data, pages, handlePages, addDeleteMachine, checkTF, limit, editEvent,
       handleSearch, selectedOption, searchValue, groupList, editCheck, DeleteMachineArray,
-      handleMinPages,handleMaxPages,totalRow,currentPage,
-      isLoading,rotationDegree
+      handleMinPages, handleMaxPages, totalRow, currentPage,
+      isLoading, rotationDegree, handleAddEquipment
     }
 
   }

@@ -5,7 +5,7 @@ export default {
   install: (app, options) => {
     let socket = null;
 
-    function connectSocket() {
+    async function connectSocket() {
       const jwtToken = localStorage.getItem('token');
       const { host } = options;
 
@@ -17,6 +17,8 @@ export default {
 
       app.config.globalProperties.$socket = socket;
       app.provide('socket', socket);
+
+      return socket;
     }
 
     function disconnectSocket() {

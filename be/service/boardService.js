@@ -189,7 +189,7 @@ const service = {
         })
 
         dailyTrend.data.push(currentStat + vibrationStat);
-        dailyTrend.labels.push(isOneDay ? startUTC.getHours() : startUTC.toLocaleDateString());
+        dailyTrend.labels.push(isOneDay ? startUTC.getHours() : startUTC.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }));
       }
 
       // totalCount

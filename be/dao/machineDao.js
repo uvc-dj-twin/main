@@ -139,6 +139,7 @@ const dao = {
         where: {
           id: params.id,
         },
+        force: true,
       })
        .then((selected) => {
           resolve(selected);

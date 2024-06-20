@@ -11,7 +11,11 @@ FROM node:latest
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 EXPOSE 80
-ENV NODE_OPTIONS=--openssl-legacy-provider
+
+# 타임존 설정 추가
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo "Asia/Seoul" > /etc/timezone
+
 RUN npm install -g serve
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 CMD ["serve", "-s", "dist", "-l", "80"]
