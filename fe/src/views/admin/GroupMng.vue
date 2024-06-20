@@ -4,7 +4,7 @@
 
       <div class="flex flex-row mt-4 w-full" style="margin-right:56px;">
         <div>
-          <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px"> 회원 테이블</h3>
+          <!-- <h3 class="font-bold text-5xl relative w-full max-w-full flex-grow flex-1" style="width:300px"> 회원 테이블</h3> -->
 
         </div>
 
