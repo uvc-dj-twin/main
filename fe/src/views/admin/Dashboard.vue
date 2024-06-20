@@ -203,8 +203,6 @@ export default {
         && newData.thresholdPercent >= 100) {
           warningEquipmentArray.value.push(newData.equipmentName);
         }
-        console.log(warningEquipmentArray.value)
-
 
 
         realtimeResult.value[index] = newData
