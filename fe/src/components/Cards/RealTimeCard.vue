@@ -18,7 +18,7 @@
             <th
               v-for="column in columnList"
               :key="column"
-              class="text-4xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
+              class="text-2xl align-middle border border-solid py-3 text-l uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-middle"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -32,7 +32,7 @@
         <tbody>
           <tr v-for="(result, index) in props.dataRealtimeCard" :key="index">
             <th
-              class="text-4xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
+              class="text-xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <span
                 class="ml-3 font-bold"
@@ -45,7 +45,7 @@
             </th>
 
             <td
-              class="text-2xl border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
+              class="text-xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               <span
                 class="ml-3 font-bold"
@@ -64,7 +64,7 @@
                 <div class="relative w-full">
                   <div>
                     <div
-                      class="text-center text-4xl"
+                      class="text-center text-xl"
                       :class="[
                         result.thresholdPercent > 70
                           ? 'text-red-500'
@@ -105,7 +105,7 @@
                     </div>
                   </div>
                   <i
-                    class="ellipse w-full text-5xl fas mr-2"
+                    class="ellipse w-full text-xl fas mr-2"
                     :class="[
                       result.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500',
                     ]"
@@ -142,7 +142,7 @@
                     </div>
                   </div>
                   <i
-                    class="ellipse w-full text-5xl fas mr-2"
+                    class="ellipse w-full text-xl fas mr-2"
                     :class="[
                       result.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500',
                     ]"
@@ -162,7 +162,7 @@
             
 
             <td
-              class="text-4xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
+              class="text-xl text-center border-t-0 align-middle border-l-0 border-r-0 whitespace-nowrap "
             >
               {{ new Date(result.vibrationTime).toLocaleTimeString('ko-KR') }}
             </td>
@@ -175,7 +175,7 @@
                   name: 'DashboardSingle',
                   params: { id: result.equipmentId? result.equipmentId : 10 },
                 }"
-                class="bg-color1 text-2xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
+                class="bg-color1 text-xl get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1"
               >
                 상세보기
               </router-link>

@@ -19,7 +19,7 @@
         <div v-show="editCheck" class="mx-4">
           <span class="mx-4">선택한 사용자의 변경할 그룹 선택</span>
           <div class="relative inline-block">
-            <div @click="toggleDropdown"
+            <div @change="toggleDropdown"
               class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
               style="min-width: 200px; max-width: 400px">
               {{ selectedText }}
@@ -81,23 +81,24 @@
         <thead>
           <tr>
             <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-              선택
+              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              
+              <input v-model="allCheck" type="checkbox" @click="handleAllcheck">
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               이름
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               메일
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               현재 그룹
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               최종 그룹
             </th>
 
@@ -110,7 +111,7 @@
           <!-- <tr v-for="person in people" :key="person.id"> -->
           <tr v-for="(person, index) in people" :key="index">
             <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4 text-left flex items-center">
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-2xl whitespace-nowrap p-4 text-left flex items-center">
               <input :id="`${index}`" type="checkbox" v-model="checkedArray[index]" @change="checkE"
                 :disabled="!editCheck" />
               <!-- <span
@@ -121,7 +122,7 @@
               >
               </span> -->
             </th>
-            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4">
+            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
               <div class="flex items-center">
                 <span class="mr-2">{{ person.name }}
                   <br></span>
@@ -131,16 +132,16 @@
               </div>
             </td>
 
-            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4">
+            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
               {{ person.email }}
             </td>
 
-            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4"
+            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
               :style="{ color: person.Group && person.Group.name ? '' : 'gray' }">
               {{ person.Group?.name || '-미소속-' }}
               <!-- {{person.currentGroup}} -->
             </td>
-            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl whitespace-nowrap p-4">
+            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
               <select v-model="selectedGroupArray[index]" @change="checkGroupE" :disabled="!editCheck" class="">
                 <!-- <option selected :value="person.currentGroup">  {{ person.currentGroup }} </option> -->
 
@@ -191,6 +192,28 @@ export default {
     const addGroupName = ref('');
     const showModal = ref(false);
     const deleteOptionId = ref();
+    const allCheck = ref(false);
+
+
+    const handleAllcheck = ()=>{
+      checkedArray.value.forEach((checked, index) => {
+        checkedArray.value[index] = !allCheck.value 
+        // (allCheck 변경전 값을 바꾼다음 전체반영)
+
+      })
+       
+      
+      // if(true==event.target.value){
+      //   checkedArray.value.forEach((_, index)=>(checkedArray.value[index] = true))
+      // }
+      // if(allCheck.value==false){
+      //   checkedArray.value.forEach((_, index)=>(checkedArray.value[index] = false))
+      // }
+      console.log(checkedArray.value)
+      
+
+    }
+    
 
 
     // 커스텀 드롭다운
@@ -315,6 +338,7 @@ export default {
       handleEdit, editCheck,
       selectedText, dropdownOpen, toggleDropdown, selectOption, handleAddOption, addGroup, addGroupName, handleAddGroup,
       showModal, cancelDelete, deleteOption, deleteOptionId, rotationDegree,
+      allCheck,handleAllcheck,
     };
   },
 
