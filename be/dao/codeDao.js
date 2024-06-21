@@ -8,7 +8,7 @@ const dao = {
         {
           where: {
             machineId: params.machineId,
-            code: params.code
+            code: params.code || 0
           }
         }
       )

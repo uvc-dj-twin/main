@@ -55,14 +55,16 @@ const readCSV = async (filePath, baseTime) => {
 // influx에 저장
 const saveDB = async (csvData, baseTime, type) => {
   const writeApi = influx.getWriteApi(`${process.env.INFLUXDB_ORG}`, `${process.env.INFLUXDB_BUCKET}`, 'us'); // Precision를 마이크로초로 설정
+
   try {
     let startTime = baseTime.getTime() * 1000;
     let endTime = baseTime.getTime() * 1000;
-    let writePoints;
+    let batchPoints = [];
+
     if (type === 'currents') {
       startTime -= csvData.data.length * 500;
       endTime -= 500;
-      writePoints = csvData.data.map((entry, index) => {
+      csvData.data.forEach((entry, index) => {
         const timestamp = baseTime.getTime() * 1000 + index * 500;
         const point = new Point('currents')
           .tag('serial_no', csvData.machine)
@@ -74,12 +76,12 @@ const saveDB = async (csvData, baseTime, type) => {
           .floatField('z', entry[2])
           .timestamp(timestamp);
 
-        return writeApi.writePoint(point);
+        batchPoints.push(point);
       });
     } else if (type === 'vibrations') {
       startTime -= csvData.data.length * 250;
       endTime -= 250;
-      writePoints = csvData.data.map((entry, index) => {
+      csvData.data.forEach((entry, index) => {
         const timestamp = baseTime.getTime() * 1000 + index * 250;
         const point = new Point('vibrations')
           .tag('serial_no', csvData.machine)
@@ -89,11 +91,14 @@ const saveDB = async (csvData, baseTime, type) => {
           .floatField('x', entry[0])
           .timestamp(timestamp);
 
-        return writeApi.writePoint(point);
+        batchPoints.push(point);
       });
     }
 
-    await Promise.all(writePoints);
+    // Batch Points를 InfluxDB에 쓰기
+    await writeApi.writePoints(batchPoints);
+
+    // API 사용 종료
     await writeApi.close();
 
     return {
@@ -240,23 +245,39 @@ const currentDir = path.resolve(__dirname, '../csv/current');
 const vibrationDir = path.resolve(__dirname, '../csv/vibration');
 
 const scheduler = {
-  machineDataJob() {
-    const io = require('../app').get('io');
+  async machineDataJob() {
+    try {
+      const io = require('../app').get('io');
+      const currentFolders = fs.readdirSync(currentDir);
+      const vibrationFolders = fs.readdirSync(vibrationDir);
 
-    const currentFolers = fs.readdirSync(currentDir);
-    const vibrationFolders = fs.readdirSync(vibrationDir);
-    currentFolers.forEach((file) => {
-      const currentFile = path.resolve(currentDir, file, `current${curIdx}.csv`)
-      readCSVAndSaveDB(currentFile, 'currents', io);
-    });
-    vibrationFolders.forEach((file) => {
-      const vibrationFile = path.resolve(vibrationDir, file, `vibration${vibIdx}.csv`)
-      readCSVAndSaveDB(vibrationFile, 'vibrations', io);
-    });
-    curIdx++; vibIdx++;
-    curIdx = curIdx >= curLength ? 0 : curIdx;
-    vibIdx = vibIdx >= vibLength ? 0 : vibIdx;
-  }
+      // Promise 배열 초기화
+      const promises = [];
+
+      // currents 폴더의 모든 파일 처리 Promise 추가
+      currentFolders.forEach(file => {
+        const currentFile = path.resolve(currentDir, file, `current${curIdx}.csv`);
+        const promise = readCSVAndSaveDB(currentFile, 'currents', io);
+        promises.push(promise);
+      });
+
+      // vibrations 폴더의 모든 파일 처리 Promise 추가
+      vibrationFolders.forEach(file => {
+        const vibrationFile = path.resolve(vibrationDir, file, `vibration${vibIdx}.csv`);
+        const promise = readCSVAndSaveDB(vibrationFile, 'vibrations', io);
+        promises.push(promise);
+      });
+
+      // 모든 Promise 병렬로 처리
+      await Promise.all(promises);
+
+      // 다음 인덱스 설정 (현재 파일 처리 인덱스 업데이트)
+      curIdx = (curIdx + 1) % curLength;
+      vibIdx = (vibIdx + 1) % vibLength;
+    } catch (err) {
+      console.error('파일 처리 중 오류 발생:', err);
+    }
+  },
 }
 
 module.exports = scheduler;
