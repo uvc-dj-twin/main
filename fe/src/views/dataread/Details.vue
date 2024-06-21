@@ -9,7 +9,7 @@
         <HeaderDataRead/>
         <div class="w-full">
               <div class="flex items-center justify-end w-full h-full"
-            style="gap: 16px; height: 65px;"> 
+            style="gap: 16px; height: 120px;"> 
              
 <div class="items-start flex flex-col mt-12 text-center">
   <label style="margin-left:16px; text-align: end;">설비 선택</label>
@@ -208,9 +208,9 @@ export default {
 // 달력관련 변수들 
     const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
     const datePicker = ref(null);
-    const startTime = ref(new Date('2024-06-14T16:00:00.000Z')
+    const startTime = ref(new Date('2024-06-14T15:01:00.000Z')
     );
-    const endTime = ref(new Date('2024-06-14T23:00:00.000Z')
+    const endTime = ref(new Date('2024-06-14T14:59:00.000Z')
     );
 
 // 조회 시 받아올 데이터 수 

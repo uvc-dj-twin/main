@@ -8,7 +8,7 @@
 
         <div style="display:flex">
           <HeaderDataRead />
-          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 65px;">
+          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 100px;">
 
 <div class="flex flex-col">
   
@@ -92,8 +92,11 @@ export default {
     CardMachineInfo,
   },
   setup() {
-    const startVal = ref(new Date("06/06/2024 12:00 PM"));
-    const endVal = ref(new Date("06/20/2024 5:00 PM"));
+
+    const startVal = ref(new Date(new Date().setDate(new Date().getDate() - 7)));
+    const endVal = ref(new Date());
+
+
     const selectedValue = ref('option1');
     const waterMark = "Select a Range";
     const equipmentList = ref(['가짜장비1', 'L-SF-05'])
@@ -136,7 +139,7 @@ export default {
             //   console.log(equipmentList.value)
             // equipmentList[0].id
             selectedValue.value=equipmentList.value[0].id
-            // getValue(); //
+            getValue(); //
           })
           .catch((error) => {
             // 요청이 실패하면 실행되는 코드

@@ -46,6 +46,10 @@
 export default {
   name: "card-stats2",
   props: {
+    data: {
+      type: Object,
+    },
+
     title: {
       type: String,
       default: "제목",
@@ -97,7 +101,10 @@ export default {
       default: "bg-red-500",
     },
   },
-  setup() {
+  setup(props) {
+
+
+    console.log(props.data)
 
     // const {data} = props
     // const dailyCount =ref();
@@ -112,7 +119,7 @@ export default {
     //   percent.value = newVal;
     // });
 
-    return {  };
+    return { props };
   },
 };
 </script>

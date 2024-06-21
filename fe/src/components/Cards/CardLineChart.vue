@@ -1,6 +1,6 @@
 <template>
   <div class=" bg-white relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded"
-  style="height:18vh"
+  style="height:30vh"
   >
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
@@ -18,7 +18,7 @@
       <!-- Chart -->
       <div class="relative">
         <canvas ref="chart" 
-        style="height:15vh"></canvas>
+        style="height:25vh"></canvas>
       </div>
     </div>
 

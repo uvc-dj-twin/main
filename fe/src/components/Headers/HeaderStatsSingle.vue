@@ -34,7 +34,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
           style="display: flex; height: 350px;flex-direction: column-reverse;">
 
 
-          <CardStatsSingle title="검사 수"/>
+          <CardStatsSingle1 title="검사 수" :data="totalStat"/>
           <CardStatsSingle title="Threshold"/>
           <CardStatsSingle title="작업시작시간"/>
           <CardStatsSingle title="작업신호" />
@@ -46,11 +46,14 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <script>
 import { ref } from 'vue';
+import CardStatsSingle1 from '@/components/Cards/CardStatsSingle1.vue';
 import CardStatsSingle from '@/components/Cards/CardStatsSingle.vue';
+
 export default {
   components: {
   
-    CardStatsSingle,
+    CardStatsSingle1,
+    CardStatsSingle
   },
   props: {
     dailyCount: {
@@ -69,14 +72,14 @@ export default {
   setup(props) {
     const totalStat = ref({
       statSubtitle: "금일 검사 현황",
-      statTitle1: props.dailyCount.totalCount,
-      statTitle2: props.dailyCount.passCount,
-      statTitle3: props.dailyCount.failCount,
-      statDescripiron1: "금일 총 검사",
-      statDescripiron2: "금일 정상판정",
-      statDescripiron3: "금일 이상판정",
-      statIconName: "far fa-chart-bar",
-      statIconColor: "bg-red-500",
+      content1: props.dailyCount.totalCount,
+      content2: props.dailyCount.passCount,
+      content3: props.dailyCount.failCount,
+      // statDescripiron1: "금일 총 검사",
+      // statDescripiron2: "금일 정상판정",
+      // statDescripiron3: "금일 이상판정",
+      // statIconName: "far fa-chart-bar",
+      // statIconColor: "bg-red-500",
     });
 
     return {

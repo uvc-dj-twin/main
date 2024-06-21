@@ -174,7 +174,7 @@ export default {
         console.log('수정진입')
         console.log(props.data.data[0])
       
-        myChart.data.labels = Array.from({length: 120}, (_, i) => i * (3 / 119));
+        myChart.data.labels = Array.from({length: props.data.data[0].length}, (_, i) => (i * (3 / 119)).toFixed(1));
         myChart.data.datasets[0].data = props.data.data[0];
         myChart.data.datasets[1].data = props.data.data[1];
         myChart.data.datasets[2].data = props.data.data[2];

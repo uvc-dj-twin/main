@@ -4,22 +4,33 @@
       <div class="w-full">
 
         <p class="text-6xl">
-          장비명:{{props.id}}
+{{ realtimeResult?.equipmentSerialNo }}
+</p>
 
-        </p>
+<!-- {{ typrof (realtimeResult?.vibrationTime) }} -->
+
+<!-- {{ new Date().getTime()  }} -->
+  <div> 
+
+    <span v-if="checkTimedifference < 60">정상 작동중</span>
+    <span v-else>센서 정지</span>
+    {{realtimeResult?.vibrationTime}} <br>
+    {{realtimeResult?.currentTime}} 
+  </div>
+       
+
+
+        
 
 
 
-     
-        <HeaderStatsSingle :dailyCount="dailyCount" :dailyState="dailyState" 
-        />
+<!-- 
+        <HeaderStatsSingle :dailyCount="dailyCount? dailyCount : ''" :dailyState="dailyState? dailyState : ''" 
+        /> -->
+        <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
+        <!-- <CardLineChartDetailSingle :data="vibrationRef"></CardLineChartDetailSingle> -->
 
-
-          <CardLineChartDetail></CardLineChartDetail>
-          <CardLineChart2></CardLineChart2>
-
-         
-
+        <CardLineChart2 :data="currentRef"></CardLineChart2>
         <!-- <h1>{{ realtimeResult }}</h1>   
       <h1>{{ dailyCount }}</h1>       
       <h1>{{ dailyState }}</h1>       
@@ -32,17 +43,19 @@
 <script>
 // import data from "@/data/dashboard.js";
 import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
-import { useStore } from 'vuex';
 
-import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
+// import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
 import CardLineChartDetail from "@/components/Cards/CardLineChartDetail.vue";
+// import CardLineChartDetailSingle from "@/components/Cards/CardLineChartDetailSingle.vue";
+
 import CardLineChart2 from "@/components/Cards/CardLineChart2.vue";
 
 
 export default {
   components: {
-    HeaderStatsSingle,
+    // HeaderStatsSingle,
     CardLineChartDetail,
+    // CardLineChartDetailSingle,
     CardLineChart2,
     
     // CardBarChart,
@@ -51,16 +64,29 @@ export default {
   },
   props: {
     id: {
-      type: Number,
+      type: String,
     },
   },
   setup(props) {
     console.log(props)
 
+    const currentRef =ref({
+      data: [[], [], []],
+    });
+    const vibrationRef =ref({
+      data: [[]],
+    });
+    
+    
+    const checkTimedifference = ref (0)
+
+
+   
+
+
+
     const dailyCount = ref();
-    const dailyState = ref();
     const realtimeResult = ref();
-    const store = useStore();
     const testChartData = computed(() => {
       const labels = Object.keys(realtimeTestData.value);
       const data = Object.values(realtimeTestData.value);
@@ -121,7 +147,6 @@ export default {
               realtimeTestData.value = newObject;
             }
 
-            realtimeMachineData.value[labelTime] = dailyState.value.failCount;
           }, 3000);
         })
         .catch((error) => {
@@ -145,43 +170,27 @@ export default {
     const setDailyInfo = () => {
       let totalCount = 0
       let failCount = 0
-
-      realtimeResult.value.forEach((equipment) => {
-        totalCount += equipment.currentCount + equipment.vibrationCount
-        failCount += equipment.currentFailCount + equipment.vibrationFailCount
-      })
-
-      const totalEquipments = realtimeResult.value.length
-      const equipmentsWithFailures = realtimeResult.value.filter(
-        (equipment) =>
-          equipment.vibrationFailCount >= equipment.thresholdCount || equipment.currentFailCount >= equipment.thresholdCount
-      ).length
+        totalCount += realtimeResult.value.currentCount + realtimeResult.value.vibrationCount
+        failCount += realtimeResult.value.currentFailCount + realtimeResult.value.vibrationFailCount
 
       dailyCount.value = {
         totalCount: totalCount,
         passCount: totalCount - failCount,
         failCount: failCount
       }
-      dailyState.value = {
-        totalCount: totalEquipments,
-        passCount: totalEquipments - equipmentsWithFailures,
-        failCount: equipmentsWithFailures
-      }
       // store.state.failCount = dailyState.value.failCount
 
-      store.dispatch('checkAlarm',dailyState.value.failCount);
-
-      
-      
     }
 
     const changeData = async (data) => {
     console.log(data);
-      const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
-      // 해당 객체가 존재하는 경우 업데이트
-      if (index !== -1) {
+    console.log(new Date().getTime())
+    console.log((data.time/1000))
+
+    checkTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+
         const newData = {
-          ...realtimeResult.value[index]
+          ...realtimeResult.value
         }
         newData.equipmentName = data.equipmentName
         newData.equipmentSerialNo = data.equipmentSerialNo
@@ -195,15 +204,36 @@ export default {
         newData.thresholdPercent =
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
-        realtimeResult.value[index] = newData
+        realtimeResult.value = newData
         if (data.resultCode !== 0) {
           realtimeFailCount.value += 1
         }
+        if (data.type === 'currents') {
+          const flatData = Array.from({ length: data.data[0].length }, () => []);
+          data.data.forEach(row => {
+            row.forEach((value, index) => {
+              flatData[index].push(value);
+            });
+          });
+          console.log(flatData[0]);
+          console.log(flatData[1]);
+          console.log(flatData[2]);
+          currentRef.value.data[0] = currentRef.value.data[0].concat(flatData[0])
+          currentRef.value.data[1] = currentRef.value.data[1].concat(flatData[1])
+          currentRef.value.data[2] = currentRef.value.data[2].concat(flatData[2])
+          console.log(currentRef.value.data[0])
+          currentRef.value.data[0] = currentRef.value.data[0].length > 360 ? currentRef.value.data[0].slice(-360) : currentRef.value.data[0];
+          currentRef.value.data[1] = currentRef.value.data[1].length > 360 ? currentRef.value.data[1].slice(-360) : currentRef.value.data[1];
+          currentRef.value.data[2] = currentRef.value.data[2].length > 360 ? currentRef.value.data[2].slice(-360) : currentRef.value.data[2];
+        } else {
+          const flatData = data.data.flat();
+          vibrationRef.value.data[0] = vibrationRef.value.data[0].concat(flatData);
+          vibrationRef.value.data[0] = vibrationRef.value.data[0].length > 360 ? vibrationRef.value.data[0].slice(-360) : vibrationRef.value.data[0];
+          console.log(vibrationRef.value)
+        }
         setDailyInfo()
-        console.log('Updated realtimeResult:', realtimeResult.value[index])
-      } else {
-        console.log(`Equipment with ID ${data.equipmentId} not found.`)
-      }
+        console.log('Updated realtimeResult:', realtimeResult.value)
+
     }
 
 
@@ -211,11 +241,12 @@ export default {
       props,
 
 
-
+      checkTimedifference,
       dailyCount,
-      dailyState,
       realtimeResult,
-       testChartData, realtimeTestData, realtimeMachineData, machineChartData
+      currentRef, vibrationRef,
+       testChartData, realtimeTestData, realtimeMachineData, machineChartData,
+       
 
 
 

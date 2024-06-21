@@ -19,8 +19,8 @@
         <div v-show="editCheck" class="mx-4">
           <span class="mx-4">선택한 사용자의 변경할 그룹 선택</span>
           <div class="relative inline-block">
-            <div @change="toggleDropdown"
-              class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
+            <div @click="toggleDropdown"
+              class="w-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
               style="min-width: 200px; max-width: 400px">
               {{ selectedText }}
             </div>
@@ -83,7 +83,7 @@
             <th
               class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               
-              <input v-model="allCheck" type="checkbox" @click="handleAllcheck">
+              <input v-model="allCheck" type="checkbox" @click="handleAllcheck" :disabled="!editCheck">
             </th>
             <th
               class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">

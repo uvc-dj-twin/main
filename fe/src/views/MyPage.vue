@@ -114,7 +114,7 @@
                 />
                 <p>                  {{ message }}
                 </p>
-                <button @click="toggleModal">클릭</button>
+                <!-- <button @click="toggleModal">클릭</button> -->
 
                 <!-- <button @click="showModal=!showModal">클릭</button> -->
                 <!-- <div v-if="showModal==true">
@@ -135,7 +135,7 @@
                     <p class="mb-4 text-lg font-semibold">회원정보가 수정되었습니다.</p>
                     <!--  버튼 -->
                     <div class="flex justify-center">
-                      <button @click="toggleModal" class="px-4 py-2 bg-gray-100 text-gray-700 rounded m-2">확인</button>
+                      <button @click="cancelDelete" class="px-4 py-2 bg-gray-100 text-gray-700 rounded m-2">확인</button>
                     </div>
                   </div>
                 </div>
