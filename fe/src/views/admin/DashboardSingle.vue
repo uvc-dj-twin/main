@@ -84,15 +84,17 @@ export default {
     //socket//
     onMounted(() => {
       axios
-        .get(`/board/monitoring-data`)
+        .get(`/board/monitoring-data/${props.id}`)
         .then((response) => {
           // 요청이 성공하면 실행되는 코드
           console.log('Response:', response.data)
           realtimeResult.value = response.data
-          setDailyInfo()
+          // setDailyInfo()
 
           connectSocket().then((socket) => {
             console.log('Socket connected:', socket);
+
+            socket.emit('requestMachineData', props.id);
 
             // 'currents' 이벤트 리스너 등록
             socket.on('currents', (data) => {
@@ -174,6 +176,7 @@ export default {
     }
 
     const changeData = async (data) => {
+    console.log(data);
       const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
       // 해당 객체가 존재하는 경우 업데이트
       if (index !== -1) {

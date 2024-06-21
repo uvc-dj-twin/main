@@ -50,17 +50,19 @@ module.exports = (server, app) => {
 
     socket.on('requestMachineData', async (machineId) => {
       try {
-        const machine = groupMachineJoinDao.selectOne({
+        const machine = await groupMachineJoinDao.selectOne({
           groupId: socket.groupId,
-          machineId: machineId,
+          machineId: machineId || 0,
         })
+        console.log(`requestMachineData : ${machine}`)
         if (machine) {
+          console.log(`requestMachineData join : ${machine}`)
           socket.join(`machine${machineId}`)
         } else {
           socket.emit('machineJoinError', { message: 'Machine not found or not accessible' });
         }
       } catch (err) {
-        console.error('Error querying machine data:', error);
+        console.error('Error querying machine data:', err);
         socket.emit('machineJoinError', { message: 'Error querying machine data' });
       }
     });
