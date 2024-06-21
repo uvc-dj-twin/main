@@ -1,20 +1,19 @@
 <template>
   <div
-    class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
-    style="margin-bottom: 22px; width: 50vw;"
+    class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded"
+    style="height: 20vh; width: 50vw;"
   >
-    <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+    
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
-          <h2 class="text-blueGray-700 text-center text-xl font-semibold">
+          <!-- <h2 class="text-blueGray-700 text-center text-xl font-semibold">
             요일 별 추이
-          </h2>
+          </h2> -->
         </div>
       </div>
-    </div>
     <div class="p-4 flex-auto">
       <div class="relative ">
-        <canvas ref="chart" style="height:20vh"></canvas>
+        <canvas ref="chart" style="height:15vh"></canvas>
       </div>
     </div>
   </div>
@@ -100,8 +99,8 @@ export default {
               {
                 display: true, //X라벨 표시 결정 
                 scaleLabel: {
-                  display: true,
-                  labelString: "Weekly",
+                  display: false,
+                  labelString: "",
                 },
                 gridLines: {
                   borderDash: [2],

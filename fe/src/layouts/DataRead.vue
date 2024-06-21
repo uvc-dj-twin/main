@@ -4,6 +4,7 @@
       <div class="mt-0 px-4 md:px-10 mx-4 w-full"
       style="
         overflow-x:hidden;
+        overflow-y:hidden;
         margin-right:40px; 
         margin-left:40px;
         width:1456px;">

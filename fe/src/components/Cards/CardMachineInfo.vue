@@ -1,8 +1,8 @@
 <template>
   <div
     class="
-    text-xl text-center relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg h-full items-center"
-  style="height: 32vh; margin-bottom: 22px;width: 50vw;"
+    text-xl text-center relative flex flex-col min-w-0 break-words bg-white rounded xl:mb-0 shadow-lg h-full items-center"
+  style="height: 20vh; width: 50vw;"
     >
     <div class="flex-auto">
       <div class="flex flex-wrap">
@@ -10,13 +10,12 @@
           <h5 class="font-semibold text-xl text-blueGray-700">
             
              장비명: {{ props.infoData.name }} 
-             <br>
-             <br>
+            <br>
              serial-No: {{props.infoData.serialNo}}  <br>
              이상률: {{ props.infoData.totalRatio }} %  <br>
              시작일: {{ props.infoData.startDate }}  <br>
              종료일:  {{ props.infoData.endDate }} 
-             <br>
+             
           </h5>
         </div>
       </div>

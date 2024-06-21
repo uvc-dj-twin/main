@@ -1,6 +1,6 @@
 <template>
-  <div class="h-[22vh] bg-whiterelative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded"
-  style="height:35vh"
+  <div class=" bg-white relative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded"
+  style="height:18vh"
   >
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
@@ -8,17 +8,17 @@
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-black text-xl font-semibold">
-            <!-- {{ data.title }} -->
-            일자별 추이
-          </h2>
+          <!-- <h2 class="text-black text-xl font-semibold">
+            일자 별 추이
+          </h2> -->
         </div>
       </div>
     </div>
     <div class="p-4 flex-auto">
       <!-- Chart -->
-      <div class="relative h-full w150-px">
-        <canvas ref="chart" ></canvas>
+      <div class="relative">
+        <canvas ref="chart" 
+        style="height:15vh"></canvas>
       </div>
     </div>
 
