@@ -10,8 +10,12 @@
           <HeaderDataRead />
           <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 65px;">
 
-            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue" @update:value="handleUpdate">
-            </EquipmentDropdown>
+<div class="flex flex-col">
+  
+</div>
+            <label>설비 선택</label>
+            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue" @update:value="handleUpdate"></EquipmentDropdown>
+            <label>기간 선택</label>
             <div class="wrapper text-2xl font-bold "
               style="width: 200px;display: flex; align-content: space-around;flex-direction: row;flex-wrap: wrap;">
               <ejs-daterangepicker ref="dateRangePicker" style="width: 200px;" :startDate="startVal" :endDate="endVal"
@@ -132,7 +136,7 @@ export default {
             //   console.log(equipmentList.value)
             // equipmentList[0].id
             selectedValue.value=equipmentList.value[0].id
-            getValue(); //
+            // getValue(); //
           })
           .catch((error) => {
             // 요청이 실패하면 실행되는 코드

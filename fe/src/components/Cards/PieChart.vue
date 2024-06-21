@@ -4,14 +4,15 @@
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
-          <h2 class="text-blueGray-700 text-xl font-semibold">
+          <h2 class="text-center text-blueGray-700 text-xl font-semibold">
+            이상 유형 비율
           </h2>
         </div>
       </div>
     </div>
     <div class="p-4 flex-auto">
       <div class="relative">
-        <canvas ref="chart" style="height: 15vw"></canvas>
+        <canvas ref="chart" style="height: 20vh"></canvas>
         <!-- <button @click="addData">버튼</button> -->
       </div>
     </div>

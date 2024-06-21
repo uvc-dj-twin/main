@@ -202,8 +202,7 @@ export default {
 </script>
 
 <style>
-.chartjs-size-monitor {
-  height: 2000px; /* 원하는 높이 설정 */
-}
+
+
 
 </style>

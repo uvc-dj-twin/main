@@ -2,7 +2,7 @@
   <div id="app" 
   >
     <router-view 
-    style="height:100%;"/>
+    style="overflow-x:hidden;height:100%; width:1536px;"/>
   </div>
 </template>
 

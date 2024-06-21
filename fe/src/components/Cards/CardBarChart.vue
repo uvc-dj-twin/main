@@ -6,7 +6,7 @@
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
-          <h2 class="text-blueGray-700 text-xl font-semibold">
+          <h2 class="text-blueGray-700 text-center text-xl font-semibold">
             요일 별 추이
           </h2>
         </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="p-4 flex-auto">
       <div class="relative ">
-        <canvas ref="chart" style="height: 15vw"></canvas>
+        <canvas ref="chart" style="height:20vh"></canvas>
       </div>
     </div>
   </div>
@@ -57,7 +57,7 @@ export default {
           datasets: [
             {
               label: '정상',
-              backgroundColor: "#13A1F9",
+              backgroundColor: "#001832",
               borderColor: "#ed64a6",
               data: props.data.data[0],
               fill: false,
@@ -66,7 +66,7 @@ export default {
             {
               label: '이상',
               fill: false,
-              backgroundColor: "#001832",
+              backgroundColor: "#13A1F9",
               borderColor: "#4c51bf",
               data: props.data.data[1],
               barThickness: 20,
@@ -101,7 +101,7 @@ export default {
                 display: true, //X라벨 표시 결정 
                 scaleLabel: {
                   display: true,
-                  labelString: "Month",
+                  labelString: "Weekly",
                 },
                 gridLines: {
                   borderDash: [2],

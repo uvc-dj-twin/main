@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-whiterelative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded "
+  <div class="h-[22vh] bg-whiterelative flex flex-col min-w-0 break-words w-full  mb-6 shadow-lg rounded"
+  style="height:35vh"
   >
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">

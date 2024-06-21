@@ -1,9 +1,9 @@
 <template>
-  <div v-if="isLoading" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+  <div v-if="isLoading" class="h-350-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
   </div>
   <div v-else-if="people.length == 0"
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    class="h-350-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     조회 결과가 없습니다.
   </div>
   <div v-else class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">

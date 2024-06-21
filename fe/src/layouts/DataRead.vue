@@ -2,7 +2,11 @@
   <div>
     <admin-navbar style=" top: 0;" />
       <div class="mt-0 px-4 md:px-10 mx-4 w-full"
-      style="margin-right:40px; margin-left:40px;">
+      style="
+        overflow-x:hidden;
+        margin-right:40px; 
+        margin-left:40px;
+        width:1456px;">
           <router-view />
         </div>
         <footer-admin />

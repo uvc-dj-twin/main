@@ -1,10 +1,5 @@
 <template>
-  <div class="control-section range"
-    style="
-    margin-right: 0px;
-    margin-left: 0px;
-    margin-top:30px;
-  ">
+  <div class="control-section range">
     <div id="component_wrapper">
       <div class="pane"
       style="display: flex;">
@@ -108,14 +103,14 @@ export default {
 </script>
 
 <style scoped>
-#component_wrapper {
+/* #component_wrapper {
   display: block;
   margin: 0 auto;
   float: none;
   padding: 2% 0;
   max-width: 300px;
   margin-top:4px;
-}
+} */
 
 .control-section.range {
   margin: 4px;
