@@ -4,13 +4,14 @@
   >
     <div class="flex-auto w-full h-full">
       <div class="flex flex-wrap h-full">
-        <div class="w-full max-w-full h-full flex-col flex items-center">
+        <div class="w-full text-3xl max-w-full h-full flex-col flex items-center">
           <div class="w-full flex flex-column justify-around flex-grow">
-            <h5 class="font-semibold text-xl text-blueGray-700">
+            <h5 class="font-semibold text-blueGray-700">
               {{ statSubtitle }}
             </h5>
           </div>
-          <div class="w-full flex flex-column justify-around flex-grow">
+          <div class="w-full flex flex-column justify-around flex-grow" 
+          style="white-space:pre">
             <span class="font-semibold text-blueGray-700">
               {{ statDescripiron1 }}
             </span>
@@ -74,7 +75,7 @@ export default {
     },
     statSubtitle: {
       type: String,
-      default: "총 수",
+      default: "총     수",
     },
     statTitle1: {
       type: String,
@@ -94,7 +95,7 @@ export default {
   
     statDescripiron1: {
       type: String,
-      default: "총 수",
+      default: "총    수",
     },
     statDescripiron2: {
       type: String,

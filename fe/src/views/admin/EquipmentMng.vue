@@ -45,19 +45,19 @@
               <thead>
                 <tr>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     장비명
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     Threshold
                   </th>
                   <th v-for="(group, index) in groupList" :key="index"
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     그룹 {{ group.name }}
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-3xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     삭제
                   </th>
                 </tr>

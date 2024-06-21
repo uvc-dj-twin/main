@@ -23,7 +23,7 @@
             
          
             <th v-for="(column ,index) in props.columnList" :key="index"
-              class="px-6 align-middle border border-solid py-3 text-3xl  uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              class="px-6 align-middle border border-solid py-3 text-2xl  uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
                   ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
@@ -38,7 +38,7 @@
         <tbody>
           <tr v-for="(row, index) in props.rowList" :key="index">
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl  whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl  whitespace-nowrap p-4"
             >   {{ 
           row.currentResult
 
@@ -47,7 +47,7 @@
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl  whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl  whitespace-nowrap p-4"
             >
           {{ 
           row.currentTime
@@ -58,7 +58,7 @@
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl  whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl  whitespace-nowrap p-4"
             >
               <i :class="[row.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" class="fas fa-circle 500 mr-2"></i> {{ row.vibrationResult }}
             
@@ -66,11 +66,11 @@
             </td>
           
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl  whitespace-nowrap p-4"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl  whitespace-nowrap p-4"
             >{{ row.vibrationTime }} 
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-3xl  whitespace-nowrap p-4 text-left"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl  whitespace-nowrap p-4 text-left"
               style="text-align: left;"
             >
             <ModalGraph :data="{id:props.id ,date:row.vibrationTime}"/> 
