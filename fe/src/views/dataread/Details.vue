@@ -82,7 +82,7 @@
 
   <div v-else-if="testResultArray.length == 0"
 
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     조회 결과가 없습니다.
   </div>
     <div v-else> 

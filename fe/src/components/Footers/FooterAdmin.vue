@@ -28,7 +28,7 @@ Composition API의 setup 함수 안에서 반응형 변수 date를 선언하고 
 
 <template>
   <!-- 푸터 컴포넌트 -->
-  <footer class="text-black block py-4 flex justify-center" 
+  <footer class="text-black block flex justify-center" 
   style="bottom: 0px;width: 100%;display: flex; justify-content: center;">
     <div class="container px-4">
       <!-- 푸터 상단의 가로줄 -->

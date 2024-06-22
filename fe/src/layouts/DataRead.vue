@@ -7,7 +7,7 @@
         overflow-y:hidden;
         margin-right:40px; 
         margin-left:40px;
-        width:1456px;">
+        width:94vw;">
           <router-view />
         </div>
         <footer-admin />

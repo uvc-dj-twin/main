@@ -1,21 +1,21 @@
 <template>
   <div
     class="
-    text-xl text-center relative flex flex-col min-w-0 break-words bg-white rounded xl:mb-0 shadow-lg h-full items-center"
-  style="height: 20vh; width: 50vw;"
+    text-sm text-center relative flex flex-col min-w-0 break-words bg-white rounded xl:mb-0 shadow-lg h-full items-center"
+  style="height: 20vh; width: 24vw;"
     >
     <div class="flex-auto">
       <div class="flex flex-wrap">
         <div class="relative w-full pr-4 max-w-full flex-grow flex-1 flex items-start flex-col">
-          <h5 class="font-semibold text-xl text-blueGray-700">
+          <h5 class="font-semibold text-blueGray-700">
             
-             장비명: {{ props.infoData.name }} 
-            <br>
+             장비명: {{ props.infoData.name }} <br>
+            
              serial-No: {{props.infoData.serialNo}}  <br>
              이상률: {{ props.infoData.totalRatio }} %  <br>
-             시작일: {{ props.infoData.startDate }}  <br>
-             종료일:  {{ props.infoData.endDate }} 
              
+             종료일:  {{ props.infoData.endDate }} <br>
+             시작일: {{ props.infoData.startDate }} 
           </h5>
         </div>
       </div>

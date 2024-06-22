@@ -8,7 +8,7 @@
 
         <div style="display:flex">
           <HeaderDataRead />
-          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 100px;">
+          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 120px;">
 
 <div class="flex flex-col">
   
@@ -111,11 +111,11 @@ export default {
 
     //Info전달용 props
     const infoData = ref({
-      name: '가짜장비1',
-      serialNo: 'L-SF-04',
-      totalRatio: 1000,
-      startDate: '01/01/2024 12:00 PM',
-      endDate: '01/01/2024 5:00 PM',
+      name: '설비0',
+      serialNo: 'Unknown',
+      totalRatio: 0,
+      startDate: '01/01/2024 ',
+      endDate: '01/01/2024 ',
     })
 
     onMounted( //장비목록 불러오기

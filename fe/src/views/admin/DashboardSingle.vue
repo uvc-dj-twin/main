@@ -1,40 +1,54 @@
 <template>
-  <div>
-    <div class="flex flex-wrap mt-4">
+  <div  class="">
+    <div class="flex flex-wrap mt-4 overflow-y:hidden">
       <div class="w-full">
 
-        <p class="text-6xl">
-{{ realtimeResult?.equipmentSerialNo }}
-</p>
-
-<!-- {{ typrof (realtimeResult?.vibrationTime) }} -->
-
-<!-- {{ new Date().getTime()  }} -->
+<div class="flex justify-center gap-6 text-2xl font-bold" > 
   <div> 
-
-    <span v-if="checkTimedifference < 60">정상 작동중</span>
-    <span v-else>센서 정지</span>
-    {{realtimeResult?.vibrationTime}} <br>
-    {{realtimeResult?.currentTime}} 
+    L-SF-04{{ realtimeResult?.equipmentSerialNo }}
+    <br>
+    설비1 {{ realtimeResult?.equipmentName }}
   </div>
-       
+  <div :class="[
+     realtimeResult?.thresholdPercent >= 70 ? 'text-red-500'
+    :realtimeResult?.thresholdPercent >= 50 ? 'text-orange-500'
+    :'text-black'
+  ]"> 
+    Threshold <br>
+    80%  {{ realtimeResult? Math.round(realtimeResult.thresholdPercent,1) : '' }}%
+  </div>
+  <div> 
+    금일 전류 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.currentCount }} ({{ realtimeResult?.currentRatioPercent }}%)
+  <br>
+    금일 진동 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.vibrationCount }} ({{ realtimeResult?.vibrationRatioPercent }}%)
 
+  </div>
 
+  <div>
+    <span v-if="currentTimedifference > 60">전류센서 상태: 정지</span>
+    <span v-else>전류센서 상태: 작동 중 </span>
+    <br>
+    <span v-if="vibrationTimedifference > 60">진동센서 상태: 정지</span>
+    <span v-else>진동센서 상태: 작동 중 </span>
+  </div>
+</div>        
+        <div class="text-xl font-bold"> 
+    
+          
+         최근 검사결과 {{realtimeResult?.currentTime}} ({{ realtimeResult?.currentResult }})
+        </div>
         
-
-
-
-<!-- 
-        <HeaderStatsSingle :dailyCount="dailyCount? dailyCount : ''" :dailyState="dailyState? dailyState : ''" 
-        /> -->
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
-        <!-- <CardLineChartDetailSingle :data="vibrationRef"></CardLineChartDetailSingle> -->
+        
+        <div class="text-xl font-bold "> 
+       
+          
+        최근 검사결과: {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
 
+        </div>
+        
         <CardLineChart2 :data="currentRef"></CardLineChart2>
-        <!-- <h1>{{ realtimeResult }}</h1>   
-      <h1>{{ dailyCount }}</h1>       
-      <h1>{{ dailyState }}</h1>       
-     -->
+       
 
       </div>
     </div>
@@ -78,7 +92,9 @@ export default {
     });
     
     
-    const checkTimedifference = ref (0)
+    const currentTimedifference = ref (1000)
+    const vibrationTimedifference = ref (1000)
+
 
 
    
@@ -187,7 +203,13 @@ export default {
     console.log(new Date().getTime())
     console.log((data.time/1000))
 
-    checkTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+    if(data.type==='currents'){
+      currentTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+    }
+    else {
+      vibrationTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+    }
+
 
         const newData = {
           ...realtimeResult.value
@@ -241,7 +263,8 @@ export default {
       props,
 
 
-      checkTimedifference,
+      currentTimedifference,
+      vibrationTimedifference,
       dailyCount,
       realtimeResult,
       currentRef, vibrationRef,
@@ -254,3 +277,5 @@ export default {
   }
 };
 </script>
+
+

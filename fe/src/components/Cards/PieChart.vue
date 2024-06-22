@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded"
-  style=" height: 20vh; width: 50vw;">
+  style=" height: 20vh; width: 24vw;">
     <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full max-w-full flex-grow flex-1">
@@ -12,7 +12,7 @@
     </div>
     <div class="p-4 flex-auto">
       <div class="relative">
-        <canvas ref="chart" style="height: 15vh"></canvas>
+        <canvas ref="chart" style="height: 12vh"></canvas>
         <!-- <button @click="addData">버튼</button> -->
       </div>
     </div>

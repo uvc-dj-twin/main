@@ -187,7 +187,7 @@ export default {
     const userRoll=ref('역할');
     const password =ref('');
     const confirmPassword = ref('');
-    const message=ref('')
+    const message=ref(' ')
     const changeCheck=ref('false')
     const showModal=ref('false')
     // const id = ref(1)
@@ -226,7 +226,7 @@ export default {
         })
         .catch((error) => {
           // 요청이 실패하면 실행되는 코드
-          message.value="요청이 실패했습니다."
+         
 
           console.error('Error:', error)
 
@@ -260,6 +260,7 @@ export default {
         //   console.log(equipmentList.value)
         })
         .catch((error) => {
+          message.value="요청이 실패했습니다."
           // 요청이 실패하면 실행되는 코드
           console.error('Error:', error)
 
