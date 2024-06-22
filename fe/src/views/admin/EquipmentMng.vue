@@ -13,7 +13,7 @@
           </div>
 
         </div>
-        <div v-if="isLoading" class="h-350-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+        <div v-if="isLoading" class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
           <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
         </div>
         <div v-else-if="totalRow == 0"

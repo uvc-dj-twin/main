@@ -17,7 +17,9 @@
     <div class="p-4 flex-auto">
       <!-- Chart -->
       <div class="relative h-150-px w-1200-px">
-        <canvas ref="chart" class="relative h-150-px w-1200-px">></canvas>
+        <canvas ref="chart" class="relative w-1200-px"
+          style="height:100px">
+        </canvas>
       </div>
     </div>
 
