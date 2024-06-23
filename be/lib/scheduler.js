@@ -13,7 +13,7 @@ const influxUrl = `http://${process.env.INFLUXDB_HOST}:${process.env.INFLUXDB_PO
 const influx = new InfluxDB({ url: influxUrl, token: process.env.INFLUXDB_TOKEN, timeout: 10000, });
 
 // csv 파일 읽기
-const readCSV = async (filePath, baseTime) => {
+const readCSV = async (filePath) => {
   try {
     const csv = fs.readFileSync(filePath, 'utf8');
     const rows = await new Promise((resolve, reject) => {
