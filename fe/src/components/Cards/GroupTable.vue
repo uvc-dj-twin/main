@@ -1,9 +1,9 @@
 <template>
-  <div v-if="isLoading" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+  <div v-if="isLoading" class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
   </div>
   <div v-else-if="people.length == 0"
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     조회 결과가 없습니다.
   </div>
   <div v-else class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
@@ -19,8 +19,8 @@
         <div v-show="editCheck" class="mx-4">
           <span class="mx-4">선택한 사용자의 변경할 그룹 선택</span>
           <div class="relative inline-block">
-            <div @change="toggleDropdown"
-              class="w-200-px h-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
+            <div @click="toggleDropdown"
+              class="w-200-px border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base shadow focus:outline-none focus:ring ease-linear transition-all duration-150 cursor-pointer"
               style="min-width: 200px; max-width: 400px">
               {{ selectedText }}
             </div>
@@ -81,24 +81,24 @@
         <thead>
           <tr>
             <th
-              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               
-              <input v-model="allCheck" type="checkbox" @click="handleAllcheck">
+              <input v-model="allCheck" type="checkbox" @click="handleAllcheck" :disabled="!editCheck">
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               이름
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               메일
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               현재 그룹
             </th>
             <th
-              class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
               최종 그룹
             </th>
 

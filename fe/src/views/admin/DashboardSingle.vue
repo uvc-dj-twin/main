@@ -1,29 +1,54 @@
 <template>
-  <div>
-    <div class="flex flex-wrap mt-4">
+  <div  class="">
+    <div class="flex flex-wrap mt-4 overflow-y:hidden">
       <div class="w-full">
 
-        <p class="text-6xl">
-          장비명:{{props.id}}
+<div class="flex justify-center gap-6 text-2xl font-bold" > 
+  <div> 
+    L-SF-04{{ realtimeResult?.equipmentSerialNo }}
+    <br>
+    설비1 {{ realtimeResult?.equipmentName }}
+  </div>
+  <div :class="[
+     realtimeResult?.thresholdPercent >= 70 ? 'text-red-500'
+    :realtimeResult?.thresholdPercent >= 50 ? 'text-orange-500'
+    :'text-black'
+  ]"> 
+    Threshold <br>
+    80%  {{ realtimeResult? Math.round(realtimeResult.thresholdPercent,1) : '' }}%
+  </div>
+  <div> 
+    금일 전류 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.currentCount }} ({{ realtimeResult?.currentRatioPercent }}%)
+  <br>
+    금일 진동 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.vibrationCount }} ({{ realtimeResult?.vibrationRatioPercent }}%)
 
-        </p>
+  </div>
 
+  <div>
+    <span v-if="currentTimedifference > 60">전류센서 상태: 정지</span>
+    <span v-else>전류센서 상태: 작동 중 </span>
+    <br>
+    <span v-if="vibrationTimedifference > 60">진동센서 상태: 정지</span>
+    <span v-else>진동센서 상태: 작동 중 </span>
+  </div>
+</div>        
+        <div class="text-xl font-bold"> 
+    
+          
+         최근 검사결과 {{realtimeResult?.currentTime}} ({{ realtimeResult?.currentResult }})
+        </div>
+        
+        <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
+        
+        <div class="text-xl font-bold "> 
+       
+          
+        최근 검사결과: {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
 
-
-     
-        <HeaderStatsSingle :dailyCount="dailyCount" :dailyState="dailyState" 
-        />
-
-
-          <CardLineChartDetail></CardLineChartDetail>
-          <CardLineChart2></CardLineChart2>
-
-         
-
-        <!-- <h1>{{ realtimeResult }}</h1>   
-      <h1>{{ dailyCount }}</h1>       
-      <h1>{{ dailyState }}</h1>       
-     -->
+        </div>
+        
+        <CardLineChart2 :data="currentRef"></CardLineChart2>
+       
 
       </div>
     </div>
@@ -32,17 +57,19 @@
 <script>
 // import data from "@/data/dashboard.js";
 import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
-import { useStore } from 'vuex';
 
-import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
+// import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
 import CardLineChartDetail from "@/components/Cards/CardLineChartDetail.vue";
+// import CardLineChartDetailSingle from "@/components/Cards/CardLineChartDetailSingle.vue";
+
 import CardLineChart2 from "@/components/Cards/CardLineChart2.vue";
 
 
 export default {
   components: {
-    HeaderStatsSingle,
+    // HeaderStatsSingle,
     CardLineChartDetail,
+    // CardLineChartDetailSingle,
     CardLineChart2,
     
     // CardBarChart,
@@ -51,16 +78,31 @@ export default {
   },
   props: {
     id: {
-      type: Number,
+      type: String,
     },
   },
   setup(props) {
     console.log(props)
 
+    const currentRef =ref({
+      data: [[], [], []],
+    });
+    const vibrationRef =ref({
+      data: [[]],
+    });
+    
+    
+    const currentTimedifference = ref (1000)
+    const vibrationTimedifference = ref (1000)
+
+
+
+   
+
+
+
     const dailyCount = ref();
-    const dailyState = ref();
     const realtimeResult = ref();
-    const store = useStore();
     const testChartData = computed(() => {
       const labels = Object.keys(realtimeTestData.value);
       const data = Object.values(realtimeTestData.value);
@@ -121,7 +163,6 @@ export default {
               realtimeTestData.value = newObject;
             }
 
-            realtimeMachineData.value[labelTime] = dailyState.value.failCount;
           }, 3000);
         })
         .catch((error) => {
@@ -145,43 +186,33 @@ export default {
     const setDailyInfo = () => {
       let totalCount = 0
       let failCount = 0
-
-      realtimeResult.value.forEach((equipment) => {
-        totalCount += equipment.currentCount + equipment.vibrationCount
-        failCount += equipment.currentFailCount + equipment.vibrationFailCount
-      })
-
-      const totalEquipments = realtimeResult.value.length
-      const equipmentsWithFailures = realtimeResult.value.filter(
-        (equipment) =>
-          equipment.vibrationFailCount >= equipment.thresholdCount || equipment.currentFailCount >= equipment.thresholdCount
-      ).length
+        totalCount += realtimeResult.value.currentCount + realtimeResult.value.vibrationCount
+        failCount += realtimeResult.value.currentFailCount + realtimeResult.value.vibrationFailCount
 
       dailyCount.value = {
         totalCount: totalCount,
         passCount: totalCount - failCount,
         failCount: failCount
       }
-      dailyState.value = {
-        totalCount: totalEquipments,
-        passCount: totalEquipments - equipmentsWithFailures,
-        failCount: equipmentsWithFailures
-      }
       // store.state.failCount = dailyState.value.failCount
 
-      store.dispatch('checkAlarm',dailyState.value.failCount);
-
-      
-      
     }
 
     const changeData = async (data) => {
     console.log(data);
-      const index = realtimeResult.value.findIndex((item) => item.equipmentId === data.equipmentId)
-      // 해당 객체가 존재하는 경우 업데이트
-      if (index !== -1) {
+    console.log(new Date().getTime())
+    console.log((data.time/1000))
+
+    if(data.type==='currents'){
+      currentTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+    }
+    else {
+      vibrationTimedifference.value = ((new Date().getTime() - (data.time/1000))/1000)
+    }
+
+
         const newData = {
-          ...realtimeResult.value[index]
+          ...realtimeResult.value
         }
         newData.equipmentName = data.equipmentName
         newData.equipmentSerialNo = data.equipmentSerialNo
@@ -195,15 +226,36 @@ export default {
         newData.thresholdPercent =
           (Math.max(newData.currentFailCount, newData.vibrationFailCount) / newData.thresholdCount) *
           100
-        realtimeResult.value[index] = newData
+        realtimeResult.value = newData
         if (data.resultCode !== 0) {
           realtimeFailCount.value += 1
         }
+        if (data.type === 'currents') {
+          const flatData = Array.from({ length: data.data[0].length }, () => []);
+          data.data.forEach(row => {
+            row.forEach((value, index) => {
+              flatData[index].push(value);
+            });
+          });
+          console.log(flatData[0]);
+          console.log(flatData[1]);
+          console.log(flatData[2]);
+          currentRef.value.data[0] = currentRef.value.data[0].concat(flatData[0])
+          currentRef.value.data[1] = currentRef.value.data[1].concat(flatData[1])
+          currentRef.value.data[2] = currentRef.value.data[2].concat(flatData[2])
+          console.log(currentRef.value.data[0])
+          currentRef.value.data[0] = currentRef.value.data[0].length > 360 ? currentRef.value.data[0].slice(-360) : currentRef.value.data[0];
+          currentRef.value.data[1] = currentRef.value.data[1].length > 360 ? currentRef.value.data[1].slice(-360) : currentRef.value.data[1];
+          currentRef.value.data[2] = currentRef.value.data[2].length > 360 ? currentRef.value.data[2].slice(-360) : currentRef.value.data[2];
+        } else {
+          const flatData = data.data.flat();
+          vibrationRef.value.data[0] = vibrationRef.value.data[0].concat(flatData);
+          vibrationRef.value.data[0] = vibrationRef.value.data[0].length > 360 ? vibrationRef.value.data[0].slice(-360) : vibrationRef.value.data[0];
+          console.log(vibrationRef.value)
+        }
         setDailyInfo()
-        console.log('Updated realtimeResult:', realtimeResult.value[index])
-      } else {
-        console.log(`Equipment with ID ${data.equipmentId} not found.`)
-      }
+        console.log('Updated realtimeResult:', realtimeResult.value)
+
     }
 
 
@@ -211,11 +263,13 @@ export default {
       props,
 
 
-
+      currentTimedifference,
+      vibrationTimedifference,
       dailyCount,
-      dailyState,
       realtimeResult,
-       testChartData, realtimeTestData, realtimeMachineData, machineChartData
+      currentRef, vibrationRef,
+       testChartData, realtimeTestData, realtimeMachineData, machineChartData,
+       
 
 
 
@@ -223,3 +277,5 @@ export default {
   }
 };
 </script>
+
+

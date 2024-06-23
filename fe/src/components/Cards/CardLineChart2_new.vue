@@ -8,7 +8,7 @@
           </h6> -->
           <h2 class="text-white text-xl font-semibold">
             <!-- {{ data.title }} -->
-            <button @click="addData">진동검사 </button>
+            <button>전류검사 </button>
 
           </h2>
         </div>

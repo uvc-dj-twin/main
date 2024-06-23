@@ -17,7 +17,7 @@
 
 
 
-      <div class="w-full">
+      <div class="w-full" style="margin-right: 56px;">
         <GroupTable :isLoading="isLoading" :people="users" :groupList="groups" @handleEdit="handleUpdate" @handleAddGroup="handleAdd" @handleDeleteGroup="handleDelete" />
       </div>
       <div class="flex relative w-full px-4 max-w-full flex-grow flex-1 text-right justify-center">

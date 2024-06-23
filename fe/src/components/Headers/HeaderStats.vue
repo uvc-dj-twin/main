@@ -26,8 +26,7 @@ Composition API의 setup 함수 안에서 반응형 변수들을 선언하고 �
 
 <template>
   <!-- Header -->
-  <div class="relative">
-   
+  <div class="relative">   
     <div class="py-8 mx-auto w-full">
       <div>
         <!-- Card stats -->
@@ -175,6 +174,7 @@ export default {
       performanceStat,
       editCount,
       props,
+      
       CardLineChart,
     
     };

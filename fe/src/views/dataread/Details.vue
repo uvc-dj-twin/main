@@ -9,21 +9,28 @@
         <HeaderDataRead/>
         <div class="w-full">
               <div class="flex items-center justify-end w-full h-full"
-            style="gap: 16px; height: 65px;"> 
+            style="gap: 16px; height: 120px;"> 
              
+<div class="items-start flex flex-col mt-12 text-center">
+  <label style="margin-left:16px; text-align: end;">설비 선택</label>
               <EquipmentDropdown 
                 :equipmentList="equipmentList" 
                 :value="selectedValue" 
                 @update:value="handleUpdateEquipment"
                 @click="handleId">
               </EquipmentDropdown>
-              <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>
-          
 
-
-
-              <div class="wrapper text-2xl font-bold " 
+</div>
+<div class="items-start flex flex-col mt-12 text-center">
+  <label style="margin-left:16px; text-align: end;">결과 선택</label>
+  <DefectTypeDropdown :defectTypeList="defectTypeList ? defectTypeList : [] "  :value="selectedDefectType" @update:value="handleUpdateDefect"></DefectTypeDropdown>        
+</div>
+            <div class="flex flex-col" style="margin-top:40px">  
+              <label style="margin-bottom: 12px;">기간 선택</label>
+              <div class="items-start wrapper flex flex-col text-center items-center justify-center" 
+              
                  style="width: 200px;display: flex; align-content: space-around;flex-direction: row;flex-wrap: wrap;">
+                 
               <ejs-daterangepicker ref="dateRangePicker" 
                                   style="width: 200px;"
                                   :startDate="startVal"
@@ -33,9 +40,22 @@
               </div>
 
 
+            </div>
+             
+  
+
+<div class="flex flex-col mt-12">
+  <label style="
+  margin-top:10px;
+  height:20px;
+  ">시간 선택</label>
 
           <TimePicker  @update:startTime="handleUpdateTimeStart" @update:endTime="handleUpdateTimeEnd"></TimePicker>
+</div>
+             
 
+
+            
 
             <button @click="getValue"
                       class="text-xl px-4 py-1 get-started  font-bold rounded outline-none focus:outline-none mr-1 mb-1 bg-color1 active:bg-color1 bg-white border-2 border-blueGray-600 text-black active:bg-emerald-600"
@@ -62,7 +82,7 @@
 
   <div v-else-if="testResultArray.length == 0"
 
-    class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+    class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
     조회 결과가 없습니다.
   </div>
     <div v-else> 
@@ -188,9 +208,9 @@ export default {
 // 달력관련 변수들 
     const selectedDate=ref(1/1/2024); //날짜만 있는 정보 - 미사용
     const datePicker = ref(null);
-    const startTime = ref(new Date('2024-06-14T16:00:00.000Z')
+    const startTime = ref(new Date('2024-06-14T15:01:00.000Z')
     );
-    const endTime = ref(new Date('2024-06-14T23:00:00.000Z')
+    const endTime = ref(new Date('2024-06-14T14:59:00.000Z')
     );
 
 // 조회 시 받아올 데이터 수 
@@ -662,18 +682,15 @@ const handleId = ()=>{
   border-radius: 50%;
 }
 
-#component_wrapper {
+/* #component_wrapper {
   display: block;
   margin: 0 auto;
   float: none;
   padding: 2% 0;
   max-width: 300px;
-}
+} */
 
-.control-section.range {
-  margin: 30px;
-  padding: 3%;
-}
+
 
 .e-bigger .control-section.range {
   margin-top: 60px;

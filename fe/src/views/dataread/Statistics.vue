@@ -8,10 +8,14 @@
 
         <div style="display:flex">
           <HeaderDataRead />
-          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 65px;">
+          <div class="flex items-center justify-end w-full h-full" style="gap:16px; height: 120px;">
 
-            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue" @update:value="handleUpdate">
-            </EquipmentDropdown>
+<div class="flex flex-col">
+  
+</div>
+            <label>설비 선택</label>
+            <EquipmentDropdown :equipmentList="equipmentList" :value="selectedValue" @update:value="handleUpdate"></EquipmentDropdown>
+            <label>기간 선택</label>
             <div class="wrapper text-2xl font-bold "
               style="width: 200px;display: flex; align-content: space-around;flex-direction: row;flex-wrap: wrap;">
               <ejs-daterangepicker ref="dateRangePicker" style="width: 200px;" :startDate="startVal" :endDate="endVal"
@@ -88,8 +92,11 @@ export default {
     CardMachineInfo,
   },
   setup() {
-    const startVal = ref(new Date("06/06/2024 12:00 PM"));
-    const endVal = ref(new Date("06/20/2024 5:00 PM"));
+
+    const startVal = ref(new Date(new Date().setDate(new Date().getDate() - 7)));
+    const endVal = ref(new Date());
+
+
     const selectedValue = ref('option1');
     const waterMark = "Select a Range";
     const equipmentList = ref(['가짜장비1', 'L-SF-05'])
@@ -104,11 +111,11 @@ export default {
 
     //Info전달용 props
     const infoData = ref({
-      name: '가짜장비1',
-      serialNo: 'L-SF-04',
-      totalRatio: 1000,
-      startDate: '01/01/2024 12:00 PM',
-      endDate: '01/01/2024 5:00 PM',
+      name: '설비0',
+      serialNo: 'Unknown',
+      totalRatio: 0,
+      startDate: '01/01/2024 ',
+      endDate: '01/01/2024 ',
     })
 
     onMounted( //장비목록 불러오기

@@ -6,7 +6,7 @@
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-black text-5xl font-semibold">
+          <h2 class="text-black text-xl font-semibold">
             <!-- {{ data.title }} -->
           전류검사 
 
@@ -17,7 +17,9 @@
     <div class="p-4 flex-auto">
       <!-- Chart -->
       <div class="relative h-150-px w-1200-px">
-        <canvas ref="chart" class="relative h-150-px w-1200-px">></canvas>
+        <canvas ref="chart" class="relative w-1200-px"
+          style="height:100px">
+        </canvas>
       </div>
     </div>
 
@@ -174,7 +176,7 @@ export default {
         console.log('수정진입')
         console.log(props.data.data[0])
       
-        myChart.data.labels = Array.from({length: 120}, (_, i) => i * (3 / 119));
+        myChart.data.labels = Array.from({length: props.data.data[0].length}, (_, i) => (i * (3 / 119)).toFixed(1));
         myChart.data.datasets[0].data = props.data.data[0];
         myChart.data.datasets[1].data = props.data.data[1];
         myChart.data.datasets[2].data = props.data.data[2];
@@ -202,8 +204,7 @@ export default {
 </script>
 
 <style>
-.chartjs-size-monitor {
-  height: 2000px; /* 원하는 높이 설정 */
-}
+
+
 
 </style>

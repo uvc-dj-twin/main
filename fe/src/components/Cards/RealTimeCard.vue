@@ -70,7 +70,7 @@
                           ? 'text-red-500'
                           : result.thresholdPercent > 50
                           ? 'text-yellow-500'
-                          : 'text-emerald-500',
+                          : 'text-yellow-200',
                       ]"
                     >
                       {{ Math.round(result.thresholdPercent, 1) }}% ({{
@@ -98,7 +98,7 @@
                           ? 'bg-red-500'
                           : result.currentRatioPercent > 50
                           ? 'bg-yellow-500'
-                          : 'bg-emerald-500',
+                          : 'bg-yellow-200',
                       ]"
                     >
                       {{ Math.round(result.currentRatioPercent, 1) }}%
@@ -135,7 +135,7 @@
                           ? 'bg-red-500'
                           : result.vibrationRatioPercent > 50
                           ? 'bg-yellow-500'
-                          : 'bg-emerald-500',
+                          : 'bg-yellow-200',
                       ]"
                     >
                       {{ Math.round(result.vibrationRatioPercent, 1) }}%

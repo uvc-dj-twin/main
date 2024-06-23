@@ -13,16 +13,16 @@
           </div>
 
         </div>
-        <div v-if="isLoading" class="h-500-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+        <div v-if="isLoading" class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
           <div class="spinner" :style="{ transform: `rotate(${rotationDegree}deg)` }"></div>
         </div>
         <div v-else-if="totalRow == 0"
-          class="h-600-px w-screen flex items-center justify-center text-5xl font-bold text-center">
+          class="h-250-px w-screen flex items-center justify-center text-5xl font-bold text-center">
           조회 결과가 없습니다.
         </div>
 
 
-        <div v-else class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+        <div v-else lass="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
               <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -45,19 +45,19 @@
               <thead>
                 <tr>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     장비명
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     Threshold
                   </th>
                   <th v-for="(group, index) in groupList" :key="index"
-                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     그룹 {{ group.name }}
                   </th>
                   <th
-                    class="px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     삭제
                   </th>
                 </tr>

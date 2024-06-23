@@ -6,7 +6,7 @@
           <!-- <h6 class="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
             Overview
           </h6> -->
-          <h2 class="text-black text-5xl font-semibold">
+          <h2 class="text-black text-xl font-semibold">
             <!-- {{ data.title }} -->진동검사 
 
           </h2>
@@ -16,7 +16,8 @@
     <div class="p-4 flex-auto">
       <!-- Chart -->
       <div class="relative h-full w-150-px">
-        <canvas ref="chart" ></canvas>
+        <canvas ref="chart" 
+        style="height: 110px;"></canvas>
       </div>
     </div>
 
@@ -154,7 +155,7 @@ export default {
         console.log(props.data.data[0])
         console.log(props.data.data[0])
         console.log(props.data.data[0])
-        myChart.data.labels = Array.from({length: 120}, (_, i) => i * (3 / 119));
+        myChart.data.labels = Array.from({length: props.data.data[0].length}, (_, i) => (i * (3 / 120)).toFixed(1));
         myChart.data.datasets[0].data = props.data.data[0];
         myChart.update();
         console.log('수정완료')

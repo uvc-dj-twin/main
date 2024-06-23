@@ -31,7 +31,15 @@
           </div>
     
           <div class="w-full flex flex-column justify-around flex-grow"
-          @mouseover="hovered=true" @mouseleave="hovered=false">
+          :class="[
+                    warningEquipmentArray?.length > 0
+                    ? 'bg-red-500'
+                    : 'bg-white'
+                    ]"
+       
+          @mouseover="hovered=true" @mouseleave="hovered=false"
+          
+          >
             <span class="font-semibold  text-blueGray-700">
               {{ statDescripiron3 }}
             </span>
@@ -46,8 +54,9 @@
           
           
         </div>
-        <p v-show="hovered==true && props.warningEquipmentArray.length>1"> 
-          {{ props.warningEquipmentArray}} </p>
+        <p v-show="hovered==true && warningEquipmentArray.length > 0"
+          class="text-xl"> 
+          </p>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">
           <div
             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full"
@@ -136,7 +145,7 @@ export default {
       console.log(props.warningEquipmentArray)
     });
 
-    return { props,hovered };
+    return { props, hovered };
   },
 };
 </script>
