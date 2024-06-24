@@ -36,7 +36,7 @@
         <div class="text-xl font-bold"> 
     
           
-         <!-- 최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}}) -->
+         최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
         </div>
         
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
@@ -44,7 +44,7 @@
         <div class="text-xl font-bold "> 
        
           
-        <!-- 최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} ) -->
+        최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
 
         </div>
         
