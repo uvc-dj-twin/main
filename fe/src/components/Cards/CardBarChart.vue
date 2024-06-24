@@ -1,7 +1,7 @@
 <template>
   <div
-    class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded"
-    style="height: 20vh; width: 40vw;"
+    class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded mb-2"
+    style="height: 180px; width: 40vw;"
   >
     
       <div class="flex flex-wrap items-center">
