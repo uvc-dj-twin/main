@@ -25,10 +25,12 @@
   </div>
 
   <div>
-    <span v-if="currentTimedifference > 60">전류센서 상태: 정지</span>
+    {{ currentTimedifference ? currentTimedifference : '' }}
+
+    <span v-if="currentTimedifference > 10">전류센서 상태: 정지</span>
     <span v-else>전류센서 상태: 작동 중 </span>
     <br>
-    <span v-if="vibrationTimedifference > 60">진동센서 상태: 정지</span>
+    <span v-if="vibrationTimedifference > 10">진동센서 상태: 정지</span>
     <span v-else>진동센서 상태: 작동 중 </span>
   </div>
 </div>        
