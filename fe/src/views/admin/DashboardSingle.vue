@@ -57,7 +57,7 @@
 </template>
 <script>
 // import data from "@/data/dashboard.js";
-import { ref, onMounted, inject, onUnmounted, computed,watch } from 'vue';
+import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
 
 // import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
 import CardLineChartDetail from "@/components/Cards/CardLineChartDetail.vue";
@@ -268,9 +268,9 @@ export default {
 
     }
 
-    const watcher = watch(realtimeResult, (newData) => {
-      changeData(newData)
-    })
+    // const watcher = watch(realtimeResult, (newData) => {
+    //   changeData(newData)
+    // })
 
 
     return {
@@ -282,8 +282,7 @@ export default {
       dailyCount,
       realtimeResult,
       currentRef, vibrationRef,
-       testChartData, realtimeTestData, realtimeMachineData, machineChartData,
-       
+      testChartData, realtimeTestData, realtimeMachineData, machineChartData,
 
 
 
