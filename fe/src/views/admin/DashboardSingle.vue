@@ -5,9 +5,9 @@
 
 <div class="flex justify-center gap-6 text-2xl font-bold" > 
   <div> 
-    L-SF-04{{ realtimeResult?.equipmentSerialNo }}
+    {{ realtimeResult?.equipmentSerialNo }}
     <br>
-    설비1 {{ realtimeResult?.equipmentName }}
+    {{ realtimeResult?.equipmentName }}
   </div>
   <div :class="[
      realtimeResult?.thresholdPercent >= 70 ? 'text-red-500'
@@ -15,12 +15,12 @@
     :'text-black'
   ]"> 
     Threshold <br>
-    80%  {{ realtimeResult? Math.round(realtimeResult.thresholdPercent,1) : '' }}%
+   {{ realtimeResult? Math.round(realtimeResult.thresholdPercent,1) : '' }}%
   </div>
   <div> 
-    금일 전류 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.currentCount }} ({{ realtimeResult?.currentRatioPercent }}%)
+    금일 전류 검사 수: {{ realtimeResult?.currentCount }} (이상률 {{ Math.round(realtimeResult?.currentRatioPercent,1)  }}%)
   <br>
-    금일 진동 검사 수 / 이상 수 : 10000 (80%) {{ realtimeResult?.vibrationCount }} ({{ realtimeResult?.vibrationRatioPercent }}%)
+    금일 진동 검사 수: {{ realtimeResult?.vibrationCount }} (이상률 {{Math.round( realtimeResult?.vibrationRatioPercent,1) }}%)
 
   </div>
 
@@ -35,7 +35,7 @@
         <div class="text-xl font-bold"> 
     
           
-         최근 검사결과 {{realtimeResult?.currentTime}} ({{ realtimeResult?.currentResult }})
+         최근 검사결과 {{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
         </div>
         
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>

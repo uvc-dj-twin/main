@@ -13,7 +13,7 @@
       </div>
     <div class="p-4 flex-auto">
       <div class="relative ">
-        <canvas ref="chart" style=""></canvas>
+        <canvas ref="chart" style="height:18vh"></canvas>
       </div>
     </div>
   </div>

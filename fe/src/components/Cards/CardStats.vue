@@ -55,7 +55,11 @@
           
         </div>
         <p v-show="hovered==true && warningEquipmentArray.length > 0"
-          class="text-xl"> 
+          class="text-xl">
+          <v-for m in warningEquipmentArray> 
+            {{ m }}
+          </v-for> 
+          
           </p>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">
           <div
