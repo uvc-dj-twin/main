@@ -54,7 +54,7 @@
                   </th>
                   <th v-for="(group, index) in groupList" :key="index"
                     class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    그룹 {{ group.name }}
+                    {{ group.name }}
                   </th>
                   <th
                     class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
