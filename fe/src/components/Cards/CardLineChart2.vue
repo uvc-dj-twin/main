@@ -61,13 +61,13 @@ export default {
       let config = {
         type: "line",
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: [0],
           datasets: [
             {
               label: 'X',
               backgroundColor: "#4c51bf",
               borderColor: "#4c51bf",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: [0],
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
             },
@@ -75,7 +75,7 @@ export default {
               label: 'Y',
               backgroundColor: "#13A1F9",
               borderColor: "#13A1F9",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: [0],
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
 
@@ -84,7 +84,7 @@ export default {
               label: 'Z',
               backgroundColor: "#98F1F8",
               borderColor: "#98F1F8",
-              data: Array.from({length: 101}, () => Math.floor(Math.random() * 100)),
+              data: [0],
               fill: false,
               borderWidth: 1, // 꺾은선 굵기 2픽셀로 설정
 

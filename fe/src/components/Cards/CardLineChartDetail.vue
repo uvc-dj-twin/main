@@ -56,13 +56,13 @@ export default {
       let config = {
         type: "line",
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: [0],
           datasets: [
             {
               label: "X",
               backgroundColor: "#4c51bf",
               borderColor: "#4c51bf",
-              data: [10,0, 100, 10000],
+              data: [0],
               fill: false,
             },
           ],
