@@ -122,6 +122,7 @@ const dao = {
         where: where,
         limit: params.limit,
         offset: offset,
+        order: [['id', 'ASC']],
       })
         .then((selected) => {
           const result = {

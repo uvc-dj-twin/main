@@ -1,8 +1,8 @@
 <template>
   <div
     class="
-    text-sm text-center relative flex flex-col min-w-0 break-words bg-white rounded xl:mb-0 shadow-lg h-full items-center"
-  style="height: 20vh; width: 24vw;"
+    text-sm text-center relative flex flex-col min-w-0 break-words bg-white rounded mb-2 shadow-lg h-full items-center"
+  style="height: 180px; width: 24vw;"
     >
     <div class="flex-auto">
       <div class="flex flex-wrap">
