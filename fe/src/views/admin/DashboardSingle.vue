@@ -24,20 +24,19 @@
 
   </div>
 
-  <div>
-    {{ currentTimedifference ? currentTimedifference : '' }}
-
-    <span v-if="currentTimedifference > 10">전류센서 상태: 정지</span>
+  
+    <span v-if="currentTimedifference>10" class="bg-red-500 text-white"> 
+      전류센서 상태: 정지</span>
     <span v-else>전류센서 상태: 작동 중 </span>
-    <br>
-    <span v-if="vibrationTimedifference > 10">진동센서 상태: 정지</span>
+    
+    <span v-if="vibrationTimedifference > 10" class="bg-red-500 text-white">진동센서 상태: 정지</span>
     <span v-else>진동센서 상태: 작동 중 </span>
-  </div>
+  
 </div>        
         <div class="text-xl font-bold"> 
     
           
-         최근 검사결과 {{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
+         최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
         </div>
         
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
@@ -45,7 +44,7 @@
         <div class="text-xl font-bold "> 
        
           
-        최근 검사결과: {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
+        최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
 
         </div>
         

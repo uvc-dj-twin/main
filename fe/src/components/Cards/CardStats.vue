@@ -32,27 +32,18 @@
     
           <div class="w-full flex flex-column justify-around flex-grow"
           :class="[
-                    warningEquipmentArray?.length > 0
-                    ? 'bg-red-500'
-                    : 'bg-white'
+                    'bg-' + (warningEquipmentArray?.length > 0 ? 'red-500' : 'white'),
+                    'text-' + (warningEquipmentArray?.length > 0 ? 'white' : 'text-blueGray-700')
                     ]"
-       
-          @mouseover="hovered=true" @mouseleave="hovered=false"
-          
+          @mouseover="hovered=true" @mouseleave="hovered=false"  
           >
-            <span class="font-semibold  text-blueGray-700">
+            <span class="font-semibold">
               {{ statDescripiron3 }}
             </span>
-            <span class="font-semibold text-blueGray-700">
+            <span class="font-semibold">
               {{ statTitle3 }}
               </span>
-             
-            
           </div>
-          
-         
-          
-          
         </div>
         <p v-show="hovered==true && warningEquipmentArray.length > 0"
           class="text-3xl">
@@ -67,8 +58,6 @@
           </div>
         </div> -->
       </div>
-     
-  
     </div>
   </div>
 </template>
