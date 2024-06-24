@@ -43,7 +43,7 @@
           row.currentResult
 
         }}
-              <i :class="[row.vibrationResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" class="fas fa-circle mr-2"> </i> 
+              <i :class="[row.currentResult === '정상' ? 'text-emerald-500' : 'text-orange-500']" class="fas fa-circle mr-2"> </i> 
             </td>
           
             <td
