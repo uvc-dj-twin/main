@@ -36,7 +36,7 @@
         <div class="text-xl font-bold"> 
     
           
-         최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
+          최근 검사결과: RMS {{ realtimeResult?.vibrationRms}} - ({{realtimeResult?.vibrationTime}})
         </div>
         
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
@@ -44,8 +44,8 @@
         <div class="text-xl font-bold "> 
        
           
-        최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
-
+        최근 검사결과: RMS {{ realtimeResult?.currentRms}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
+        <!-- .split(',').map(str => str.substring(0, 4)).join(','): '' -->
         </div>
         
         <CardLineChart2 :data="currentRef"></CardLineChart2>
@@ -105,9 +105,9 @@ export default {
     const dailyCount = ref();
     const realtimeResult = ref(
       {
-        equipmentId: 0,
-        equipmentSerialNo: 'L-SF-04',
-        currentCount : 0,
+        // currentRms:[1,1,1],
+        // vibrationRms:[1],
+
       }
     );
     const testChartData = computed(() => {
