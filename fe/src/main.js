@@ -77,7 +77,7 @@ const routes = [
     redirect: "/dashboard",
     component: DashboardLayout,
     name:"Dashboard",
-    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dashboard",
@@ -101,7 +101,7 @@ const routes = [
     path: "/dataread", // layouts/dataread
     redirect:"/dataread/statistics",
     component: DataRead,
-    // meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    meta: { requiresAuth: true }, // 인증이 필요한 페이지
     children: [
       {
         path: "/dataread/statistics", //views/
@@ -134,7 +134,7 @@ const routes = [
     path: "/admin",
     redirect: "/admin/groupMng",
     component: Admin,
-    // meta: { requiresAuth: true,requiresAdmin: true  }, // 권리자 포함 인증이 필요한 페이지
+    meta: { requiresAuth: true,requiresAdmin: true  }, // 권리자 포함 인증이 필요한 페이지
     children: [
       {
         path: "/admin/groupMng",

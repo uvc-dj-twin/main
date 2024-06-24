@@ -19,8 +19,8 @@
             {{ link.name }}
           </router-link>
         </div>
-        <!-- <div v-if="userRole === 'admin'">  -->
-        <div> 
+        
+        <div v-if="userRole === 'admin'">
           <router-link
           
             v-for="link in linksAdmin"

@@ -31,7 +31,8 @@
           :key="page"
           :value="page"
           :class="{
-            'hidden': !(Math.floor(page / 10) === Math.floor(currentPage / 10)) &&
+            'hidden': 
+            Math.floor(page / 10) !== Math.floor(currentPage / 10) &&
               page !== 1 &&
               page !== pages
           }"
@@ -201,7 +202,7 @@ export default {
       handleUpdate, getValue, handlePage, handleAdd,
       selectedOption, searchValue,
       handleSearch, handleDelete,
-      handleMaxPages,handleMinPages,handlePages,isLoading
+      handleMaxPages,handleMinPages,handlePages,isLoading,currentPage
     }
   }
 };

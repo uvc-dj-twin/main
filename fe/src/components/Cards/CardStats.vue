@@ -46,7 +46,7 @@
           </div>
         </div>
         <p v-show="hovered==true && warningEquipmentArray.length > 0"
-          class="text-3xl">
+          class="text-xl">
             이상 장비 : {{ warningEquipmentArray?.join(' ') }}
           </p>
         <!-- <div class="text-3xl relative w-auto pl-4 flex-initial">

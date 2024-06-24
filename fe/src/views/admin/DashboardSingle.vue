@@ -18,7 +18,7 @@
    {{ realtimeResult? Math.round(realtimeResult.thresholdPercent,1) : '' }}%
   </div>
   <div> 
-    금일 전류 검사 수: {{ realtimeResult?.currentCount }} (이상률 {{ Math.round(realtimeResult?.currentRatioPercent,1)  }}%)
+    금일 전류 검사 수: {{ realtimeResult.currentCount }} (이상률 {{ Math.round(realtimeResult?.currentRatioPercent,1)  }}%)
   <br>
     금일 진동 검사 수: {{ realtimeResult?.vibrationCount }} (이상률 {{Math.round( realtimeResult?.vibrationRatioPercent,1) }}%)
 
@@ -36,7 +36,7 @@
         <div class="text-xl font-bold"> 
     
           
-         최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}})
+         <!-- 최근 검사결과:{{ realtimeResult?.vibrationResult}} ({{realtimeResult?.vibrationTime}}) -->
         </div>
         
         <CardLineChartDetail :data="vibrationRef"></CardLineChartDetail>
@@ -44,7 +44,7 @@
         <div class="text-xl font-bold "> 
        
           
-        최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} )
+        <!-- 최근 검사결과: RMS {{ realtimeResult?.currentRms.split(',').map(str => str.substring(0, 4)).join(',')}} -  {{ realtimeResult?.currentResult }} (  {{realtimeResult?.currentTime}} ) -->
 
         </div>
         
@@ -57,7 +57,7 @@
 </template>
 <script>
 // import data from "@/data/dashboard.js";
-import { ref, onMounted, inject, onUnmounted, computed } from 'vue';
+import { ref, onMounted, inject, onUnmounted, computed,watch } from 'vue';
 
 // import HeaderStatsSingle from "@/components/Headers/HeaderStatsSingle.vue";
 import CardLineChartDetail from "@/components/Cards/CardLineChartDetail.vue";
@@ -103,7 +103,13 @@ export default {
 
 
     const dailyCount = ref();
-    const realtimeResult = ref();
+    const realtimeResult = ref(
+      {
+        equipmentId: 0,
+        equipmentSerialNo: 'L-SF-04',
+        currentCount : 0,
+      }
+    );
     const testChartData = computed(() => {
       const labels = Object.keys(realtimeTestData.value);
       const data = Object.values(realtimeTestData.value);
@@ -222,6 +228,9 @@ export default {
         newData[`${type}Count`] = data.count
         newData[`${type}FailCount`] = data.failCount
         newData[`${type}Result`] = data.result
+        newData[`${type}Rms`]=data.rms
+        console.log(newData[`${type}Rms`])
+
         newData[`${type}Time`] = new Date(data.time / 1000).toISOString('ko-KR')
         newData[`${type}RatioPercent`] = data.ratioPercent
         newData.thresholdPercent =
@@ -258,6 +267,10 @@ export default {
         console.log('Updated realtimeResult:', realtimeResult.value)
 
     }
+
+    const watcher = watch(realtimeResult, (newData) => {
+      changeData(newData)
+    })
 
 
     return {
