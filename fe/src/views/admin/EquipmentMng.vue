@@ -54,7 +54,7 @@
                   </th>
                   <th v-for="(group, index) in groupList" :key="index"
                     class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    그룹 {{ group.name }}
+                    {{ group.name }}
                   </th>
                   <th
                     class="text-blueGray-500 px-6 align-middle border border-solid py-3 text-2xl uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -67,10 +67,13 @@
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
                     {{ machine.name }}
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4" style="width: 15%;">
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4"
+                    style="width: 15%;">
                     <input v-if="editCheck" type="text" v-model="machine.threshold" placeholder="Search here..."
                       class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
-                    <div v-else class="px-3 py-3 text-blueGray-600 relative bg-white rounded text-sm outline-none w-full pl-10">{{ machine.threshold }}</div>
+                    <div v-else
+                      class="px-3 py-3 text-blueGray-600 relative bg-white rounded text-sm outline-none w-full pl-10">{{
+                        machine.threshold }}</div>
                   </td>
                   <td v-for="(group, groupIndex) in machine.groups" :key="groupIndex"
                     class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xl whitespace-nowrap p-4">
@@ -87,8 +90,9 @@
                     </div>
                   </td>
                   <td>
-                    <button @click="addDeleteMachine(machine.id)"
+                    <button @click="addDeleteMachine(machine.id)" :disabled="!editCheck"
                       class="bg-color3 text-sm get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 active:bg-color3"
+                      :class="!editCheck ? 'bg-blueGray-200' : DeleteMachineArray.includes(machine.id) ? 'bg-color3' : 'bg-red-400'"
                       style="text-align: right;">
                       {{ DeleteMachineArray.includes(machine.id) ? '취소' : '삭제' }}
                     </button>
