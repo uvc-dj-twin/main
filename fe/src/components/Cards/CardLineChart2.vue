@@ -18,7 +18,7 @@
       <!-- Chart -->
       <div class="relative h-150-px w-1200-px">
         <canvas ref="chart" class="relative w-1200-px"
-          style="height:100px">
+          style="height:150px">
         </canvas>
       </div>
     </div>
