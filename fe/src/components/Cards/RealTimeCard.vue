@@ -98,7 +98,7 @@
                           ? 'bg-red-500'
                           : result.currentRatioPercent > 50
                           ? 'bg-yellow-500'
-                          : 'bg-yellow-200',
+                          : 'bg-blueGray-700',
                       ]"
                     >
                       {{ Math.round(result.currentRatioPercent, 1) }}%
@@ -135,7 +135,7 @@
                           ? 'bg-red-500'
                           : result.vibrationRatioPercent > 50
                           ? 'bg-yellow-500'
-                          : 'bg-yellow-200',
+                          : 'bg-blueGray-700',
                       ]"
                     >
                       {{ Math.round(result.vibrationRatioPercent, 1) }}%
