@@ -24,13 +24,14 @@
 
   </div>
 
-  
+  <div class="flex flex-col">
     <span v-if="currentTimedifference>10" class="bg-red-500 text-white"> 
       전류센서 상태: 정지</span>
     <span v-else>전류센서 상태: 작동 중 </span>
     
     <span v-if="vibrationTimedifference > 10" class="bg-red-500 text-white">진동센서 상태: 정지</span>
     <span v-else>진동센서 상태: 작동 중 </span>
+  </div>
   
 </div>        
         <div class="text-xl font-bold"> 

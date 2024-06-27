@@ -276,7 +276,7 @@ export default {
 
           // .get(`/board/machines/details/${selectedMachine.value.id}?startTime=${startTime.value}&endTime=${endTime.value}&result=${selectedDefectType.value}&limit=${limits.value}&page=${currentPage.value}`, {
           selectedMachine.value.id=equipmentList.value[0].id
-          selectedDefectType.value=equipmentList.value[0].defectTypes[0].id
+          selectedDefectType.value=equipmentList.value[0]?.defectTypes[0].id
           getValue();
         })
         .catch((error) => {

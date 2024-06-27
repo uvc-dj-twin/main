@@ -66,11 +66,11 @@
                     <div
                       class="text-center text-xl"
                       :class="[
-                        result.thresholdPercent > 70
+                        result.thresholdPercent > 100
                           ? 'text-red-500'
                           : result.thresholdPercent > 50
                           ? 'text-yellow-500'
-                          : 'text-yellow-200',
+                          : 'text-blueGray-700',
                       ]"
                     >
                       {{ Math.round(result.thresholdPercent, 1) }}% ({{
